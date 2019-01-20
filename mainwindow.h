@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QPushButton>
 
 namespace Ui {
 class MainWindow;
@@ -17,12 +18,15 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_treeView_collapsed(const QModelIndex &index);
-
     void on_pushButton_clicked();
+
+    void on_lineEdit_textChanged(const QString &arg1);
+
+    void handleButton();
 
 private:
     Ui::MainWindow *ui;
+    QPushButton *tag;
 };
 
 #endif // MAINWINDOW_H

@@ -3,6 +3,7 @@
 #include <QPixmap>
 #include <dirent.h>
 #include <iostream>
+#include <qdebug.h>
 
 using namespace std;
 
@@ -12,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
     DIR *dir;
     struct dirent *ent;
     if ((dir = opendir ("C:/Users/Theo/Documents/IHM/BibliothequePhoto/PicsTmp")) != NULL) {
@@ -21,7 +23,6 @@ MainWindow::MainWindow(QWidget *parent) :
       }
       closedir (dir);
     } else {
-        cout << "test" << endl;
       /* could not open directory */
       perror ("Can't Open");
     }
@@ -36,14 +37,25 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_treeView_collapsed(const QModelIndex &index)
-{
-
-}
-
 void MainWindow::on_pushButton_clicked()
 {
     if(textChange == true){
-        
+        tag = new QPushButton(this);
+        tag->setText(ui->lineEdit->text());
+        ui->formLayout->addWidget(tag);
+        //connect(tag, SIGNAL (released()), this, SLOT (handleButton()));
+        qDebug() << __FUNCTION__ << "Button created";
     }
+}
+
+void MainWindow::handleButton()
+{
+    tag->setText("Example");
+    tag->resize(100,100);
+    qDebug() << __FUNCTION__ << "Slot";
+}
+
+void MainWindow::on_lineEdit_textChanged(const QString &arg1)
+{
+    textChange =true;
 }
