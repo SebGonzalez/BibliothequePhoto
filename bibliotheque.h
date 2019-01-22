@@ -8,7 +8,7 @@ class Bibliotheque
 {
 public:
     Bibliotheque();
-    void loadImage();
+    void loadImage(std::string cheminDossier);
     void save();
 
 private:
