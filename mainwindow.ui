@@ -49,7 +49,7 @@
       <x>0</x>
       <y>0</y>
       <width>211</width>
-      <height>601</height>
+      <height>411</height>
      </rect>
     </property>
     <layout class="QFormLayout" name="formLayout">
@@ -68,6 +68,16 @@
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QTreeView" name="treeView">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>410</y>
+      <width>209</width>
+      <height>192</height>
+     </rect>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">

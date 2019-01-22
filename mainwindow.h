@@ -3,6 +3,14 @@
 
 #include <QMainWindow>
 #include <QPushButton>
+#include <QPixmap>
+#include <dirent.h>
+#include <iostream>
+#include <qdebug.h>
+#include <QFileSystemModel>
+#include <string>
+
+using namespace std;
 
 namespace Ui {
 class MainWindow;
@@ -20,10 +28,15 @@ public:
 private slots:
     void on_pushButton_clicked();
 
-    void on_lineEdit_textChanged(const QString &arg1);
+    void on_lineEdit_textChanged();
 
     void handleButton();
 
+    void showTreeView();
+
+    void getFics(string path);
+
+    void displayPic(string path);
 private:
     Ui::MainWindow *ui;
     QPushButton *tag;
