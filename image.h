@@ -9,9 +9,10 @@ class Image
 {
 public:
     Image(std::string chemin);
+    QImage* getQImage();
 
 private:
-    QImage image;
+    QImage *image;
 };
 
 #endif // IMAGE_H

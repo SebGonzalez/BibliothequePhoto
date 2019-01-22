@@ -8,7 +8,5 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
 
-    Bibliotheque bibliotheque;
-
     return a.exec();
 }

@@ -9,6 +9,7 @@
 #include <qdebug.h>
 #include <QFileSystemModel>
 #include <string>
+#include "bibliotheque.h"
 
 using namespace std;
 

@@ -79,6 +79,17 @@
      </rect>
     </property>
    </widget>
+   <widget class="QWidget" name="gridLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>10</y>
+      <width>821</width>
+      <height>591</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="presentateurPhoto"/>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

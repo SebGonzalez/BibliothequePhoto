@@ -13,9 +13,13 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    Bibliotheque bibliotheque;
+
     displayPic("C:/Users/Theo/Documents/IHM/BibliothequePhoto/PicsTmp/Younes.png");
     getFics("C:/Users/Theo/Documents/IHM/BibliothequePhoto/PicsTmp");
     showTreeView();
+
+    bibliotheque.drawImages(ui->presentateurPhoto);
 }
 
 MainWindow::~MainWindow()
