@@ -1,11 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
 #include <QPixmap>
 #include <iostream>
 #include <qdebug.h>
 
 using namespace std;
-
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -13,13 +13,49 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QPixmap pix("C:/Users/Theo/Documents/IHM/BibliothequePhoto/PicsTmp/Younes.png");
-    ui->label->setPixmap(pix.scaled(ui->label->width(),ui->label->height()));
+    displayPic("C:/Users/Theo/Documents/IHM/BibliothequePhoto/PicsTmp/Younes.png");
+    getFics("C:/Users/Theo/Documents/IHM/BibliothequePhoto/PicsTmp");
+    showTreeView();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::displayPic(string path)
+{
+    QPixmap pix;
+    pix.load(path.c_str());
+    ui->label->setPixmap(pix.scaled(ui->label->width(),ui->label->height()));
+}
+
+void MainWindow::getFics(string path)
+{
+    DIR *dir;
+    struct dirent *ent;
+    if ((dir = opendir (path.c_str())) != NULL) {
+      /* print all the files and directories within directory */
+      while ((ent = readdir (dir)) != NULL) {
+          string str(ent->d_name);
+          if(str.find('png') != string::npos)
+            printf ("%s\n", ent->d_name);
+      }
+      closedir (dir);
+    } else {
+      /* could not open directory */
+      perror ("Can't Open");
+    }
+}
+
+void MainWindow::showTreeView()
+{
+    QFileSystemModel *model = new QFileSystemModel(this);
+    model->setRootPath(QDir::rootPath());
+    ui->treeView->setModel(model);
+    ui->treeView->hideColumn(1);
+    ui->treeView->hideColumn(2);
+    ui->treeView->hideColumn(3);
 }
 
 void MainWindow::on_pushButton_clicked()
@@ -40,7 +76,7 @@ void MainWindow::handleButton()
    // qDebug() << __FUNCTION__ << "Slot";
 }
 
-void MainWindow::on_lineEdit_textChanged(const QString &arg1)
+void MainWindow::on_lineEdit_textChanged()
 {
     textChange =true;
 }
