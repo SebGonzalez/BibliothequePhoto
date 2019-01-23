@@ -21,6 +21,8 @@ public:
 private:
     std::vector<Image> listeImage;
     void initDataFile();
+    void openJson();
+    void sealJson();
 };
 
 #endif // BIBLIOTHEQUE_H

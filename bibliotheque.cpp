@@ -1,12 +1,16 @@
 #include "bibliotheque.h"
 #include <fstream>
 #include <iostream>
+#include <sstream>
 
 using namespace std;
 
 Bibliotheque::Bibliotheque()
 {
     initDataFile();
+    openJson();
+    sealJson();
+    std::cin.get();
     cout << "Création bibliotheque" << endl;
     loadImage("../BibliothequePhoto/PicsTmp/");
     //loadImage("PicsTmp/");
@@ -86,4 +90,29 @@ void Bibliotheque::initDataFile() {
     }
 
     else cout << "Unable to open file";
+}
+
+void Bibliotheque::openJson() {
+    std::ifstream fileIn( "../BibliothequePhoto/images.dat" );                   // Open for reading
+
+    std::stringstream buffer;                             // Store contents in a std::string
+    buffer << fileIn.rdbuf();
+    std::string contents = buffer.str();
+
+    fileIn.close();
+    contents.pop_back();                                  // Remove last character
+
+    std::ofstream fileOut( "../BibliothequePhoto/images.dat" , std::ios::trunc); // Open for writing (while also clearing file)
+    fileOut << contents;                                  // Output contents with removed character
+    fileOut.close();
+}
+
+void Bibliotheque::sealJson() {
+    ofstream outfile;
+
+    outfile.open("../BibliothequePhoto/images.dat", ios::app);
+
+    outfile << "\n}" << endl;
+
+    outfile.close();
 }
