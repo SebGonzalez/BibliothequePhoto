@@ -8,16 +8,32 @@ using namespace std;
 Bibliotheque::Bibliotheque()
 {
     initDataFile();
-    addToLib("image.jpg");
-    addToLib("image2.jpg");
-    addToLib("image.jpg");
-    std::cin.get();
     cout << "Création bibliotheque" << endl;
-    loadImage("../BibliothequePhoto/PicsTmp/");
-    //loadImage("PicsTmp/");
+    addDirectory("../BibliothequePhoto/PicsTmp/");
+    loadImages();
 }
 
-void Bibliotheque::loadImage(string cheminDossier) {
+void Bibliotheque::loadImages() {
+    string line;
+    ifstream myfile ("../BibliothequePhoto/images.csv");
+    if (myfile.is_open()) {
+        while (getline (myfile,line)) {
+          std::size_t comma = line.find(",");
+          if (comma != std::string::npos){ // Si il y a une virgule dans line on prend la substring avant elle.
+              string str = line.substr(0, comma);
+              listeImage.push_back(str);
+          }
+          else {
+              listeImage.push_back(line);
+          }
+        }
+        myfile.close();
+    }
+
+    else cout << "Unable to open file";
+}
+
+void Bibliotheque::addDirectory(string cheminDossier) {
     QString chemonDossierQt(cheminDossier.c_str());
     cout << "Lecture des fichiers : " << cheminDossier << endl;
     DIR *dir;
@@ -30,7 +46,7 @@ void Bibliotheque::loadImage(string cheminDossier) {
         if(nomFichier.section(".", -1).toStdString() == "png" ||  nomFichier.section(".", -1).toStdString() == "jpg") {
            // printf ("HEY %s\n", ent->d_name);
             Image newImage(cheminDossier + ent->d_name);
-            listeImage.push_back(newImage);
+            addToLib(cheminDossier + ent->d_name);
         }
       }
       closedir (dir);
@@ -66,7 +82,6 @@ bool emptyDataFile() {
     ifstream myfile ("../BibliothequePhoto/images.dat");
     if (myfile.is_open()) {
         getline (myfile, line1);
-        getline (myfile, line2);
         myfile.close();
 
         if (line2.compare("}") == 0) {
@@ -110,52 +125,81 @@ void addTag(string path, string tag) {
         cout << "Cannot add tag ; invalid path.\n";
         return;
     }
+    
+    std::ifstream fileIn( "../BibliothequePhoto/images.dat");                   // Open for reading
+
+    string buffer; // Store contents in a std::string
+
+    while(getline(fileIn, buffer)) {
+        cout << buffer << endl;
+        if (buffer.find(path) != std::string::npos) {
+            
+        }
+    }
+    fileIn.close();
+    
 
 }
+
+//void Bibliotheque::addToLib(string filepath) {
+//    ofstream outfile;
+//    bool comma = false;
+
+//    if (!emptyDataFile()) comma = true;
+//    if (libContains(filepath)) {
+//        return;
+//    }
+
+//    openJson();
+//    outfile.open("../BibliothequePhoto/images.dat", ios::app);
+
+//    assert (!outfile.fail());
+//    if (comma) addComma();
+//    string img;
+//    img = "\t{\n\t\t\"path\" : \"" + filepath + "\",\n";
+//    img = img + "\t\t\"tags\" : [\n\t\t]";
+//    outfile << img << "\n\t}" << endl;
+
+//    outfile.close();
+//    sealJson();
+
+//    cout << "New image of path " + filepath + " added to the library";
+//}
 
 void Bibliotheque::addToLib(string filepath) {
+    if (libContains(filepath)) return;
+    
     ofstream outfile;
-    bool comma = false;
-
-    if (!emptyDataFile()) comma = true;
-    if (libContains(filepath)) {
-        return;
-    }
-
-    openJson();
-    outfile.open("../BibliothequePhoto/images.dat", ios::app);
-
+    outfile.open("../BibliothequePhoto/images.csv", ios::app);
     assert (!outfile.fail());
-    if (comma) addComma();
-    string img;
-    img = "\t{\n\t\t\"path\" : \"" + filepath + "\",\n";
-    img = img + "\t\t\"tags\" : [\n\t\t]";
-    outfile << img << "\n\t}" << endl;
-
+    outfile << filepath << endl;
     outfile.close();
-    sealJson();
-
-    cout << "New image of path " + filepath + " added to the library";
+    
+    cout << "New image of path " + filepath + " added to the library" << endl;
 }
 
-void Bibliotheque::initDataFile() {
-    string line;
-    ifstream myfile ("../BibliothequePhoto/images.dat");
-    if (myfile.is_open()) {
-        if (!getline (myfile,line)) {
-            myfile.close();
-            ofstream outfile;
-            outfile.open("../BibliothequePhoto/images.dat");
-            outfile << "{" << endl << "}";
-            cout << "Data file initialized." << endl;
-        }
-        else {
-            cout << "Data file already initialized." << endl;
-        }
-        myfile.close();
-    }
+//void Bibliotheque::initDataFile() {
+//    string line;
+//    ifstream myfile ("../BibliothequePhoto/images.dat");
+//    if (myfile.is_open()) {
+//        if (!getline (myfile,line)) {
+//            myfile.close();
+//            ofstream outfile;
+//            outfile.open("../BibliothequePhoto/images.dat");
+//            outfile << "{" << endl << "}";
+//            cout << "Data file initialized." << endl;
+//        }
+//        else {
+//            cout << "Data file already initialized." << endl;
+//        }
+//        myfile.close();
+//    }
 
-    else cout << "Unable to open file";
+//    else cout << "Unable to open file";
+//}
+
+void Bibliotheque::initDataFile() {
+    remove("../BibliothequePhoto/images.csv");
 }
 
 void Bibliotheque::addComma() {

@@ -1,7 +1,7 @@
 #ifndef BIBLIOTHEQUE_H
 #define BIBLIOTHEQUE_H
 
-#include <vector>
+#include <set>
 #include "image.h"
 #include <dirent.h>
 #include <QGridLayout>
@@ -13,8 +13,9 @@ class Bibliotheque
 {
 public:
     Bibliotheque();
-    void loadImage(std::string cheminDossier);
+    void addDirectory(std::string cheminDossier);
     void save();
+    void loadImages();
     void drawImages(QGridLayout *layout);
     void addToLib(std::string filepath);
 

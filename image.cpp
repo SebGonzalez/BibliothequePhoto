@@ -2,14 +2,19 @@
 
 using namespace std;
 
-Image::Image(string cheminFichier)
+Image::Image(string chemin)
 {
-    image = new QImage(QString::fromStdString(cheminFichier));
+    this->chemin = chemin;
+    this->image = new QImage(QString::fromStdString(chemin));
     if(image->isNull()) {
         cout << "Erreur lors de l'ouverture" << endl;
     }
 }
 
 QImage* Image::getQImage() {
-    return image;
+    return this->image;
+}
+
+string Image::getChemin() {
+    return this->chemin;
 }

@@ -15,8 +15,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     Bibliotheque bibliotheque;
 
-    displayPic("C:/Users/Theo/Documents/IHM/BibliothequePhoto/PicsTmp/Younes.png");
-    getFics("C:/Users/Theo/Documents/IHM/BibliothequePhoto/PicsTmp");
+    displayPic("PicsTmp/Younes.png");
+    getFics("PicsTmp/");
     showTreeView();
 
     bibliotheque.drawImages(ui->presentateurPhoto);
