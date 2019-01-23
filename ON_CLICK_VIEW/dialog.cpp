@@ -57,8 +57,8 @@ void Dialog::initLabels(    )
     ui->next_photo->setAttribute(Qt::WA_Hover);
     ui->previous_photo->setAttribute(Qt::WA_Hover);
 
-    ui->next_photo->hide();
-    ui->previous_photo->hide();
+    //ui->next_photo->hide();
+    //ui->previous_photo->hide();
 
 }
 
