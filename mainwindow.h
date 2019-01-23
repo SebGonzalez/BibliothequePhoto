@@ -10,6 +10,7 @@
 #include <QFileSystemModel>
 #include <string>
 #include "bibliotheque.h"
+#include <QScrollArea>
 
 using namespace std;
 

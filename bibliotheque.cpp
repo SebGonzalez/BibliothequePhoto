@@ -62,12 +62,11 @@ void Bibliotheque::drawImages(QGridLayout *layout) {
         QPixmap pixmap = QPixmap::fromImage(*listeImage[i].getQImage());
         QLabel *imgDisplayLabel = new QLabel("");
         imgDisplayLabel->setPixmap(pixmap.scaled(200,200));
-        imgDisplayLabel->adjustSize();
         imgDisplayLabel->setFixedWidth(200);
        imgDisplayLabel->setFixedHeight(200);
            layout->addWidget(imgDisplayLabel, line, colonne);
            colonne++;
-           if(colonne == 5) {
+           if(colonne ==5) {
                line++;
                colonne = 0;
            }

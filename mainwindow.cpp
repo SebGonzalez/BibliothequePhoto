@@ -1,4 +1,4 @@
-    #include "mainwindow.h"
+#include "mainwindow.h"
 #include "ui_mainwindow.h"
 
 #include <QPixmap>
@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    this->setFixedSize(1600,900);
     ui->setupUi(this);
 
     Bibliotheque bibliotheque;
@@ -18,6 +19,10 @@ MainWindow::MainWindow(QWidget *parent) :
     displayPic("PicsTmp/Younes.png");
     getFics("PicsTmp/");
     showTreeView();
+
+    QWidget *w = new QWidget;
+    w->setLayout(ui->presentateurPhoto);
+    ui->scrollArea->setWidget(w);
 
     bibliotheque.drawImages(ui->presentateurPhoto);
 }
