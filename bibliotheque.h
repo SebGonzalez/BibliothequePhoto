@@ -20,6 +20,7 @@ public:
 
 private:
     std::vector<Image> listeImage;
+    void initDataFile();
 };
 
 #endif // BIBLIOTHEQUE_H

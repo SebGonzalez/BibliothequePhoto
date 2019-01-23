@@ -6,8 +6,9 @@ using namespace std;
 
 Bibliotheque::Bibliotheque()
 {
+    initDataFile();
     cout << "Création bibliotheque" << endl;
-    loadImage("/amuhome/g17003337/Documents/S2/IHM/projet/BibliothequePhoto/PicsTmp/");
+    loadImage("../BibliothequePhoto/PicsTmp/");
     //loadImage("PicsTmp/");
 }
 
@@ -49,7 +50,6 @@ void Bibliotheque::drawImages(QGridLayout *layout) {
                line++;
                colonne = 0;
            }
-           cout << "oui" << endl;
     }
      layout->minimumSize().setHeight(line*210);
     layout->maximumSize().setHeight(line*210);
@@ -58,9 +58,32 @@ void Bibliotheque::drawImages(QGridLayout *layout) {
 void Bibliotheque::addToLib(string filepath) {
     ofstream outfile;
 
-    outfile.open("images.dat", ios::app);
-    assert (!outfile.fail( ));
-    outfile << filepath << endl;
+    outfile.open("../BibliothequePhoto/images.dat", ios::app);
+
+    assert (!outfile.fail());
+    string img;
+    img = "{\n\t\"path\" : \"" + filepath + "\",\n";
+    img = img + "\t\"tags\" : [\n\t]";
+    outfile << img << "\n}" << endl;
+
     outfile.close();
 }
 
+void Bibliotheque::initDataFile() {
+    string line;
+    ifstream myfile ("../BibliothequePhoto/images.dat");
+    if (myfile.is_open()) {
+        if (!getline (myfile,line)) {
+            myfile.close();
+            ofstream outfile;
+            outfile.open("../BibliothequePhoto/images.dat");
+            outfile << "{" << endl << "}";
+        }
+        else {
+            cout << "Fichier déjà initialisé.";
+        }
+        myfile.close();
+    }
+
+    else cout << "Unable to open file";
+}
