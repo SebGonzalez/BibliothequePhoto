@@ -79,16 +79,39 @@
      </rect>
     </property>
    </widget>
-   <widget class="QWidget" name="gridLayoutWidget">
+   <widget class="QScrollArea" name="scrollArea">
     <property name="geometry">
      <rect>
-      <x>230</x>
+      <x>260</x>
       <y>10</y>
-      <width>821</width>
-      <height>591</height>
+      <width>791</width>
+      <height>581</height>
      </rect>
     </property>
-    <layout class="QGridLayout" name="presentateurPhoto"/>
+    <property name="widgetResizable">
+     <bool>true</bool>
+    </property>
+    <widget class="QWidget" name="scrollAreaWidgetContents">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>789</width>
+       <height>579</height>
+      </rect>
+     </property>
+     <widget class="QWidget" name="gridLayoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>791</width>
+        <height>581</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="presentateurPhoto"/>
+     </widget>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -97,7 +120,7 @@
      <x>0</x>
      <y>0</y>
      <width>1098</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

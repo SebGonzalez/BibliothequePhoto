@@ -28,20 +28,15 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     bibliotheque.cpp \
-    image.cpp \
-    dialog.cpp
+    image.cpp
 
 HEADERS += \
         mainwindow.h \
     bibliotheque.h \
-    image.h \
-    dialog.h \
-    global_variables.h
-
+    image.h
 
 FORMS += \
-        mainwindow.ui \
-        dialog.ui
+        mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -5,7 +5,7 @@ using namespace std;
 Bibliotheque::Bibliotheque()
 {
     cout << "Création bibliotheque" << endl;
-    loadImage("/home/amine/Documents/IHM/BibliothequePhoto/PicsTmp/");
+    loadImage("/amuhome/g17003337/Documents/S2/IHM/projet/BibliothequePhoto/PicsTmp/");
 }
 
 void Bibliotheque::loadImage(string cheminDossier) {
@@ -36,8 +36,10 @@ void Bibliotheque::drawImages(QGridLayout *layout) {
     for(int i=0; i<listeImage.size(); i++) {
         QPixmap pixmap = QPixmap::fromImage(*listeImage[i].getQImage());
         QLabel *imgDisplayLabel = new QLabel("");
-        imgDisplayLabel->setPixmap(pixmap.scaled(300,300));
-         //  imgDisplayLabel->adjustSize();
+        imgDisplayLabel->setPixmap(pixmap.scaled(200,200));
+        imgDisplayLabel->adjustSize();
+        imgDisplayLabel->setFixedWidth(200);
+       imgDisplayLabel->setFixedHeight(200);
            layout->addWidget(imgDisplayLabel, line, colonne);
            colonne++;
            if(colonne == 5) {
@@ -46,6 +48,8 @@ void Bibliotheque::drawImages(QGridLayout *layout) {
            }
            cout << "oui" << endl;
     }
+     layout->minimumSize().setHeight(line*210);
+    layout->maximumSize().setHeight(line*210);
 }
 
 
