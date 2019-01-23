@@ -23,6 +23,7 @@ private:
     void initDataFile();
     void openJson();
     void sealJson();
+    void addComma();
 };
 
 #endif // BIBLIOTHEQUE_H

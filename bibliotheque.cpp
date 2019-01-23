@@ -8,9 +8,7 @@ using namespace std;
 Bibliotheque::Bibliotheque()
 {
     initDataFile();
-    openJson();
-    sealJson();
-    std::cin.get();
+
     cout << "Création bibliotheque" << endl;
     loadImage("../BibliothequePhoto/PicsTmp/");
     //loadImage("PicsTmp/");
@@ -59,18 +57,40 @@ void Bibliotheque::drawImages(QGridLayout *layout) {
     layout->maximumSize().setHeight(line*210);
 }
 
+
+bool emptyDataFile() {
+    string line1, line2;
+    ifstream myfile ("../BibliothequePhoto/images.dat");
+    if (myfile.is_open()) {
+        getline (myfile, line1);
+        getline (myfile, line2);
+        myfile.close();
+
+        if (line2.compare("}") == 0) {
+            cout << "Data file is empty." << endl;
+            return true;
+        }
+    }
+    return false;
+}
+
 void Bibliotheque::addToLib(string filepath) {
     ofstream outfile;
+    bool comma = false;
 
+    if (!emptyDataFile()) comma = true;
+    openJson();
     outfile.open("../BibliothequePhoto/images.dat", ios::app);
 
     assert (!outfile.fail());
+    if (comma) addComma();
     string img;
-    img = "{\n\t\"path\" : \"" + filepath + "\",\n";
-    img = img + "\t\"tags\" : [\n\t]";
-    outfile << img << "\n}" << endl;
+    img = "\t{\n\t\t\"path\" : \"" + filepath + "\",\n";
+    img = img + "\t\t\"tags\" : [\n\t\t]";
+    outfile << img << "\n\t}" << endl;
 
     outfile.close();
+    sealJson();
 }
 
 void Bibliotheque::initDataFile() {
@@ -82,14 +102,31 @@ void Bibliotheque::initDataFile() {
             ofstream outfile;
             outfile.open("../BibliothequePhoto/images.dat");
             outfile << "{" << endl << "}";
+            cout << "Data file initialized." << endl;
         }
         else {
-            cout << "Fichier déjà initialisé.";
+            cout << "Data file already initialized." << endl;
         }
         myfile.close();
     }
 
     else cout << "Unable to open file";
+}
+
+void Bibliotheque::addComma() {
+    std::ifstream fileIn( "../BibliothequePhoto/images.dat" );                   // Open for reading
+
+    std::stringstream buffer;                             // Store contents in a std::string
+    buffer << fileIn.rdbuf();
+    std::string contents = buffer.str();
+
+    fileIn.close();
+    contents.pop_back();                                  // Remove last character
+    contents.pop_back();                                  // Remove last character
+    contents = contents + ",\n";
+    std::ofstream fileOut( "../BibliothequePhoto/images.dat" , std::ios::trunc); // Open for writing (while also clearing file)
+    fileOut << contents;                                  // Output contents with removed character
+    fileOut.close();
 }
 
 void Bibliotheque::openJson() {
@@ -112,7 +149,7 @@ void Bibliotheque::sealJson() {
 
     outfile.open("../BibliothequePhoto/images.dat", ios::app);
 
-    outfile << "\n}" << endl;
+    outfile << "}" << endl;
 
     outfile.close();
 }
