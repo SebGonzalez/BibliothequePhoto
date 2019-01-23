@@ -1,11 +1,13 @@
 #include "bibliotheque.h"
+#include <fstream>
+#include <iostream>
 
 using namespace std;
 
 Bibliotheque::Bibliotheque()
 {
     cout << "Création bibliotheque" << endl;
-    loadImage("/home/amine/Documents/IHM/BibliothequePhoto/PicsTmp/");
+    loadImage("PicsTmp/");
 }
 
 void Bibliotheque::loadImage(string cheminDossier) {
@@ -33,7 +35,7 @@ void Bibliotheque::loadImage(string cheminDossier) {
 void Bibliotheque::drawImages(QGridLayout *layout) {
     int line = 0;
     int colonne = 0;
-    for(int i=0; i<listeImage.size(); i++) {
+    for(int i = 0; i < listeImage.size(); i++) {
         QPixmap pixmap = QPixmap::fromImage(*listeImage[i].getQImage());
         QLabel *imgDisplayLabel = new QLabel("");
         imgDisplayLabel->setPixmap(pixmap.scaled(300,300));
@@ -48,4 +50,12 @@ void Bibliotheque::drawImages(QGridLayout *layout) {
     }
 }
 
+void Bibliotheque::addToLib(string filepath) {
+    ofstream outfile;
+
+    outfile.open("images.dat", ios::app);
+    assert (!outfile.fail( ));
+    outfile << filepath << endl;
+    outfile.close();
+}
 
