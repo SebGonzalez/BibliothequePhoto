@@ -74,7 +74,7 @@ void MainWindow::on_pushButton_clicked()
     }
 }
 
-conne
+
 
 void MainWindow::handleButton()
 {
