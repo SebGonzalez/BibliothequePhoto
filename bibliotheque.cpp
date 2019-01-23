@@ -8,7 +8,10 @@ using namespace std;
 Bibliotheque::Bibliotheque()
 {
     initDataFile();
-
+    addToLib("image.jpg");
+    addToLib("image2.jpg");
+    addToLib("image.jpg");
+    std::cin.get();
     cout << "Création bibliotheque" << endl;
     loadImage("../BibliothequePhoto/PicsTmp/");
     //loadImage("PicsTmp/");
@@ -74,11 +77,51 @@ bool emptyDataFile() {
     return false;
 }
 
+
+bool libContains(string path) {
+    bool found = false;
+    std::ifstream fileIn( "../BibliothequePhoto/images.dat");                   // Open for reading
+
+    string buffer; // Store contents in a std::string
+    string currentPath;
+
+    while(getline(fileIn, buffer)) {
+        cout << buffer << endl;
+        if (buffer.find(path) != std::string::npos) {
+            cout << "Already exists!" << endl;
+            found = true;
+            break;
+        }
+    }
+    fileIn.close();
+    if (found) {
+        cout << "Your library already contains this file" << endl;
+        return true;
+    }
+    else {
+        return false;
+    }
+
+
+}
+
+void addTag(string path, string tag) {
+    if (!libContains(path)) {
+        cout << "Cannot add tag ; invalid path.\n";
+        return;
+    }
+
+}
+
 void Bibliotheque::addToLib(string filepath) {
     ofstream outfile;
     bool comma = false;
 
     if (!emptyDataFile()) comma = true;
+    if (libContains(filepath)) {
+        return;
+    }
+
     openJson();
     outfile.open("../BibliothequePhoto/images.dat", ios::app);
 
@@ -91,6 +134,8 @@ void Bibliotheque::addToLib(string filepath) {
 
     outfile.close();
     sealJson();
+
+    cout << "New image of path " + filepath + " added to the library";
 }
 
 void Bibliotheque::initDataFile() {
@@ -153,3 +198,5 @@ void Bibliotheque::sealJson() {
 
     outfile.close();
 }
+
+
