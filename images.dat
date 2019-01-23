@@ -1,1 +1,12 @@
-sqdfqsf
+{
+	{
+		"path" : "image.jpg",
+		"tags" : [
+		]
+	},
+	{
+		"path" : "image2.jpg",
+		"tags" : [
+		]
+	}
+}
