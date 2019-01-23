@@ -16,6 +16,7 @@ public:
     void loadImage(std::string cheminDossier);
     void save();
     void drawImages(QGridLayout *layout);
+    void addToLib(std::string filepath);
 
 private:
     std::vector<Image> listeImage;
