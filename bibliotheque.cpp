@@ -5,7 +5,7 @@ using namespace std;
 Bibliotheque::Bibliotheque()
 {
     cout << "Création bibliotheque" << endl;
-    loadImage("D:/GoogleDrive/Master/S2/IHM/Projet/BibliothePhoto/PicsTmp/");
+    loadImage("/home/amine/Documents/IHM/BibliothequePhoto/PicsTmp/");
 }
 
 void Bibliotheque::loadImage(string cheminDossier) {

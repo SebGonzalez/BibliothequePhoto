@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+    #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
 #include <QPixmap>
@@ -32,6 +32,7 @@ void MainWindow::displayPic(string path)
     QPixmap pix;
     pix.load(path.c_str());
     ui->label->setPixmap(pix.scaled(ui->label->width(),ui->label->height()));
+
 }
 
 void MainWindow::getFics(string path)
@@ -72,6 +73,8 @@ void MainWindow::on_pushButton_clicked()
         //qDebug() << __FUNCTION__ << "Button created";
     }
 }
+
+conne
 
 void MainWindow::handleButton()
 {
