@@ -10,8 +10,11 @@ class Image
 {
 public:
     Image(std::string chemin);
+    Image(std::string chemin, std::vector<std::string> tags);
     QImage* getQImage();
     std::string getChemin();
+    std::vector<std::string> getTags();
+    void addTag(std::string tag);
 
 private:
     std::string chemin;

@@ -18,6 +18,9 @@ public:
     void loadImages();
     void drawImages(QGridLayout *layout);
     void addToLib(std::string filepath);
+    void addToLib(std::string filepath, std::vector<std::string> tags);
+    void addTag(std::string path, std::string tag);
+    void addTags(std::string path, std::vector<std::string> tags);
     int getImgListSize();
     std::vector<Image> getlisteImage();
 

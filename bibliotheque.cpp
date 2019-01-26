@@ -21,7 +21,7 @@ void Bibliotheque::loadImages() {
     if (myfile.is_open()) {
         while (getline (myfile,line)) {
           std::size_t comma = line.find(",");
-          if (comma != std::string::npos){ // Si il y a une virgule dans line on prend la substring avant elle.
+          if (comma != std::string::npos){ // S'il y a une virgule dans line on prend la substring avant elle.
               string str = line.substr(0, comma);
               listeImage.push_back(str);
           }
@@ -51,11 +51,9 @@ void Bibliotheque::addDirectory(string cheminDossier) {
     struct dirent *ent;
     if ((dir = opendir (cheminDossier.c_str())) != NULL) {
       while ((ent = readdir (dir)) != NULL) {
-
         QString nomFichier(ent->d_name);
-      //  cout << "oui : " << cheminFichier.toStdString() << " : " << cheminFichier.section(".", -1).toStdString() << endl;
-        if(nomFichier.section(".", -1).toStdString() == "png" ||  nomFichier.section(".", -1).toStdString() == "jpg") {
-           // printf ("HEY %s\n", ent->d_name);
+        string extension = nomFichier.section(".", -1).toStdString();
+        if(extension == "png" || extension == "jpg") {
             Image newImage(cheminDossier + ent->d_name);
             addToLib(cheminDossier + ent->d_name);
         }
@@ -69,7 +67,7 @@ void Bibliotheque::addDirectory(string cheminDossier) {
 void Bibliotheque::drawImages(QGridLayout *layout) {
     int line = 0;
     int colonne = 0;
-    for(int i = 0; i < listeImage.size(); i++) {
+    for(unsigned int i = 0; i < listeImage.size(); i++) {
         QPixmap pixmap = QPixmap::fromImage(*listeImage[i].getQImage());
         ClickableLabel *imgDisplayLabel = new ClickableLabel();
         imgDisplayLabel->setPixmap(pixmap.scaled(200,200));
@@ -84,24 +82,8 @@ void Bibliotheque::drawImages(QGridLayout *layout) {
 
 
     }
-     layout->minimumSize().setHeight(line*210);
+    layout->minimumSize().setHeight(line*210);
     layout->maximumSize().setHeight(line*210);
-}
-
-
-bool emptyDataFile() {
-    string line1, line2;
-    ifstream myfile ("../BibliothequePhoto/images.dat");
-    if (myfile.is_open()) {
-        getline (myfile, line1);
-        myfile.close();
-
-        if (line2.compare("}") == 0) {
-            cout << "Data file is empty." << endl;
-            return true;
-        }
-    }
-    return false;
 }
 
 
@@ -115,14 +97,13 @@ bool libContains(string path) {
     while(getline(fileIn, buffer)) {
         cout << buffer << endl;
         if (buffer.find(path) != std::string::npos) {
-            cout << "Already exists!" << endl;
             found = true;
             break;
         }
     }
     fileIn.close();
     if (found) {
-        cout << "Your library already contains this file" << endl;
+        cout << "Your library contains this file" << endl;
         return true;
     }
     else {
@@ -132,27 +113,26 @@ bool libContains(string path) {
 
 }
 
-
-
-void addTag(string path, string tag) {
-    if (!libContains(path)) {
-        cout << "Cannot add tag ; invalid path.\n";
-        return;
-    }
-    
-    std::ifstream fileIn( "../BibliothequePhoto/images.dat");                   // Open for reading
-
-    string buffer; // Store contents in a std::string
-
-    while(getline(fileIn, buffer)) {
-        cout << buffer << endl;
-        if (buffer.find(path) != std::string::npos) {
-            
+void Bibliotheque::addTag(string path, string tag) {
+    for(unsigned int i = 0; i < listeImage.size(); i++) {
+        Image &img = listeImage[i];
+        if(img.getChemin().compare(path) == 0) {
+            img.addTag(tag);
+            return;
         }
     }
-    fileIn.close();
-    
+}
 
+void Bibliotheque::addTags(string path, vector<string> tags) {
+    for(unsigned int i = 0; i < listeImage.size(); i++) {
+        Image &img = listeImage[i];
+        if(img.getChemin().compare(path) == 0) {
+            for(unsigned int j = 0; j < tags.size(); j++) {
+                img.addTag(tags[j]);
+            }
+            return;
+        }
+    }
 }
 
 //void Bibliotheque::addToLib(string filepath) {
@@ -182,13 +162,29 @@ void addTag(string path, string tag) {
 
 void Bibliotheque::addToLib(string filepath) {
     if (libContains(filepath)) return;
-    
+
     ofstream outfile;
     outfile.open("../BibliothequePhoto/images.csv", ios::app);
     assert (!outfile.fail());
     outfile << filepath << endl;
     outfile.close();
-    
+
+    cout << "New image of path " + filepath + " added to the library" << endl;
+}
+
+void Bibliotheque::addToLib(string filepath, vector<string> tags) {
+    if (libContains(filepath)) return;
+
+    ofstream outfile;
+    outfile.open("../BibliothequePhoto/images.csv", ios::app);
+    assert (!outfile.fail());
+    outfile << filepath;
+    for(unsigned int i = 0; i < tags.size(); i++) {
+        outfile << ", " + tags[i];
+    }
+    outfile << endl;
+    outfile.close();
+
     cout << "New image of path " + filepath + " added to the library" << endl;
 }
 
