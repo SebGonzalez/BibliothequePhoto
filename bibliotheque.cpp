@@ -9,7 +9,7 @@ class ClickableLabel;
 
 Bibliotheque::Bibliotheque()
 {
-    initDataFile();
+    initDataFile(); // temporaire
     cout << "Création bibliotheque" << endl;
     addDirectory("../BibliothequePhoto/PicsTmp/");
     loadImages();
@@ -17,13 +17,28 @@ Bibliotheque::Bibliotheque()
 
 void Bibliotheque::loadImages() {
     string line;
+
     ifstream myfile ("../BibliothequePhoto/images.csv");
     if (myfile.is_open()) {
-        while (getline (myfile,line)) {
+        while (getline (myfile, line)) {
           std::size_t comma = line.find(",");
-          if (comma != std::string::npos){ // S'il y a une virgule dans line on prend la substring avant elle.
-              string str = line.substr(0, comma);
-              listeImage.push_back(str);
+          if (comma != std::string::npos){ // if the image has tags
+              vector<string> tags(0);
+              // Parse path
+              string path = line.substr(0, comma);
+
+              // Parse tags
+              comma = comma + 2;
+              std::size_t nextComma = line.find(',', comma);
+              while(nextComma != std::string::npos) {
+                  tags.push_back(line.substr(comma, nextComma - comma));
+                  comma = nextComma + 2;
+                  nextComma = line.find(',', comma);
+              }
+              tags.push_back(line.substr(comma, nextComma - comma));
+
+              Image image(path, tags);
+              listeImage.push_back(image);
           }
           else {
               listeImage.push_back(line);
@@ -32,7 +47,7 @@ void Bibliotheque::loadImages() {
         myfile.close();
     }
 
-    else cout << "Unable to open file";
+    else cout << "Unable to open file" << endl;
 
 }
 
@@ -89,7 +104,7 @@ void Bibliotheque::drawImages(QGridLayout *layout) {
 
 bool libContains(string path) {
     bool found = false;
-    std::ifstream fileIn( "../BibliothequePhoto/images.dat");                   // Open for reading
+    std::ifstream fileIn( "../BibliothequePhoto/images.csv");                   // Open for reading
 
     string buffer; // Store contents in a std::string
     string currentPath;
@@ -109,8 +124,6 @@ bool libContains(string path) {
     else {
         return false;
     }
-
-
 }
 
 void Bibliotheque::addTag(string path, string tag) {
@@ -134,31 +147,6 @@ void Bibliotheque::addTags(string path, vector<string> tags) {
         }
     }
 }
-
-//void Bibliotheque::addToLib(string filepath) {
-//    ofstream outfile;
-//    bool comma = false;
-
-//    if (!emptyDataFile()) comma = true;
-//    if (libContains(filepath)) {
-//        return;
-//    }
-
-//    openJson();
-//    outfile.open("../BibliothequePhoto/images.dat", ios::app);
-
-//    assert (!outfile.fail());
-//    if (comma) addComma();
-//    string img;
-//    img = "\t{\n\t\t\"path\" : \"" + filepath + "\",\n";
-//    img = img + "\t\t\"tags\" : [\n\t\t]";
-//    outfile << img << "\n\t}" << endl;
-
-//    outfile.close();
-//    sealJson();
-
-//    cout << "New image of path " + filepath + " added to the library";
-//}
 
 void Bibliotheque::addToLib(string filepath) {
     if (libContains(filepath)) return;
@@ -188,69 +176,6 @@ void Bibliotheque::addToLib(string filepath, vector<string> tags) {
     cout << "New image of path " + filepath + " added to the library" << endl;
 }
 
-//void Bibliotheque::initDataFile() {
-//    string line;
-//    ifstream myfile ("../BibliothequePhoto/images.dat");
-//    if (myfile.is_open()) {
-//        if (!getline (myfile,line)) {
-//            myfile.close();
-//            ofstream outfile;
-//            outfile.open("../BibliothequePhoto/images.dat");
-//            outfile << "{" << endl << "}";
-//            cout << "Data file initialized." << endl;
-//        }
-//        else {
-//            cout << "Data file already initialized." << endl;
-//        }
-//        myfile.close();
-//    }
-
-//    else cout << "Unable to open file";
-//}
-
 void Bibliotheque::initDataFile() {
     remove("../BibliothequePhoto/images.csv");
 }
-
-void Bibliotheque::addComma() {
-    std::ifstream fileIn( "../BibliothequePhoto/images.dat" );                   // Open for reading
-
-    std::stringstream buffer;                             // Store contents in a std::string
-    buffer << fileIn.rdbuf();
-    std::string contents = buffer.str();
-
-    fileIn.close();
-    contents.pop_back();                                  // Remove last character
-    contents.pop_back();                                  // Remove last character
-    contents = contents + ",\n";
-    std::ofstream fileOut( "../BibliothequePhoto/images.dat" , std::ios::trunc); // Open for writing (while also clearing file)
-    fileOut << contents;                                  // Output contents with removed character
-    fileOut.close();
-}
-
-void Bibliotheque::openJson() {
-    std::ifstream fileIn( "../BibliothequePhoto/images.dat" );                   // Open for reading
-
-    std::stringstream buffer;                             // Store contents in a std::string
-    buffer << fileIn.rdbuf();
-    std::string contents = buffer.str();
-
-    fileIn.close();
-    contents.pop_back();                                  // Remove last character
-
-    std::ofstream fileOut( "../BibliothequePhoto/images.dat" , std::ios::trunc); // Open for writing (while also clearing file)
-    fileOut << contents;                                  // Output contents with removed character
-    fileOut.close();
-}
-
-void Bibliotheque::sealJson() {
-    ofstream outfile;
-
-    outfile.open("../BibliothequePhoto/images.dat", ios::app);
-
-    outfile << "}" << endl;
-
-    outfile.close();
-}
-
-
