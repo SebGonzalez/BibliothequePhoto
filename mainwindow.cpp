@@ -106,7 +106,18 @@ void MainWindow::on_lineEdit_textChanged()
 
 
 void MainWindow::displayDialogue(){
-    Dialog *test = new Dialog();
-    test->exec();
+
+    for(int i = 0 ; i < bibliotheque.getImgListSize();i++){
+        QObject* widget = QObject::sender();
+        if(widget == ui->presentateurPhoto->itemAt(i)->widget()){
+            Dialog *dialog = new Dialog(i,bibliotheque.getlisteImage());
+
+         //    Dialog *dialog = new Dialog();
+            dialog->exec();
+        }
+    }
+
+
+
 
 }

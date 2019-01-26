@@ -3,6 +3,8 @@
 
 #include <QDialog>
 #include <QHoverEvent>
+#include <bibliotheque.h>
+#include <image.h>
 
 namespace Ui {
 class Dialog;
@@ -14,15 +16,11 @@ class Dialog : public QDialog
 
 public:
 
-    QString current_image;
-    QList <QString> liste_image;
+    int position;
+    std::vector<Image> liste_image;
 
     explicit Dialog(QWidget *parent = nullptr);
-
-    Dialog(QString current_image,QList <QString> listeImage){
-        this->current_image = current_image;
-        this->liste_image = listeImage;
-    }
+    Dialog(int position,std::vector<Image> listeImage);
     ~Dialog();
 
 

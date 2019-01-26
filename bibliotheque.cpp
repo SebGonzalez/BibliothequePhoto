@@ -40,6 +40,9 @@ int Bibliotheque::getImgListSize(){
     return listeImage.size();
 }
 
+std::vector<Image> Bibliotheque::getlisteImage(){
+    return listeImage;
+}
 
 void Bibliotheque::addDirectory(string cheminDossier) {
     QString chemonDossierQt(cheminDossier.c_str());

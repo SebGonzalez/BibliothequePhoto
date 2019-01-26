@@ -14,17 +14,23 @@ Dialog::Dialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    loadImagesfromList();
+}
+
+
+Dialog::Dialog(int position,std::vector<Image> listeImage):
+    ui(new Ui::Dialog)
+{
+
+    this->liste_image = listeImage;
+    this->position = position;
+    ui->setupUi(this);
     initLabels();
-     QPixmap pix1(pictures_array.at(0));
-     ui->current_picture->setPixmap(pix1);
+    QPixmap pixmap = QPixmap::fromImage(*listeImage[position].getQImage());
+    ui->current_picture->setPixmap(pixmap);
+    indice = position;
 
-     indice = 0;
-
-     connect(ui->next_photo, SIGNAL(clicked()), this, SLOT(nextImage()));
-     connect(ui->previous_photo, SIGNAL(clicked()), this, SLOT(previousImage()) );
-
-
+    connect(ui->next_photo, SIGNAL(clicked()), this, SLOT(nextImage()));
+    connect(ui->previous_photo, SIGNAL(clicked()), this, SLOT(previousImage()) );
 
 }
 
@@ -34,10 +40,9 @@ Dialog::~Dialog()
 }
 
 
-void Dialog::initLabels(    )
+void Dialog::initLabels()
 {
-    this->setMouseTracking(true);
-    ui->next_photo->setMouseTracking(true);
+
 
     QCommonStyle style;
     ui->previous_photo->setIcon(style.standardIcon(QStyle::SP_ArrowLeft));
@@ -55,21 +60,6 @@ void Dialog::initLabels(    )
     ui->next_photo->setAttribute(Qt::WA_Hover);
     ui->previous_photo->setAttribute(Qt::WA_Hover);
 
-    //ui->next_photo->hide();
-    //ui->previous_photo->hide();
-
-}
-
-void Dialog::loadImagesfromList()
-{
-
-     pictures_array.append("/home/amine/Documents/IHM/ON_CLICK_VIEW/PicsTmp/1.jpg");
-      pictures_array.append("/home/amine/Documents/IHM/ON_CLICK_VIEW/PicsTmp/2.jpg");
-       pictures_array.append("/home/amine/Documents/IHM/ON_CLICK_VIEW/PicsTmp/3.jpg");
-        pictures_array.append("/home/amine/Documents/IHM/ON_CLICK_VIEW/PicsTmp/4.jpg");
-         pictures_array.append("/home/amine/Documents/IHM/ON_CLICK_VIEW/PicsTmp/5.jpg");
-
-
 
 }
 
@@ -78,10 +68,10 @@ void Dialog::loadImagesfromList()
 void Dialog:: nextImage(){
     QObject* button = QObject::sender();
     if(button == ui->next_photo){
-        if(indice < pictures_array.size() - 1){
-        indice ++;
-        QPixmap pix1(pictures_array.at(indice));
-        ui->current_picture->setPixmap(pix1);
+        if(position < this->liste_image.size() - 1){
+        position ++;
+        QPixmap pixmap = QPixmap::fromImage(*liste_image[position].getQImage());
+        ui->current_picture->setPixmap(pixmap);
         }
     }
 
@@ -93,10 +83,10 @@ void Dialog:: previousImage(){
 
       QObject* button = QObject::sender();
       if(button == ui->previous_photo){
-          if(indice > 0){
-           indice --;
-           QPixmap pix2(pictures_array.at(indice));
-           ui->current_picture->setPixmap(pix2);
+          if(position > 0){
+           position --;
+           QPixmap pixmap = QPixmap::fromImage(*liste_image[position].getQImage());
+           ui->current_picture->setPixmap(pixmap);
           }
       }
 

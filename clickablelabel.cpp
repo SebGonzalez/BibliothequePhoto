@@ -7,6 +7,6 @@ ClickableLabel::ClickableLabel(QWidget *parent) :
 }
 
 void  ClickableLabel::mousePressEvent(QMouseEvent *ev){
-    this->is_clicked = true;
     emit clicked();
 }
+

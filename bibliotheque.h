@@ -19,6 +19,7 @@ public:
     void drawImages(QGridLayout *layout);
     void addToLib(std::string filepath);
     int getImgListSize();
+    std::vector<Image> getlisteImage();
 
 private:
     std::vector<Image> listeImage;
@@ -26,6 +27,7 @@ private:
     void openJson();
     void sealJson();
     void addComma();
+
 };
 
 #endif // BIBLIOTHEQUE_H
