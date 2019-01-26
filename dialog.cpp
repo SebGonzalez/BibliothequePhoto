@@ -24,8 +24,6 @@ Dialog::Dialog(QWidget *parent) :
      connect(ui->next_photo, SIGNAL(clicked()), this, SLOT(nextImage()));
      connect(ui->previous_photo, SIGNAL(clicked()), this, SLOT(previousImage()) );
 
-     connect(ui->next_photo,SIGNAL(mouseMoving()),this,SLOT(mouseMoving()));
-
 
 
 }
@@ -101,15 +99,6 @@ void Dialog:: previousImage(){
            ui->current_picture->setPixmap(pix2);
           }
       }
-
-}
-
-void Dialog:: mouseMoving(){
-
-    QObject* button = QObject::sender();
-    if(button == ui->next_photo)
-        ui->next_photo->show();
-
 
 }
 

@@ -39,6 +39,9 @@ private slots:
     void getFics(string path);
 
     void displayPic(string path);
+
+    void displayDialogue();
+
 private:
     Ui::MainWindow *ui;
     QPushButton *tag;

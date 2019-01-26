@@ -2,8 +2,10 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <clickablelabel.h>
 
 using namespace std;
+class ClickableLabel;
 
 Bibliotheque::Bibliotheque()
 {
@@ -31,7 +33,13 @@ void Bibliotheque::loadImages() {
     }
 
     else cout << "Unable to open file";
+
 }
+
+int Bibliotheque::getImgListSize(){
+    return listeImage.size();
+}
+
 
 void Bibliotheque::addDirectory(string cheminDossier) {
     QString chemonDossierQt(cheminDossier.c_str());
@@ -60,16 +68,18 @@ void Bibliotheque::drawImages(QGridLayout *layout) {
     int colonne = 0;
     for(int i = 0; i < listeImage.size(); i++) {
         QPixmap pixmap = QPixmap::fromImage(*listeImage[i].getQImage());
-        QLabel *imgDisplayLabel = new QLabel("");
+        ClickableLabel *imgDisplayLabel = new ClickableLabel();
         imgDisplayLabel->setPixmap(pixmap.scaled(200,200));
         imgDisplayLabel->setFixedWidth(200);
-       imgDisplayLabel->setFixedHeight(200);
+        imgDisplayLabel->setFixedHeight(200);
            layout->addWidget(imgDisplayLabel, line, colonne);
            colonne++;
            if(colonne ==5) {
                line++;
                colonne = 0;
            }
+
+
     }
      layout->minimumSize().setHeight(line*210);
     layout->maximumSize().setHeight(line*210);
@@ -118,6 +128,8 @@ bool libContains(string path) {
 
 
 }
+
+
 
 void addTag(string path, string tag) {
     if (!libContains(path)) {

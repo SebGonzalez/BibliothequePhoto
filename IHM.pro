@@ -29,14 +29,16 @@ SOURCES += \
         mainwindow.cpp \
     bibliotheque.cpp \
     image.cpp \
-    dialog.cpp
+    dialog.cpp \
+    clickablelabel.cpp
 
 HEADERS += \
         mainwindow.h \
     bibliotheque.h \
     image.h \
     dialog.h \
-    global_variables.h
+    global_variables.h \
+    clickablelabel.h
 
 
 FORMS += \

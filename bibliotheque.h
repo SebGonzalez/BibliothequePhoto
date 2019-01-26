@@ -18,6 +18,7 @@ public:
     void loadImages();
     void drawImages(QGridLayout *layout);
     void addToLib(std::string filepath);
+    int getImgListSize();
 
 private:
     std::vector<Image> listeImage;
