@@ -9,9 +9,9 @@ class ClickableLabel;
 
 Bibliotheque::Bibliotheque()
 {
-    initDataFile(); // temporaire
     cout << "Création bibliotheque" << endl;
-    addDirectory("../BibliothequePhoto/PicsTmp/");
+    //initDataFile(); // temporaire
+    //addDirectory("../BibliothequePhoto/PicsTmp/");
     loadImages();
 }
 
@@ -70,7 +70,7 @@ void Bibliotheque::addDirectory(string cheminDossier) {
         string extension = nomFichier.section(".", -1).toStdString();
         if(extension == "png" || extension == "jpg") {
             Image newImage(cheminDossier + ent->d_name);
-            addToLib(cheminDossier + ent->d_name);
+            addToFile(cheminDossier + ent->d_name);
         }
       }
       closedir (dir);
@@ -79,7 +79,7 @@ void Bibliotheque::addDirectory(string cheminDossier) {
     }
 }
 
-void Bibliotheque::drawImages(QGridLayout *layout) {
+void Bibliotheque::drawImages(QGridLayout *layout, vector<Image> listeImage) {
     int line = 0;
     int colonne = 0;
     for(unsigned int i = 0; i < listeImage.size(); i++) {
@@ -148,19 +148,22 @@ void Bibliotheque::addTags(string path, vector<string> tags) {
     }
 }
 
-void Bibliotheque::addToLib(string filepath) {
-    if (libContains(filepath)) return;
+vector<Image> Bibliotheque::getTaggedImages(string tag) {
+    vector<Image> tagged;
 
-    ofstream outfile;
-    outfile.open("../BibliothequePhoto/images.csv", ios::app);
-    assert (!outfile.fail());
-    outfile << filepath << endl;
-    outfile.close();
+    for(unsigned int i = 0; i < listeImage.size(); i++) {
+        Image img = listeImage[i];
+        vector<string> tags = img.getTags();
+        for(unsigned int j = 0; j < tags.size(); j++) {
+            if(tags[j].compare(tag) == 0)
+                tagged.push_back(img);
+        }
+    }
 
-    cout << "New image of path " + filepath + " added to the library" << endl;
+    return tagged;
 }
 
-void Bibliotheque::addToLib(string filepath, vector<string> tags) {
+void Bibliotheque::addToFile(string filepath, vector<string> tags) {
     if (libContains(filepath)) return;
 
     ofstream outfile;
@@ -174,6 +177,18 @@ void Bibliotheque::addToLib(string filepath, vector<string> tags) {
     outfile.close();
 
     cout << "New image of path " + filepath + " added to the library" << endl;
+}
+
+void Bibliotheque::addToFile(string filepath) {
+    vector<string> tags(0);
+    addToFile(filepath, tags);
+}
+
+void Bibliotheque::addToFile(Image image) {
+    string path = image.getChemin();
+    vector<string> tags = image.getTags();
+
+    addToFile(path, tags);
 }
 
 void Bibliotheque::initDataFile() {
