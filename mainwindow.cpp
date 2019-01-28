@@ -24,7 +24,20 @@ MainWindow::MainWindow(QWidget *parent) :
     getFics("PicsTmp/");
     showTreeView();
 
-    QWidget *w = new QWidget;
+
+    QHBoxLayout *frameLayout = new QHBoxLayout(ui->frame);
+    bibliothequeWigdet = new BibliothequeWidget(200,this, &bibliotheque);
+    for(unsigned int i = 0; i < bibliotheque.getlisteImage().size(); i++) {
+        QPixmap pixmap = QPixmap::fromImage(*bibliotheque.getlisteImage()[i].getQImage());
+        pixmap = pixmap.scaledToWidth(200);
+        //pixmap.scaledToHeight(200);
+          bibliothequeWigdet->addPiece(pixmap, i);
+    }
+   frameLayout->addWidget(bibliothequeWigdet);
+
+      QObject::connect(bibliothequeWigdet, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(displayDialogue(QListWidgetItem*)));
+
+   /* QWidget *w = new QWidget;
     w->setLayout(ui->presentateurPhoto);
     ui->scrollArea->setWidget(w);
 
@@ -32,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     for(int i = 0 ; i < bibliotheque.getImgListSize() ; i++)
         connect(ui->presentateurPhoto->itemAt(i)->widget(), SIGNAL(clicked()),SLOT(displayDialogue()));
-
+*/
 
 
 
@@ -105,19 +118,10 @@ void MainWindow::on_lineEdit_textChanged()
 }
 
 
-void MainWindow::displayDialogue(){
+void MainWindow::displayDialogue(QListWidgetItem *item)
+{
 
-    for(int i = 0 ; i < bibliotheque.getImgListSize();i++){
-        QObject* widget = QObject::sender();
-        if(widget == ui->presentateurPhoto->itemAt(i)->widget()){
-            Dialog *dialog = new Dialog(i,bibliotheque.getlisteImage());
-
-         //    Dialog *dialog = new Dialog();
-            dialog->exec();
-        }
-    }
-
-
-
+     Dialog *dialog = new Dialog(item->data(Qt::UserRole).toInt() ,bibliotheque.getlisteImage());
+     dialog->exec();
 
 }

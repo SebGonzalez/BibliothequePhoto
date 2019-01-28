@@ -9,8 +9,9 @@
 #include <qdebug.h>
 #include <QFileSystemModel>
 #include <string>
-#include "bibliotheque.h"
 #include <QScrollArea>
+#include "bibliothequewidget.h"
+#include "clickablelabel.h"
 
 using namespace std;
 
@@ -40,11 +41,12 @@ private slots:
 
     void displayPic(string path);
 
-    void displayDialogue();
+    void displayDialogue(QListWidgetItem*);
 
 private:
     Ui::MainWindow *ui;
     QPushButton *tag;
+    BibliothequeWidget *bibliothequeWigdet;
 };
 
 #endif // MAINWINDOW_H

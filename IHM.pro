@@ -30,7 +30,8 @@ SOURCES += \
     bibliotheque.cpp \
     image.cpp \
     dialog.cpp \
-    clickablelabel.cpp
+    clickablelabel.cpp \
+    bibliothequewidget.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -38,7 +39,8 @@ HEADERS += \
     image.h \
     dialog.h \
     global_variables.h \
-    clickablelabel.h
+    clickablelabel.h \
+    bibliothequewidget.h
 
 
 FORMS += \
