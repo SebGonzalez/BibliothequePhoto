@@ -56,7 +56,8 @@ void BibliothequeWidget::addPiece(const QPixmap &pixmap, int i)
 {
     QListWidgetItem *pieceItem = new QListWidgetItem(this);
     pieceItem->setIcon(QIcon(pixmap));
-    pieceItem->setData(Qt::UserRole, QVariant(i));
+     pieceItem->setData(Qt::UserRole, QVariant(pixmap));
+    pieceItem->setData(Qt::UserRole+1, QVariant(i));
 
     pieceItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
 
