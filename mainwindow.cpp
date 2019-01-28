@@ -28,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
     w->setLayout(ui->presentateurPhoto);
     ui->scrollArea->setWidget(w);
 
-    bibliotheque.drawImages(ui->presentateurPhoto);
+    bibliotheque.drawImages(ui->presentateurPhoto, bibliotheque.getlisteImage());
 
     for(int i = 0 ; i < bibliotheque.getImgListSize() ; i++)
         connect(ui->presentateurPhoto->itemAt(i)->widget(), SIGNAL(clicked()),SLOT(displayDialogue()));
