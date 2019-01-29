@@ -31,7 +31,8 @@ SOURCES += \
     image.cpp \
     dialog.cpp \
     clickablelabel.cpp \
-    bibliothequewidget.cpp
+    bibliothequewidget.cpp \
+    landingpage.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -40,12 +41,14 @@ HEADERS += \
     dialog.h \
     global_variables.h \
     clickablelabel.h \
-    bibliothequewidget.h
+    bibliothequewidget.h \
+    landingpage.h
 
 
 FORMS += \
         mainwindow.ui \
-        dialog.ui
+        dialog.ui \
+    landingpage.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

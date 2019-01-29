@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "bibliotheque.h"
 #include "dialog.h"
+#include "landingpage.h"
 
 #include <QPixmap>
 #include <iostream>
@@ -16,9 +17,16 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+
+    //Landing page : Commenter les 3 prochaines lignes pour avoir la galerie
+    LandingPage *lp = new LandingPage(this);
+    lp->exec();
+
     this->setFixedSize(1600,900);
     ui->setupUi(this);
 
+
+    //Main gallery
     selection = bibliotheque.getlisteImage();
 
     displayPic("PicsTmp/Younes.png");
@@ -36,20 +44,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
    frameLayout->addWidget(bibliothequeWigdet);
 
-      QObject::connect(bibliothequeWigdet, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(displayDialogue(QListWidgetItem*)));
-
-   /* QWidget *w = new QWidget;
-    w->setLayout(ui->presentateurPhoto);
-    ui->scrollArea->setWidget(w);
-
-    bibliotheque.drawImages(ui->presentateurPhoto, bibliotheque.getlisteImage());
-
-    for(int i = 0 ; i < bibliotheque.getImgListSize() ; i++)
-        connect(ui->presentateurPhoto->itemAt(i)->widget(), SIGNAL(clicked()),SLOT(displayDialogue()));
-*/
-
-
-
+   QObject::connect(bibliothequeWigdet, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(displayDialogue(QListWidgetItem*)));
 }
 
 MainWindow::~MainWindow()
@@ -137,5 +132,6 @@ void MainWindow::displayDialogue(QListWidgetItem *item)
 
      Dialog *dialog = new Dialog(item->data(Qt::UserRole+1).toInt() ,bibliotheque.getlisteImage());
      dialog->exec();
+
 
 }
