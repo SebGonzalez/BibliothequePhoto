@@ -26,6 +26,7 @@ public:
 
     void initLabels();
     void loadImagesfromList();
+    QPixmap resizePixmap(QLabel *label, QPixmap pixmap);
 
 public slots:
 

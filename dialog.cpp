@@ -26,6 +26,7 @@ Dialog::Dialog(int position,std::vector<Image> listeImage):
     ui->setupUi(this);
     initLabels();
     QPixmap pixmap = QPixmap::fromImage(*listeImage[position].getQImage());
+    pixmap = resizePixmap(ui->current_picture,pixmap);
     ui->current_picture->setPixmap(pixmap);
     indice = position;
 
@@ -39,6 +40,12 @@ Dialog::Dialog(int position,std::vector<Image> listeImage):
 Dialog::~Dialog()
 {
     delete ui;
+}
+
+QPixmap Dialog:: resizePixmap(QLabel *label,QPixmap pix){
+    QSize labelsize = ui-> current_picture->size();
+    return pix.scaled(labelsize, Qt::IgnoreAspectRatio, Qt::FastTransformation);
+
 }
 
 
@@ -77,6 +84,7 @@ void Dialog:: nextImage(){
         if(position < this->liste_image.size() - 1){
         position ++;
         QPixmap pixmap = QPixmap::fromImage(*liste_image[position].getQImage());
+        pixmap = resizePixmap(ui->current_picture,pixmap);
         ui->current_picture->setPixmap(pixmap);
         }
     }
@@ -93,6 +101,7 @@ void Dialog:: previousImage(){
           if(position > 0){
            position --;
            QPixmap pixmap = QPixmap::fromImage(*liste_image[position].getQImage());
+           pixmap = resizePixmap(ui->current_picture,pixmap);
            ui->current_picture->setPixmap(pixmap);
           }
       }
