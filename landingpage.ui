@@ -13,6 +13,24 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton {
+	opacity: 200;
+	color: white;
+	border-style: outset;
+	border-width: 3px;
+	border-color: white;
+}
+
+QPushButton:hover {
+	opacity: 200;
+	color: black;
+	border-style: outset;
+	border-width: 3px;
+	border-color: black;
+
+}</string>
+  </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
@@ -60,11 +78,7 @@
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">opacity: 200;
-color: white;
-border-style: outset;
-border-width: 3px;
-border-color: white;</string>
+    <string notr="true"/>
    </property>
    <property name="text">
     <string>Importer des photos</string>
