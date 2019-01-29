@@ -43,7 +43,23 @@ void BibliothequeWidget::dropEvent(QDropEvent *event)
         QPoint location;
         dataStream >> pixmap >> location;
 
-        addPiece(pixmap, 0);
+        int ligne = event->pos().y()/200;
+        int colonne = (event->pos().x())/200;
+        QListWidgetItem *pieceItem = new QListWidgetItem();
+        pieceItem->setIcon(QIcon(pixmap));
+         pieceItem->setData(Qt::UserRole, QVariant(pixmap));
+        pieceItem->setData(Qt::UserRole+1, QVariant(0));
+
+        pieceItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
+
+
+        int rowPhoto = ligne*6 + colonne;
+        std::cout << ligne <<" OOOOOOOOO " << colonne << " AAAAAA " << rowPhoto << std::endl;
+
+        takeItem(row(currentItem()));
+        insertItem(rowPhoto, pieceItem);
+        setCurrentRow(rowPhoto);
+       // addPiece(pixmap, 0);
 
         event->setDropAction(Qt::MoveAction);
         event->accept();
@@ -60,10 +76,9 @@ void BibliothequeWidget::addPiece(const QPixmap &pixmap, int i)
     pieceItem->setData(Qt::UserRole+1, QVariant(i));
 
     pieceItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
-
 }
 
-void BibliothequeWidget::startDrag(Qt::DropActions /*supportedActions*/)
+void BibliothequeWidget::startDrag(Qt::DropActions)
 {
     QListWidgetItem *item = currentItem();
 
@@ -82,6 +97,8 @@ void BibliothequeWidget::startDrag(Qt::DropActions /*supportedActions*/)
     drag->setHotSpot(QPoint(pixmap.width()/2, pixmap.height()/2));
     drag->setPixmap(pixmap);
 
+    drag->exec(Qt::MoveAction);
+
     if (drag->exec(Qt::MoveAction) == Qt::MoveAction)
-        delete takeItem(row(item));
+       delete takeItem(row(item));
 }
