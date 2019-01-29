@@ -56,7 +56,6 @@ void BibliothequeWidget::dropEvent(QDropEvent *event)
         int rowPhoto = ligne*6 + colonne;
         std::cout << ligne <<" OOOOOOOOO " << colonne << " AAAAAA " << rowPhoto << std::endl;
 
-        takeItem(row(currentItem()));
         insertItem(rowPhoto, pieceItem);
         setCurrentRow(rowPhoto);
        // addPiece(pixmap, 0);
@@ -96,8 +95,6 @@ void BibliothequeWidget::startDrag(Qt::DropActions)
     drag->setMimeData(mimeData);
     drag->setHotSpot(QPoint(pixmap.width()/2, pixmap.height()/2));
     drag->setPixmap(pixmap);
-
-    drag->exec(Qt::MoveAction);
 
     if (drag->exec(Qt::MoveAction) == Qt::MoveAction)
        delete takeItem(row(item));
