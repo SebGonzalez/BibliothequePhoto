@@ -12,7 +12,7 @@ public:
     explicit BibliothequeWidget(int pieceSize, QWidget *parent = nullptr, Bibliotheque *bibliotheque = nullptr);
     void addPiece(const QPixmap &pixmap, int i);
 
-    static QString bibliothequeMimeType() { return QStringLiteral("image/x-puzzle-piece"); }
+    static QString bibliothequeMimeType() { return QStringLiteral("image/icon-photo"); }
 
 protected:
     void dragEnterEvent(QDragEnterEvent *event) override;
