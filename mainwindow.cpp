@@ -40,7 +40,7 @@ MainWindow::MainWindow(QWidget *parent) :
         QPixmap pixmap = QPixmap::fromImage(*selection[i].getQImage());
         pixmap = pixmap.scaledToWidth(200);
         //pixmap.scaledToHeight(200);
-          bibliothequeWigdet->addPiece(pixmap, i);
+          bibliothequeWigdet->addPiece(pixmap.scaled(200,200), i);
     }
    frameLayout->addWidget(bibliothequeWigdet);
 
