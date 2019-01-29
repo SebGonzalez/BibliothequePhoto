@@ -10,6 +10,7 @@
 using namespace std;
 
     Bibliotheque bibliotheque;
+    vector<Image> selection;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -18,8 +19,9 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setFixedSize(1600,900);
     ui->setupUi(this);
 
-
-
+    selection = bibliotheque.getlisteImage();
+    vector<Image> selection;
+    selection.push_back(bibliotheque.getlisteImage()[0]);
     displayPic("PicsTmp/Younes.png");
     getFics("PicsTmp/");
     showTreeView();
@@ -27,8 +29,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QHBoxLayout *frameLayout = new QHBoxLayout(ui->frame);
     bibliothequeWigdet = new BibliothequeWidget(200,this, &bibliotheque);
-    for(unsigned int i = 0; i < bibliotheque.getlisteImage().size(); i++) {
-        QPixmap pixmap = QPixmap::fromImage(*bibliotheque.getlisteImage()[i].getQImage());
+    for(unsigned int i = 0; i < selection.size(); i++) {
+        QPixmap pixmap = QPixmap::fromImage(*selection[i].getQImage());
         pixmap = pixmap.scaledToWidth(200);
         //pixmap.scaledToHeight(200);
           bibliothequeWigdet->addPiece(pixmap, i);
@@ -53,6 +55,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    //Reset file and save all updated data before closing
+    bibliotheque.initDataFile();
+    for (int i = 0; i < bibliotheque.getImgListSize(); i++) {
+        bibliotheque.addToFile(bibliotheque.getlisteImage()[i]);
+    }
     delete ui;
 }
 
@@ -92,17 +99,27 @@ void MainWindow::showTreeView()
     ui->treeView->hideColumn(3);
 }
 
+
 void MainWindow::on_pushButton_clicked()
 {
     if(textChange == true){
         tag = new QPushButton(this);
         tag->setText(ui->lineEdit->text());
         ui->formLayout->addWidget(tag);
+        selection = bibliotheque.getTaggedImages(ui->lineEdit->text().toStdString());
+
+        //Debug
+        for(int i = 0; i < selection.size(); i++) {
+            cout << selection[i].getChemin() << endl;
+        }
+        //bibliotheque.drawImages(ui->presentateurPhoto, selection);
+        //
+
+
         //connect(tag, SIGNAL (released()), this, SLOT (handleButton()));
         //qDebug() << __FUNCTION__ << "Button created";
     }
 }
-
 
 
 void MainWindow::handleButton()
