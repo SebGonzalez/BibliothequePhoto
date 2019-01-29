@@ -20,8 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     selection = bibliotheque.getlisteImage();
-    vector<Image> selection;
-    selection.push_back(bibliotheque.getlisteImage()[0]);
+
     displayPic("PicsTmp/Younes.png");
     getFics("PicsTmp/");
     showTreeView();
@@ -99,7 +98,6 @@ void MainWindow::showTreeView()
     ui->treeView->hideColumn(3);
 }
 
-
 void MainWindow::on_pushButton_clicked()
 {
     if(textChange == true){
@@ -112,7 +110,6 @@ void MainWindow::on_pushButton_clicked()
         for(int i = 0; i < selection.size(); i++) {
             cout << selection[i].getChemin() << endl;
         }
-        //bibliotheque.drawImages(ui->presentateurPhoto, selection);
         //
 
 
