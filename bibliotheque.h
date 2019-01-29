@@ -25,6 +25,7 @@ public:
     std::vector<Image> getTaggedImages(std::string tag);
     int  getImgListSize();
     std::vector<Image> getlisteImage();
+    void fillDefaultTag();
 
 private:
     std::vector<Image> listeImage;

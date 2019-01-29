@@ -13,6 +13,7 @@ Bibliotheque::Bibliotheque()
     initDataFile(); // temporaire
     addDirectory("../BibliothequePhoto/PicsTmp/");
     loadImages();
+    fillDefaultTag();
 }
 
 void Bibliotheque::loadImages() {
@@ -53,6 +54,15 @@ void Bibliotheque::loadImages() {
 
 int Bibliotheque::getImgListSize(){
     return listeImage.size();
+}
+
+void Bibliotheque::fillDefaultTag(){
+
+    for (int i = 0; i < listeImage.size() ; i++){
+
+        listeImage[i].addTag("default tag");
+
+    }
 }
 
 std::vector<Image> Bibliotheque::getlisteImage(){

@@ -32,6 +32,7 @@ public slots:
 
     void nextImage();
     void previousImage();
+    void displayTags();
 
 
 
