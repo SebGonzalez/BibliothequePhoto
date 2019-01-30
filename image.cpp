@@ -34,7 +34,8 @@ vector<string> Image::getTags() {
 }
 
 void Image::addTag(string tag) {
-    this->tags.push_back(tag);
+    if(!(std::find(this->tags.begin(), this->tags.end(), tag) != this->tags.end()))
+        this->tags.push_back(tag);
 }
 
 void Image::removeTags(){

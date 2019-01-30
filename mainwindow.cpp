@@ -108,6 +108,17 @@ void MainWindow::on_pushButton_clicked()
         //
 
 
+        QHBoxLayout *frameLayout = new QHBoxLayout(ui->frame);
+        bibliothequeWigdet->clear();
+        bibliothequeWigdet = new BibliothequeWidget(200,this, &bibliotheque);
+        for(unsigned int i = 0; i < selection.size(); i++) {
+            QPixmap pixmap = QPixmap::fromImage(*selection[i].getQImage());
+            pixmap = pixmap.scaledToWidth(200);
+            //pixmap.scaledToHeight(200);
+              bibliothequeWigdet->addPiece(pixmap.scaled(200,200), i);
+        }
+       frameLayout->addWidget(bibliothequeWigdet);
+
         //connect(tag, SIGNAL (released()), this, SLOT (handleButton()));
         //qDebug() << __FUNCTION__ << "Button created";
     }

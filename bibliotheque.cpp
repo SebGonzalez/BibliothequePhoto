@@ -10,8 +10,8 @@ class ClickableLabel;
 Bibliotheque::Bibliotheque()
 {
     cout << "Création bibliotheque" << endl;
-    initDataFile(); // temporaire
-    addDirectory("../BibliothequePhoto/PicsTmp/");
+    //initDataFile(); // temporaire
+    //addDirectory("../BibliothequePhoto/PicsTmp/");
     loadImages();
     fillDefaultTag();
 }
@@ -50,6 +50,13 @@ void Bibliotheque::loadImages() {
 
     else cout << "Unable to open file" << endl;
 
+    for (int i = 0; i < listeImage.size(); i++) {
+        cout << listeImage[i].getChemin() + " - ";
+        for(int j = 0; j < listeImage[i].getTags().size(); j++) {
+            cout << "tag : " + listeImage[i].getTags()[j] << endl;
+        }
+        cout << endl;
+    }
 }
 
 int Bibliotheque::getImgListSize(){

@@ -89,10 +89,15 @@ void Dialog:: nextImage(){
     if(button == ui->next_photo){
         if(position < this->liste_image.size() - 1){
         position ++;
+
+        }
+        else {
+            position = 0;
+        }
+
         QPixmap pixmap = QPixmap::fromImage(*liste_image[position].getQImage());
         pixmap = resizePixmap(ui->current_picture,pixmap);
         ui->current_picture->setPixmap(pixmap);
-        }
     }
 
  }
@@ -106,17 +111,20 @@ void Dialog:: previousImage(){
         if(!(ui->gridLayout->itemAt(i) == nullptr))
               ui->gridLayout->itemAt(i)->widget()->setVisible(false);
 
-
-
     QObject* button = QObject::sender();
       if(button == ui->previous_photo){
           if(position > 0){
            position --;
-           QPixmap pixmap = QPixmap::fromImage(*liste_image[position].getQImage());
-           pixmap = resizePixmap(ui->current_picture,pixmap);
-           ui->current_picture->setPixmap(pixmap);
           }
+          else {
+              position = this->liste_image.size() - 1;
+          }
+
+          QPixmap pixmap = QPixmap::fromImage(*liste_image[position].getQImage());
+          pixmap = resizePixmap(ui->current_picture,pixmap);
+          ui->current_picture->setPixmap(pixmap);
       }
+
 }
 
 
