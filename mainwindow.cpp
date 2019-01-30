@@ -51,6 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :
    frameLayout->addWidget(bibliothequeWigdet);
 
    QObject::connect(bibliothequeWigdet, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(displayDialogue(QListWidgetItem*)));
+   QObject::connect(bibliothequeWigdet, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(multipleSelection(QListWidgetItem*)));
 }
 
 MainWindow::~MainWindow()
@@ -138,4 +139,29 @@ void MainWindow::on_treeView_expanded(const QModelIndex &index)
         //pixmap.scaledToHeight(200);
         bibliothequeWigdet->addPiece(pixmap, i);
     }
+}
+
+void MainWindow::multipleSelection(QListWidgetItem* item){
+    if (ctrlIsPressed){
+        listSelect.addItem(item);
+        cout << item->data(Qt::UserRole+1).toInt() << endl;
+    }
+    if (!ctrlIsPressed){
+        listSelect.clear();
+    }
+    cout << listSelect.count() << endl;
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    if( event->key() == Qt::Key_Control )
+        ctrlIsPressed = true;
+    cout << "ctrl : " << ctrlIsPressed << endl;
+}
+
+void MainWindow::keyReleaseEvent(QKeyEvent *event)
+{
+    if( event->key() == Qt::Key_Control )
+       ctrlIsPressed = false;
+    cout << "ctrl : " << ctrlIsPressed << endl;
 }

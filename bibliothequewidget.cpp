@@ -20,6 +20,7 @@ BibliothequeWidget::BibliothequeWidget(int pieceSize, QWidget *parent, Bibliothe
 
 void BibliothequeWidget::dragEnterEvent(QDragEnterEvent *event)
 {
+
     if (event->mimeData()->hasFormat(BibliothequeWidget::bibliothequeMimeType()))
         event->accept();
     else
@@ -49,7 +50,7 @@ void BibliothequeWidget::dropEvent(QDropEvent *event)
         int colonne = (event->pos().x())/210;
         QListWidgetItem *pieceItem = new QListWidgetItem();
         pieceItem->setIcon(QIcon(pixmap.scaled(200,200)));
-         pieceItem->setData(Qt::UserRole, QVariant(pixmap));
+        pieceItem->setData(Qt::UserRole, QVariant(pixmap));
         pieceItem->setData(Qt::UserRole+1, QVariant(0));
 
         pieceItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
@@ -66,7 +67,7 @@ void BibliothequeWidget::dropEvent(QDropEvent *event)
 
         insertItem(rowPhoto, pieceItem);
         setCurrentRow(rowPhoto);
-       // addPiece(pixmap, 0);
+        // addPiece(pixmap, 0);
 
         event->setDropAction(Qt::MoveAction);
         event->accept();
@@ -88,7 +89,7 @@ void BibliothequeWidget::addPiece(const QPixmap &pixmap, int i)
 void BibliothequeWidget::startDrag(Qt::DropActions)
 {
     QListWidgetItem *item = currentItem();
-
+    vector<QPixmap> pixmaplist;
     QByteArray itemData;
     QDataStream dataStream(&itemData, QIODevice::WriteOnly);
     QPixmap pixmap = qvariant_cast<QPixmap>(item->data(Qt::UserRole));

@@ -19,8 +19,10 @@ protected:
     void dragMoveEvent(QDragMoveEvent *event) override;
     void dropEvent(QDropEvent *event) override;
     void startDrag(Qt::DropActions supportedActions) override;
+//    void mousePressEvent(QMouseEvent *event);
 
     int m_PieceSize;
     Bibliotheque *m_bibliotheque;
+
 };
 #endif // BIBLIOTHEQUEWIDGET_H

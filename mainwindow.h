@@ -28,6 +28,10 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+protected :
+    void keyPressEvent(QKeyEvent *event);
+    void keyReleaseEvent(QKeyEvent *event);
+
 private slots:
     void on_pushButton_clicked();
 
@@ -41,10 +45,14 @@ private slots:
 
     void on_treeView_expanded(const QModelIndex &index);
 
+    void multipleSelection(QListWidgetItem*item);
+
 private:
     Ui::MainWindow *ui;
     QPushButton *tag;
     BibliothequeWidget *bibliothequeWigdet;
+    bool ctrlIsPressed = false;
+    QListWidget listSelect;
 };
 
 #endif // MAINWINDOW_H

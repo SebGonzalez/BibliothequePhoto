@@ -8,6 +8,8 @@
 #include <QLabel>
 #include <QMouseEvent>
 #include <QDebug>
+#include <iostream>
+#include <stdio.h>
 
 class ClickableLabel : public QLabel
 {
