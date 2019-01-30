@@ -33,7 +33,7 @@ Dialog::Dialog(int position,std::vector<Image> listeImage):
     connect(ui->next_photo, SIGNAL(clicked()), this, SLOT(nextImage()));
     connect(ui->previous_photo, SIGNAL(clicked()), this, SLOT(previousImage()) );
     connect(ui->buttonInfo, SIGNAL(clicked()),this, SLOT(displayTags()));
-     connect(ui->buttonModify, SIGNAL(clicked()),this, SLOT(modifyTags()));
+    connect(ui->buttonModify, SIGNAL(clicked()),this, SLOT(rotatePicture()));
 
 
 }
@@ -79,6 +79,8 @@ void Dialog::initLabels()
 void Dialog:: nextImage(){
 
 
+    this->rotate = 0;
+
     for(int i = 0 ; i < ui->gridLayout->count() ; i++)
         if(!(ui->gridLayout->itemAt(i) == nullptr))
               ui->gridLayout->itemAt(i)->widget()->setVisible(false);
@@ -106,6 +108,7 @@ void Dialog:: nextImage(){
 
 void Dialog:: previousImage(){
 
+    this->rotate = 0;
 
     for(int i = 0 ; i < ui->gridLayout->count() ; i++)
         if(!(ui->gridLayout->itemAt(i) == nullptr))
@@ -159,8 +162,14 @@ QPlainTextEdit* Dialog::labelVisualSettings(QPlainTextEdit *label){
 
 }
 
-void Dialog::modifyTags(){
+void Dialog::rotatePicture(){
 
+    QPixmap pixmap = QPixmap::fromImage(*liste_image[position].getQImage());
+    QMatrix rm;
+    this->rotate += 90;
+    rm.rotate(this->rotate);
+    pixmap = pixmap.transformed(rm);
+    ui->current_picture->setPixmap(pixmap);
 
 }
 

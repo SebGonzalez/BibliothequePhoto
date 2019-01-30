@@ -7,6 +7,9 @@
 #include <QPixmap>
 #include <iostream>
 #include <qdebug.h>
+#include <QGuiApplication>
+#include <QRect>
+#include <QDesktopWidget>
 
 using namespace std;
 
@@ -22,17 +25,19 @@ MainWindow::MainWindow(QWidget *parent) :
     LandingPage *lp = new LandingPage(this);
     lp->exec();
 
-    this->setFixedSize(1600,900);
+    QRect rec = QApplication::desktop()->screenGeometry();
+    int height = rec.height();
+    int width = rec.width();
+
+    this->setFixedSize(width,height);
+
     ui->setupUi(this);
 
 
     //Main gallery
     selection = bibliotheque.getlisteImage();
 
-    displayPic("PicsTmp/Younes.png");
-    getFics("PicsTmp/");
     showTreeView();
-
 
     QHBoxLayout *frameLayout = new QHBoxLayout(ui->frame);
     bibliothequeWigdet = new BibliothequeWidget(200,this, &bibliotheque);
@@ -40,7 +45,8 @@ MainWindow::MainWindow(QWidget *parent) :
         QPixmap pixmap = QPixmap::fromImage(*selection[i].getQImage());
         pixmap = pixmap.scaledToWidth(200);
         //pixmap.scaledToHeight(200);
-          bibliothequeWigdet->addPiece(pixmap.scaled(200,200), i);
+
+        bibliothequeWigdet->addPiece(pixmap.scaled(200,200), i);
     }
    frameLayout->addWidget(bibliothequeWigdet);
 
@@ -55,32 +61,6 @@ MainWindow::~MainWindow()
         bibliotheque.addToFile(bibliotheque.getlisteImage()[i]);
     }
     delete ui;
-}
-
-void MainWindow::displayPic(string path)
-{
-    QPixmap pix;
-    pix.load(path.c_str());
-    ui->label->setPixmap(pix.scaled(ui->label->width(),ui->label->height()));
-
-}
-
-void MainWindow::getFics(string path)
-{
-    DIR *dir;
-    struct dirent *ent;
-    if ((dir = opendir (path.c_str())) != NULL) {
-      /* print all the files and directories within directory */
-      while ((ent = readdir (dir)) != NULL) {
-          string str(ent->d_name);
-          if(str.find('png') != string::npos)
-            printf ("%s\n", ent->d_name);
-      }
-      closedir (dir);
-    } else {
-      /* could not open directory */
-      perror ("Can't Open");
-    }
 }
 
 void MainWindow::showTreeView()
@@ -140,9 +120,22 @@ void MainWindow::on_lineEdit_textChanged()
 
 void MainWindow::displayDialogue(QListWidgetItem *item)
 {
-
      Dialog *dialog = new Dialog(item->data(Qt::UserRole+1).toInt() ,bibliotheque.getlisteImage());
      dialog->exec();
+}
 
+void MainWindow::on_treeView_expanded(const QModelIndex &index)
+{
+    QFileSystemModel model;
+    qDebug() << model.filePath(index) << endl;
+    bibliotheque.addDirectoryArb(ui->frame, model.filePath(index).toStdString());
 
+    selection = bibliotheque.getlisteImage();
+    bibliothequeWigdet->clear();
+    for(unsigned int i = 0; i < selection.size(); i++) {
+        QPixmap pixmap = QPixmap::fromImage(*selection[i].getQImage());
+        pixmap = pixmap.scaledToWidth(200);
+        //pixmap.scaledToHeight(200);
+        bibliothequeWigdet->addPiece(pixmap, i);
+    }
 }

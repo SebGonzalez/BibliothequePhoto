@@ -18,6 +18,7 @@ public:
 
     int position;
     std::vector<Image> liste_image;
+    int rotate;
 
     explicit Dialog(QWidget *parent = nullptr);
     Dialog(int position,std::vector<Image> listeImage);
@@ -36,7 +37,7 @@ public slots:
     void nextImage();
     void previousImage();
     void displayTags();
-    void modifyTags();
+    void rotatePicture();
 
 
 

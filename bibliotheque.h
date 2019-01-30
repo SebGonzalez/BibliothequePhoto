@@ -9,13 +9,15 @@
 #include <QPixmap>
 #include <QSizePolicy>
 
+using namespace std;
+
 class Bibliotheque
 {
 public:
     Bibliotheque();
     void addDirectory(std::string cheminDossier);
     void loadImages();
-    void drawImages(QGridLayout *layout, std::vector<Image> listeImage);
+    void drawImages(QFrame *frame, std::vector<Image> listeImage);
     void initDataFile();
     void addToFile(std::string filepath);
     void addToFile(std::string filepath, std::vector<std::string> tags);
@@ -25,8 +27,9 @@ public:
     std::vector<Image> getTaggedImages(std::string tag);
     int  getImgListSize();
     std::vector<Image> getlisteImage();
+    void addDirectoryArb(QFrame *frame, string cheminDossier);
     void fillDefaultTag();
-
+    void deleteImgList();
 private:
     std::vector<Image> listeImage;
 
