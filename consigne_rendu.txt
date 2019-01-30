@@ -1,0 +1,9 @@
+[IHM] nom-du-projet
+
+corps: 
+NOM Prénom 
+tout le monde en copie
+une seule piece jointe qui contient :
+	- fichiers source
+	- fichier qui décrit un scénario de test
+	- fiches d'itération
