@@ -106,7 +106,10 @@ void Bibliotheque::addDirectoryArb(QFrame *frame, string cheminDossier) {
         if(extension == "png" || extension == "jpg") {
             cout << cheminDossier << ent->d_name << endl;
             Image newImage(cheminDossier +"/"+ ent->d_name );
+            newImage.addTag("default tag");
+            newImage.addTag("default tag2");
             images.push_back(newImage);
+
         }
       }
       closedir (dir);
