@@ -16,6 +16,41 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow {
+	font-family: &quot;Myriad Web Pro&quot;;
+}
+
+QFrame#frame  {
+	background-color : pink;
+	margin: 0px 50px 50px 50px;
+}
+
+QWidget#centralWidget {
+	background-color: white;
+}
+
+QLineEdit {
+	margin : 50% 800% 50% 400%;
+
+	font-size: 16px;
+	border-width: 10%;
+
+	color:  rgb(172, 172, 172);
+	background-color: rgb(240, 240, 240);;
+}
+
+QLineEdit:hover {
+	opacity: 25;
+	background-color: rgb(214, 214, 214);
+	color: black;
+
+}
+
+QPushButton {
+
+}</string>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <property name="sizePolicy">
     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -48,31 +83,41 @@
      <enum>Qt::Vertical</enum>
     </property>
    </widget>
-   <widget class="QWidget" name="formLayoutWidget">
+   <widget class="QWidget" name="formLayout" native="true">
     <property name="geometry">
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>211</width>
-      <height>411</height>
+      <width>1601</width>
+      <height>151</height>
      </rect>
     </property>
-    <layout class="QFormLayout" name="formLayout">
-     <item row="0" column="0">
-      <widget class="QLineEdit" name="lineEdit">
-       <property name="text">
-        <string>Ajouter un tag</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="pushButton">
-       <property name="text">
-        <string>OK</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <widget class="QLineEdit" name="lineEdit">
+     <property name="geometry">
+      <rect>
+       <x>7</x>
+       <y>50</y>
+       <width>1593</width>
+       <height>72</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Photos, tags...</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="tagsButton">
+     <property name="geometry">
+      <rect>
+       <x>850</x>
+       <y>70</y>
+       <width>31</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>PushButton</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QTreeView" name="treeView">
     <property name="geometry">
@@ -87,10 +132,10 @@
    <widget class="QFrame" name="frame">
     <property name="geometry">
      <rect>
-      <x>250</x>
-      <y>10</y>
-      <width>1331</width>
-      <height>851</height>
+      <x>0</x>
+      <y>150</y>
+      <width>1601</width>
+      <height>751</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -100,6 +145,10 @@
      <enum>QFrame::Raised</enum>
     </property>
    </widget>
+   <zorder>formLayout</zorder>
+   <zorder>verticalScrollBar</zorder>
+   <zorder>frame</zorder>
+   <zorder>treeView</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -107,19 +156,10 @@
      <x>0</x>
      <y>0</y>
      <width>1600</width>
-     <height>22</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>
-  <widget class="QToolBar" name="mainToolBar">
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-  </widget>
-  <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
