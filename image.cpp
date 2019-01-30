@@ -7,7 +7,7 @@ Image::Image(string chemin)
     this->chemin = chemin;
     this->image = new QImage(QString::fromStdString(chemin));
     if(image->isNull()) {
-        cout << "Erreur lors de l'ouverture" << endl;
+        qDebug() << "Erreur lors de l'ouverture" << endl;
     }
 }
 
@@ -17,7 +17,7 @@ Image::Image(string chemin, vector<string> tags)
     this->tags      = tags;
     this->image     = new QImage(QString::fromStdString(chemin));
     if(image->isNull()) {
-        cout << "Erreur lors de l'ouverture" << endl;
+        qDebug() << "Erreur lors de l'ouverture" << endl;
     }
 }
 

@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include <set>
+#include <qdebug.h>
 
 class Image
 {

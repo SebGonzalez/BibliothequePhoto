@@ -1,3 +1,4 @@
+
 #include "bibliothequewidget.h"
 
 #include <QDrag>

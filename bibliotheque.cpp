@@ -3,8 +3,8 @@
 #include <iostream>
 #include <sstream>
 #include <clickablelabel.h>
+#include <assert.h>
 
-using namespace std;
 class ClickableLabel;
 
 Bibliotheque::Bibliotheque()
@@ -79,27 +79,47 @@ void Bibliotheque::addDirectory(string cheminDossier) {
     }
 }
 
-void Bibliotheque::drawImages(QGridLayout *layout, vector<Image> listeImage) {
-    int line = 0;
-    int colonne = 0;
-    for(unsigned int i = 0; i < listeImage.size(); i++) {
-        QPixmap pixmap = QPixmap::fromImage(*listeImage[i].getQImage());
-        ClickableLabel *imgDisplayLabel = new ClickableLabel();
-        imgDisplayLabel->setPixmap(pixmap.scaled(200,200));
-        imgDisplayLabel->setFixedWidth(200);
-        imgDisplayLabel->setFixedHeight(200);
-           layout->addWidget(imgDisplayLabel, line, colonne);
-           colonne++;
-           if(colonne ==5) {
-               line++;
-               colonne = 0;
-           }
-
-
+void Bibliotheque::addDirectoryArb(QFrame *frame, string cheminDossier) {
+    cout << "Lecture des fichiers : " << cheminDossier << endl;
+    DIR *dir;
+    struct dirent *ent;
+    vector<Image> images;
+    if ((dir = opendir (cheminDossier.c_str())) != NULL) {
+      while ((ent = readdir (dir)) != NULL) {
+        QString nomFichier(ent->d_name);
+        string extension = nomFichier.section(".", -1).toStdString();
+        if(extension == "png" || extension == "jpg") {
+            Image newImage("/home/theo/Bureau/IHM/BibliothequePhoto/PicsTmp/black.png");
+            images.push_back(newImage);
+        }
+      }
+      closedir (dir);
+    } else {
+      perror ("Erreur lors de l'ouverture du dossier");
     }
-    layout->minimumSize().setHeight(line*210);
-    layout->maximumSize().setHeight(line*210);
+
+    listeImage = images;
 }
+
+//void Bibliotheque::drawImages(QFrame *frame, vector<Image> listeImage) {
+//    int line = 0;
+//    int colonne = 0;
+//    for(unsigned int i = 0; i < listeImage.size(); i++) {
+//        QPixmap pixmap = QPixmap::fromImage(*listeImage[i].getQImage());
+//        ClickableLabel *imgDisplayLabel = new ClickableLabel();
+//        imgDisplayLabel->setPixmap(pixmap.scaled(200,200));
+//        imgDisplayLabel->setFixedWidth(200);
+//        imgDisplayLabel->setFixedHeight(200);
+//        frame->addWidget(imgDisplayLabel, line, colonne);
+//        colonne++;
+//        if(colonne ==5) {
+//            line++;
+//            colonne = 0;
+//        }
+//    }
+//    frame->minimumSize().setHeight(line*210);
+//    frame->maximumSize().setHeight(line*210);
+//}
 
 
 bool libContains(string path) {
@@ -117,7 +137,7 @@ bool libContains(string path) {
         }
     }
     fileIn.close();
-    if (found) {
+    if (found) {https://github.com/SebGonzalez/BibliothequePhoto/commit/64a20293686c1ea971ecddb7dedbfcec115691a6mage
         cout << "Your library contains this file" << endl;
         return true;
     }

@@ -37,11 +37,9 @@ private slots:
 
     void showTreeView();
 
-    void getFics(string path);
-
-    void displayPic(string path);
-
     void displayDialogue(QListWidgetItem*);
+
+    void on_treeView_expanded(const QModelIndex &index);
 
 private:
     Ui::MainWindow *ui;
