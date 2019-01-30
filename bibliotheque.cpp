@@ -61,6 +61,7 @@ void Bibliotheque::fillDefaultTag(){
     for (int i = 0; i < listeImage.size() ; i++){
 
         listeImage[i].addTag("default tag");
+        listeImage[i].addTag("default tag2");
 
     }
 }

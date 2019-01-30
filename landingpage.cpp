@@ -1,5 +1,7 @@
 #include "landingpage.h"
 #include "ui_landingpage.h"
+#include "mainwindow.h"
+#include "dialog.h"
 
 LandingPage::LandingPage(QWidget *parent) :
     QDialog(parent),
@@ -14,9 +16,17 @@ LandingPage::LandingPage(QWidget *parent) :
     QPalette palette;
     palette.setBrush(QPalette::Background, bkgnd);
     this->setPalette(palette);
+    connect(ui->importer, SIGNAL(clicked()), this, SLOT(displayMainWindow()));
 }
 
 LandingPage::~LandingPage()
 {
     delete ui;
 }
+
+void LandingPage::displayMainWindow(){
+
+    this->close();
+}
+
+

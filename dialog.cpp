@@ -33,6 +33,7 @@ Dialog::Dialog(int position,std::vector<Image> listeImage):
     connect(ui->next_photo, SIGNAL(clicked()), this, SLOT(nextImage()));
     connect(ui->previous_photo, SIGNAL(clicked()), this, SLOT(previousImage()) );
     connect(ui->buttonInfo, SIGNAL(clicked()),this, SLOT(displayTags()));
+     connect(ui->buttonModify, SIGNAL(clicked()),this, SLOT(modifyTags()));
 
 
 }
@@ -75,10 +76,15 @@ void Dialog::initLabels()
 }
 
 
-
 void Dialog:: nextImage(){
 
-    ui->tagsWidget->setVisible(false);
+
+    for(int i = 0 ; i < ui->gridLayout->count() ; i++)
+        if(!(ui->gridLayout->itemAt(i) == nullptr))
+              ui->gridLayout->itemAt(i)->widget()->setVisible(false);
+
+
+
     QObject* button = QObject::sender();
     if(button == ui->next_photo){
         if(position < this->liste_image.size() - 1){
@@ -95,8 +101,14 @@ void Dialog:: nextImage(){
 
 void Dialog:: previousImage(){
 
-      ui->tagsWidget->setVisible(false);
-      QObject* button = QObject::sender();
+
+    for(int i = 0 ; i < ui->gridLayout->count() ; i++)
+        if(!(ui->gridLayout->itemAt(i) == nullptr))
+              ui->gridLayout->itemAt(i)->widget()->setVisible(false);
+
+
+
+    QObject* button = QObject::sender();
       if(button == ui->previous_photo){
           if(position > 0){
            position --;
@@ -109,13 +121,38 @@ void Dialog:: previousImage(){
 
 
 void Dialog:: displayTags(){
-   ui->tagsWidget->setVisible(true);
+
    std::vector<std::string> tags = liste_image[indice].getTags();
    QString label_tags;
+
    for(int i = 0 ; i < tags.size() ; i++){
-    label_tags = label_tags + tags[i].c_str() +" ";
+     label_tags = tags[i].c_str();
+     QPlainTextEdit *label = new QPlainTextEdit();
+     label->setPlainText(label_tags);
+     label = labelVisualSettings(label);
+     ui->gridLayout->addWidget(label,150,i);
+
 
    }
-   ui->tagsWidget->setPlainText(label_tags);
+
+
+}
+
+QPlainTextEdit* Dialog::labelVisualSettings(QPlainTextEdit *label){
+    QFont *font = new QFont();
+    font->setPointSize(12);
+    label->setFont(*font);
+    label->setFixedWidth(102);
+    label->setFixedHeight(40);
+    label->setReadOnly(true);
+    label->setBackgroundVisible(true);
+    label->setVisible(true);
+    return label;
+
+}
+
+void Dialog::modifyTags(){
+
+
 }
 

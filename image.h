@@ -15,6 +15,8 @@ public:
     std::string getChemin();
     std::vector<std::string> getTags();
     void addTag(std::string tag);
+    void removeTags();
+    void removeTag(int indice);
 
 private:
     std::string chemin;

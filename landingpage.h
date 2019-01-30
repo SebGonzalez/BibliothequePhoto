@@ -15,8 +15,19 @@ public:
     explicit LandingPage(QWidget *parent = nullptr);
     ~LandingPage();
 
+public slots:
+
+    void displayMainWindow();
+
+
+
 private:
     Ui::LandingPage *ui;
+
+
+
+
+
 };
 
 #endif // LANDINGPAGE_H

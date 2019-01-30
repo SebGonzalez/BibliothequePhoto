@@ -5,7 +5,7 @@
 #include <QHoverEvent>
 #include <bibliotheque.h>
 #include <image.h>
-
+#include <QPlainTextEdit>
 namespace Ui {
 class Dialog;
 }
@@ -27,6 +27,8 @@ public:
     void initLabels();
     void loadImagesfromList();
     QPixmap resizePixmap(QLabel *label, QPixmap pixmap);
+    QPlainTextEdit* labelVisualSettings(QPlainTextEdit *label);
+
 
 public slots:
 
@@ -34,6 +36,7 @@ public slots:
     void nextImage();
     void previousImage();
     void displayTags();
+    void modifyTags();
 
 
 
