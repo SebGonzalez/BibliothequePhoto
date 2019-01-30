@@ -26,17 +26,27 @@ Dialog::Dialog(int position,std::vector<Image> listeImage):
     ui->setupUi(this);
     initLabels();
     QPixmap pixmap = QPixmap::fromImage(*listeImage[position].getQImage());
+    pixmap = resizePixmap(ui->current_picture,pixmap);
     ui->current_picture->setPixmap(pixmap);
     indice = position;
 
     connect(ui->next_photo, SIGNAL(clicked()), this, SLOT(nextImage()));
     connect(ui->previous_photo, SIGNAL(clicked()), this, SLOT(previousImage()) );
+    connect(ui->buttonInfo, SIGNAL(clicked()),this, SLOT(displayTags()));
+     connect(ui->buttonModify, SIGNAL(clicked()),this, SLOT(modifyTags()));
+
 
 }
 
 Dialog::~Dialog()
 {
     delete ui;
+}
+
+QPixmap Dialog:: resizePixmap(QLabel *label,QPixmap pix){
+    QSize labelsize = ui-> current_picture->size();
+    return pix.scaled(labelsize, Qt::IgnoreAspectRatio, Qt::FastTransformation);
+
 }
 
 
@@ -51,11 +61,13 @@ void Dialog::initLabels()
     ui->buttonInfo->setIcon(style.standardIcon(QStyle::SP_FileDialogInfoView));
     ui->buttonModify->setIcon(style.standardIcon(QStyle::SP_BrowserReload));
 
+
     ui->buttonThrow->resize(45,45);
     ui->buttonInfo->resize(45,45);
     ui->next_photo->resize(100,75);
     ui->previous_photo->resize(100,75);
     ui->buttonModify->resize(45,45);
+    ui->tagsWidget->setVisible(false);
 
     ui->next_photo->setAttribute(Qt::WA_Hover);
     ui->previous_photo->setAttribute(Qt::WA_Hover);
@@ -64,13 +76,21 @@ void Dialog::initLabels()
 }
 
 
-
 void Dialog:: nextImage(){
+
+
+    for(int i = 0 ; i < ui->gridLayout->count() ; i++)
+        if(!(ui->gridLayout->itemAt(i) == nullptr))
+              ui->gridLayout->itemAt(i)->widget()->setVisible(false);
+
+
+
     QObject* button = QObject::sender();
     if(button == ui->next_photo){
         if(position < this->liste_image.size() - 1){
         position ++;
         QPixmap pixmap = QPixmap::fromImage(*liste_image[position].getQImage());
+        pixmap = resizePixmap(ui->current_picture,pixmap);
         ui->current_picture->setPixmap(pixmap);
         }
     }
@@ -81,15 +101,58 @@ void Dialog:: nextImage(){
 
 void Dialog:: previousImage(){
 
-      QObject* button = QObject::sender();
+
+    for(int i = 0 ; i < ui->gridLayout->count() ; i++)
+        if(!(ui->gridLayout->itemAt(i) == nullptr))
+              ui->gridLayout->itemAt(i)->widget()->setVisible(false);
+
+
+
+    QObject* button = QObject::sender();
       if(button == ui->previous_photo){
           if(position > 0){
            position --;
            QPixmap pixmap = QPixmap::fromImage(*liste_image[position].getQImage());
+           pixmap = resizePixmap(ui->current_picture,pixmap);
            ui->current_picture->setPixmap(pixmap);
           }
       }
+}
+
+
+void Dialog:: displayTags(){
+
+   std::vector<std::string> tags = liste_image[indice].getTags();
+   QString label_tags;
+
+   for(int i = 0 ; i < tags.size() ; i++){
+     label_tags = tags[i].c_str();
+     QPlainTextEdit *label = new QPlainTextEdit();
+     label->setPlainText(label_tags);
+     label = labelVisualSettings(label);
+     ui->gridLayout->addWidget(label,150,i);
+
+
+   }
+
 
 }
 
+QPlainTextEdit* Dialog::labelVisualSettings(QPlainTextEdit *label){
+    QFont *font = new QFont();
+    font->setPointSize(12);
+    label->setFont(*font);
+    label->setFixedWidth(102);
+    label->setFixedHeight(40);
+    label->setReadOnly(true);
+    label->setBackgroundVisible(true);
+    label->setVisible(true);
+    return label;
+
+}
+
+void Dialog::modifyTags(){
+
+
+}
 

@@ -13,6 +13,7 @@ Bibliotheque::Bibliotheque()
     initDataFile(); // temporaire
     addDirectory("../BibliothequePhoto/PicsTmp/");
     loadImages();
+    fillDefaultTag();
 }
 
 void Bibliotheque::loadImages() {
@@ -55,6 +56,20 @@ int Bibliotheque::getImgListSize(){
     return listeImage.size();
 }
 
+void Bibliotheque::deleteImgList(){
+    listeImage.empty();
+}
+
+void Bibliotheque::fillDefaultTag(){
+
+    for (int i = 0; i < listeImage.size() ; i++){
+
+        listeImage[i].addTag("default tag");
+        listeImage[i].addTag("default tag2");
+
+    }
+}
+
 std::vector<Image> Bibliotheque::getlisteImage(){
     return listeImage;
 }
@@ -89,7 +104,8 @@ void Bibliotheque::addDirectoryArb(QFrame *frame, string cheminDossier) {
         QString nomFichier(ent->d_name);
         string extension = nomFichier.section(".", -1).toStdString();
         if(extension == "png" || extension == "jpg") {
-            Image newImage("/home/theo/Bureau/IHM/BibliothequePhoto/PicsTmp/black.png");
+            cout << cheminDossier << ent->d_name << endl;
+            Image newImage(cheminDossier +"/"+ ent->d_name );
             images.push_back(newImage);
         }
       }

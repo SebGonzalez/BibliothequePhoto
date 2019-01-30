@@ -36,3 +36,14 @@ vector<string> Image::getTags() {
 void Image::addTag(string tag) {
     this->tags.push_back(tag);
 }
+
+void Image::removeTags(){
+
+    for(int i = 0 ; i < tags.size() ; i++)
+     this->tags.pop_back();
+}
+
+
+void Image::removeTag(int indice){
+    this->tags[indice] = "";
+}

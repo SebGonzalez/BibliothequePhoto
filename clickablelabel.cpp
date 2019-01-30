@@ -6,6 +6,10 @@ ClickableLabel::ClickableLabel(QWidget *parent) :
 
 }
 
+ClickableLabel::ClickableLabel(int indice){
+    this->indice = indice;
+}
+
 void  ClickableLabel::mousePressEvent(QMouseEvent *ev){
     emit clicked();
 }

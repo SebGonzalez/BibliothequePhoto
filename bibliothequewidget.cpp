@@ -14,6 +14,7 @@ BibliothequeWidget::BibliothequeWidget(int pieceSize, QWidget *parent, Bibliothe
     setSpacing(10);
     setAcceptDrops(true);
     setDropIndicatorShown(true);
+    setUniformItemSizes(true);
     m_bibliotheque = bibliotheque;
 }
 
@@ -44,20 +45,25 @@ void BibliothequeWidget::dropEvent(QDropEvent *event)
         QPoint location;
         dataStream >> pixmap >> location;
 
-        int ligne = event->pos().y()/200;
-        int colonne = (event->pos().x())/200;
+        int ligne = event->pos().y()/210;
+        int colonne = (event->pos().x())/210;
         QListWidgetItem *pieceItem = new QListWidgetItem();
-        pieceItem->setIcon(QIcon(pixmap));
+        pieceItem->setIcon(QIcon(pixmap.scaled(200,200)));
          pieceItem->setData(Qt::UserRole, QVariant(pixmap));
         pieceItem->setData(Qt::UserRole+1, QVariant(0));
 
         pieceItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
 
 
-        int rowPhoto = ligne*6 + colonne;
+        int rowPhoto = ligne*5 + colonne+1;
+           if(row(currentItem()) >= rowPhoto) {
+               std::cout << "Saut" << std::endl;
+               rowPhoto--;
+           }
+
         std::cout << ligne <<" OOOOOOOOO " << colonne << " AAAAAA " << rowPhoto << std::endl;
 
-        takeItem(row(currentItem()));
+
         insertItem(rowPhoto, pieceItem);
         setCurrentRow(rowPhoto);
        // addPiece(pixmap, 0);
@@ -97,8 +103,6 @@ void BibliothequeWidget::startDrag(Qt::DropActions)
     drag->setMimeData(mimeData);
     drag->setHotSpot(QPoint(pixmap.width()/2, pixmap.height()/2));
     drag->setPixmap(pixmap);
-
-    drag->exec(Qt::MoveAction);
 
     if (drag->exec(Qt::MoveAction) == Qt::MoveAction)
        delete takeItem(row(item));

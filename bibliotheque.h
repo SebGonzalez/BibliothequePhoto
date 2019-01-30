@@ -28,8 +28,8 @@ public:
     int  getImgListSize();
     std::vector<Image> getlisteImage();
     void addDirectoryArb(QFrame *frame, string cheminDossier);
-
-
+    void fillDefaultTag();
+    void deleteImgList();
 private:
     std::vector<Image> listeImage;
 

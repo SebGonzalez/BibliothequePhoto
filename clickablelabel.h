@@ -13,8 +13,10 @@ class ClickableLabel : public QLabel
 {
     Q_OBJECT
     bool is_clicked = false;
+    int indice;
 public:
     ClickableLabel(QWidget *parent = 0);
+    ClickableLabel(int indice);
     void mousePressEvent(QMouseEvent *e);
 
 signals:

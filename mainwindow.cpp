@@ -37,7 +37,8 @@ MainWindow::MainWindow(QWidget *parent) :
         QPixmap pixmap = QPixmap::fromImage(*selection[i].getQImage());
         pixmap = pixmap.scaledToWidth(200);
         //pixmap.scaledToHeight(200);
-        bibliothequeWigdet->addPiece(pixmap, i);
+
+        bibliothequeWigdet->addPiece(pixmap.scaled(200,200), i);
     }
    frameLayout->addWidget(bibliothequeWigdet);
 
@@ -108,11 +109,10 @@ void MainWindow::on_treeView_expanded(const QModelIndex &index)
 {
     QFileSystemModel model;
     qDebug() << model.filePath(index) << endl;
-
     bibliotheque.addDirectoryArb(ui->frame, model.filePath(index).toStdString());
 
     selection = bibliotheque.getlisteImage();
-
+    bibliothequeWigdet->clear();
     for(unsigned int i = 0; i < selection.size(); i++) {
         QPixmap pixmap = QPixmap::fromImage(*selection[i].getQImage());
         pixmap = pixmap.scaledToWidth(200);
