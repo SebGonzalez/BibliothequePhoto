@@ -7,6 +7,9 @@
 #include <QPixmap>
 #include <iostream>
 #include <qdebug.h>
+#include <QGuiApplication>
+#include <QRect>
+#include <QDesktopWidget>
 
 using namespace std;
 
@@ -22,7 +25,12 @@ MainWindow::MainWindow(QWidget *parent) :
     LandingPage *lp = new LandingPage(this);
     lp->exec();
 
-    this->setFixedSize(1300,700);
+    QRect rec = QApplication::desktop()->screenGeometry();
+    int height = rec.height();
+    int width = rec.width();
+
+    this->setFixedSize(width,height);
+
     ui->setupUi(this);
 
 
