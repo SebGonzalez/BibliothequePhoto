@@ -10,9 +10,9 @@ class ClickableLabel;
 Bibliotheque::Bibliotheque()
 {
     cout << "Création bibliotheque" << endl;
-    //initDataFile(); // temporaire
-    //addDirectory("../BibliothequePhoto/PicsTmp/");
-    loadImages();
+  initDataFile(); // temporaire
+  addDirectory("../BibliothequePhoto/PicsTmp/");
+   loadImages();
     fillDefaultTag();
 }
 

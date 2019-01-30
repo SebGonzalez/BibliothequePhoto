@@ -166,7 +166,7 @@ void Dialog::rotatePicture(){
 
     QPixmap pixmap = QPixmap::fromImage(*liste_image[position].getQImage());
     QMatrix rm;
-    this->rotate += 90;
+    this->rotate += 90 % 360;
     rm.rotate(this->rotate);
     pixmap = pixmap.transformed(rm);
     ui->current_picture->setPixmap(pixmap);
