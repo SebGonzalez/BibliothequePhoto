@@ -81,21 +81,14 @@ void MainWindow::on_pushButton_clicked()
         ui->formLayout->addWidget(tag);
         selection = bibliotheque.getTaggedImages(ui->lineEdit->text().toStdString());
 
-        //Debug
-        for(int i = 0; i < selection.size(); i++) {
-            cout << selection[i].getChemin() << endl;
-        }
-        //
-
-
-        QHBoxLayout *frameLayout = new QHBoxLayout(ui->frame);
         bibliothequeWigdet->clear();
-        bibliothequeWigdet = new BibliothequeWidget(200,this, &bibliotheque);
+        QHBoxLayout *frameLayout = new QHBoxLayout(ui->frame);
+
         for(unsigned int i = 0; i < selection.size(); i++) {
             QPixmap pixmap = QPixmap::fromImage(*selection[i].getQImage());
             pixmap = pixmap.scaledToWidth(200);
             //pixmap.scaledToHeight(200);
-              bibliothequeWigdet->addPiece(pixmap.scaled(200,200), i);
+              bibliothequeWigdet->addPiece(pixmap.scaled(200,200), selection[i].getId());
         }
        frameLayout->addWidget(bibliothequeWigdet);
 
