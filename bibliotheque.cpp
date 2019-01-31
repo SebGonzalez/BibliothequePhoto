@@ -9,9 +9,10 @@ class ClickableLabel;
 
 Bibliotheque::Bibliotheque()
 {
+    idPhoto = 0;
     cout << "Création bibliotheque" << endl;
-  initDataFile(); // temporaire
-  addDirectory("../BibliothequePhoto/PicsTmp/");
+  //initDataFile(); // temporaire
+ // addDirectory("../BibliothequePhoto/PicsTmp/");
    loadImages();
     fillDefaultTag();
 }
@@ -38,11 +39,11 @@ void Bibliotheque::loadImages() {
               }
               tags.push_back(line.substr(comma, nextComma - comma));
 
-              Image image(path, tags);
+              Image image(path, tags, idPhoto++);
               listeImage.push_back(image);
           }
           else {
-              listeImage.push_back(line);
+             // listeImage.push_back(line);
           }
         }
         myfile.close();
@@ -57,6 +58,35 @@ void Bibliotheque::loadImages() {
         }
         cout << endl;
     }
+}
+
+void Bibliotheque::updatePositionPhoto(int idPhotoD, int position) {
+    cout << endl << "LISTE IMAGE 1 : " << idPhotoD << endl;
+    for(int i=0; i<listeImage.size(); i++) {
+        cout << listeImage[i].getChemin() << endl;
+    }
+    cout << endl << "FIN LISTE IMAGE " << endl;
+
+    Image m("",0);
+    int index = 0;
+    for(size_t i=0; i<listeImage.size(); i++) {
+        if(listeImage[i].getId() == idPhotoD) {
+            m = listeImage[i];
+            index = i;
+            cout << "trouve : " << i << endl;
+            break;
+        }
+    }
+
+    if(index < position) position--;
+    listeImage.erase(listeImage.begin() + index);
+    listeImage.insert(listeImage.begin()+position, m);
+
+    cout << endl << "LISTE IMAGE 2" << endl;
+    for(int i=0; i<listeImage.size(); i++) {
+        cout << listeImage[i].getChemin() << endl;
+    }
+    cout << endl << "FIN LISTE IMAGE " << endl;
 }
 
 int Bibliotheque::getImgListSize(){
@@ -91,7 +121,7 @@ void Bibliotheque::addDirectory(string cheminDossier) {
         QString nomFichier(ent->d_name);
         string extension = nomFichier.section(".", -1).toStdString();
         if(extension == "png" || extension == "jpg") {
-            Image newImage(cheminDossier + ent->d_name);
+            Image newImage(cheminDossier + ent->d_name, idPhoto++);
             addToFile(cheminDossier + ent->d_name);
         }
       }
@@ -112,7 +142,7 @@ void Bibliotheque::addDirectoryArb(QFrame *frame, string cheminDossier) {
         string extension = nomFichier.section(".", -1).toStdString();
         if(extension == "png" || extension == "jpg") {
             cout << cheminDossier << ent->d_name << endl;
-            Image newImage(cheminDossier +"/"+ ent->d_name );
+            Image newImage(cheminDossier +"/"+ ent->d_name, idPhoto++);
             newImage.addTag("default tag");
             newImage.addTag("default tag2");
             images.push_back(newImage);
@@ -126,27 +156,6 @@ void Bibliotheque::addDirectoryArb(QFrame *frame, string cheminDossier) {
 
     listeImage = images;
 }
-
-//void Bibliotheque::drawImages(QFrame *frame, vector<Image> listeImage) {
-//    int line = 0;
-//    int colonne = 0;
-//    for(unsigned int i = 0; i < listeImage.size(); i++) {
-//        QPixmap pixmap = QPixmap::fromImage(*listeImage[i].getQImage());
-//        ClickableLabel *imgDisplayLabel = new ClickableLabel();
-//        imgDisplayLabel->setPixmap(pixmap.scaled(200,200));
-//        imgDisplayLabel->setFixedWidth(200);
-//        imgDisplayLabel->setFixedHeight(200);
-//        frame->addWidget(imgDisplayLabel, line, colonne);
-//        colonne++;
-//        if(colonne ==5) {
-//            line++;
-//            colonne = 0;
-//        }
-//    }
-//    frame->minimumSize().setHeight(line*210);
-//    frame->maximumSize().setHeight(line*210);
-//}
-
 
 bool libContains(string path) {
     bool found = false;

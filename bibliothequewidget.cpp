@@ -47,19 +47,20 @@ void BibliothequeWidget::dropEvent(QDropEvent *event)
 
         int ligne = event->pos().y()/210;
         int colonne = (event->pos().x())/210;
+        int idPhoto = currentItem()->data(Qt::UserRole+1).toInt();
         QListWidgetItem *pieceItem = new QListWidgetItem();
         pieceItem->setIcon(QIcon(pixmap.scaled(200,200)));
          pieceItem->setData(Qt::UserRole, QVariant(pixmap));
-        pieceItem->setData(Qt::UserRole+1, QVariant(0));
+        pieceItem->setData(Qt::UserRole+1, QVariant(idPhoto));
 
         pieceItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
 
 
         int rowPhoto = ligne*5 + colonne+1;
            if(row(currentItem()) >= rowPhoto) {
-               std::cout << "Saut" << std::endl;
                rowPhoto--;
            }
+        m_bibliotheque->updatePositionPhoto(idPhoto, rowPhoto);
 
         std::cout << ligne <<" OOOOOOOOO " << colonne << " AAAAAA " << rowPhoto << std::endl;
 
@@ -75,13 +76,12 @@ void BibliothequeWidget::dropEvent(QDropEvent *event)
     }
 }
 
-void BibliothequeWidget::addPiece(const QPixmap &pixmap, int i)
+void BibliothequeWidget::addPiece(const QPixmap &pixmap, int id)
 {
     QListWidgetItem *pieceItem = new QListWidgetItem(this);
     pieceItem->setIcon(QIcon(pixmap));
      pieceItem->setData(Qt::UserRole, QVariant(pixmap));
-    pieceItem->setData(Qt::UserRole+1, QVariant(i));
-
+    pieceItem->setData(Qt::UserRole+1, QVariant(id));
     pieceItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
 }
 

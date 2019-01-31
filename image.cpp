@@ -2,8 +2,9 @@
 
 using namespace std;
 
-Image::Image(string chemin)
+Image::Image(string chemin, int id)
 {
+    this->id = id;
     this->chemin = chemin;
     this->image = new QImage(QString::fromStdString(chemin));
     if(image->isNull()) {
@@ -11,14 +12,19 @@ Image::Image(string chemin)
     }
 }
 
-Image::Image(string chemin, vector<string> tags)
+Image::Image(string chemin, vector<string> tags, int id)
 {
+    this->id = id;
     this->chemin    = chemin;
     this->tags      = tags;
     this->image     = new QImage(QString::fromStdString(chemin));
     if(image->isNull()) {
         qDebug() << "Erreur lors de l'ouverture" << endl;
     }
+}
+
+int Image::getId() {
+    return this->id;
 }
 
 QImage* Image::getQImage() {

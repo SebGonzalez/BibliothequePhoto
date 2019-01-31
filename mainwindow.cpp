@@ -46,7 +46,7 @@ MainWindow::MainWindow(QWidget *parent) :
         pixmap = pixmap.scaledToWidth(200);
         //pixmap.scaledToHeight(200);
 
-        bibliothequeWigdet->addPiece(pixmap.scaled(200,200), i);
+        bibliothequeWigdet->addPiece(pixmap.scaled(200,200), selection[i].getId());
     }
    frameLayout->addWidget(bibliothequeWigdet);
 
