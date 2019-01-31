@@ -15,6 +15,7 @@ BibliothequeWidget::BibliothequeWidget(int pieceSize, QWidget *parent, Bibliothe
     setAcceptDrops(true);
     setDropIndicatorShown(true);
     setUniformItemSizes(true);
+    setSelectionMode(QAbstractItemView::ExtendedSelection);
     m_bibliotheque = bibliotheque;
 }
 

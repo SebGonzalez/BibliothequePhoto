@@ -31,6 +31,7 @@ public:
     void fillDefaultTag();
     void deleteImgList();
     void updatePositionPhoto(int idPhoton, int position);
+    int getPositionImage(int idPhoto);
 private:
     std::vector<Image> listeImage;
     int idPhoto;

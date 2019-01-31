@@ -60,6 +60,19 @@ void Bibliotheque::loadImages() {
     }
 }
 
+int Bibliotheque::getPositionImage(int idPhotoD) {
+    int position;
+
+    for(size_t i=0; i<listeImage.size(); i++) {
+        if(listeImage[i].getId() == idPhotoD) {
+            position = i;
+            break;
+        }
+    }
+
+    return position;
+}
+
 void Bibliotheque::updatePositionPhoto(int idPhotoD, int position) {
     cout << endl << "LISTE IMAGE 1 : " << idPhotoD << endl;
     for(int i=0; i<listeImage.size(); i++) {

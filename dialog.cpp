@@ -25,6 +25,7 @@ Dialog::Dialog(int position,std::vector<Image> listeImage):
     this->position = position;
     ui->setupUi(this);
     initLabels();
+
     QPixmap pixmap = QPixmap::fromImage(*listeImage[position].getQImage());
     pixmap = resizePixmap(ui->current_picture,pixmap);
     ui->current_picture->setPixmap(pixmap);

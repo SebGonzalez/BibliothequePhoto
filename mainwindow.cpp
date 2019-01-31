@@ -120,7 +120,9 @@ void MainWindow::on_lineEdit_textChanged()
 
 void MainWindow::displayDialogue(QListWidgetItem *item)
 {
-     Dialog *dialog = new Dialog(item->data(Qt::UserRole+1).toInt() ,bibliotheque.getlisteImage());
+    int idPhoto = item->data(Qt::UserRole+1).toInt();
+    int position = bibliotheque.getPositionImage(idPhoto);
+     Dialog *dialog = new Dialog(position ,bibliotheque.getlisteImage());
      dialog->exec();
 }
 
