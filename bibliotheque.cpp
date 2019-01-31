@@ -11,8 +11,8 @@ Bibliotheque::Bibliotheque()
 {
     idPhoto = 0;
     cout << "Création bibliotheque" << endl;
-  //initDataFile(); // temporaire
- // addDirectory("../BibliothequePhoto/PicsTmp/");
+  initDataFile(); // temporaire
+  addDirectory("../BibliothequePhoto/PicsTmp/");
    loadImages();
     fillDefaultTag();
 }
@@ -43,7 +43,8 @@ void Bibliotheque::loadImages() {
               listeImage.push_back(image);
           }
           else {
-             // listeImage.push_back(line);
+               Image image(line, idPhoto++);
+              listeImage.push_back(image);
           }
         }
         myfile.close();
@@ -51,13 +52,7 @@ void Bibliotheque::loadImages() {
 
     else cout << "Unable to open file" << endl;
 
-    for (int i = 0; i < listeImage.size(); i++) {
-        cout << listeImage[i].getChemin() + " - ";
-        for(int j = 0; j < listeImage[i].getTags().size(); j++) {
-            cout << "tag : " + listeImage[i].getTags()[j] << endl;
-        }
-        cout << endl;
-    }
+   cout << "Nombre de photo : " << listeImage.size() << endl;
 }
 
 int Bibliotheque::getPositionImage(int idPhotoD) {
@@ -74,12 +69,6 @@ int Bibliotheque::getPositionImage(int idPhotoD) {
 }
 
 void Bibliotheque::updatePositionPhoto(int idPhotoD, int position) {
-    cout << endl << "LISTE IMAGE 1 : " << idPhotoD << endl;
-    for(int i=0; i<listeImage.size(); i++) {
-        cout << listeImage[i].getChemin() << endl;
-    }
-    cout << endl << "FIN LISTE IMAGE " << endl;
-
     Image m("",0);
     int index = 0;
     for(size_t i=0; i<listeImage.size(); i++) {
@@ -94,12 +83,16 @@ void Bibliotheque::updatePositionPhoto(int idPhotoD, int position) {
     if(index < position) position--;
     listeImage.erase(listeImage.begin() + index);
     listeImage.insert(listeImage.begin()+position, m);
+}
 
-    cout << endl << "LISTE IMAGE 2" << endl;
-    for(int i=0; i<listeImage.size(); i++) {
-        cout << listeImage[i].getChemin() << endl;
+void Bibliotheque::removeImage(int idPhotoS) {
+    for(size_t i=0; i<listeImage.size(); i++) {
+        if(listeImage[i].getId() == idPhotoS) {
+            cout << "Image supprimé ! " << endl;
+            listeImage.erase(listeImage.begin() + i);
+            break;
+        }
     }
-    cout << endl << "FIN LISTE IMAGE " << endl;
 }
 
 int Bibliotheque::getImgListSize(){
@@ -178,7 +171,6 @@ bool libContains(string path) {
     string currentPath;
 
     while(getline(fileIn, buffer)) {
-        cout << buffer << endl;
         if (buffer.find(path) != std::string::npos) {
             found = true;
             break;

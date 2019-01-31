@@ -41,6 +41,8 @@ private slots:
 
     void on_treeView_expanded(const QModelIndex &index);
 
+    void on_lineEdit_textChanged(const QString &arg1);
+
 private:
     Ui::MainWindow *ui;
     QPushButton *tag;

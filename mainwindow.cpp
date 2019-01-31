@@ -36,6 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //Main gallery
     selection = bibliotheque.getlisteImage();
+    cout << "Nombre de photos : " << selection.size() << endl;
 
     showTreeView();
 
@@ -115,8 +116,18 @@ void MainWindow::displayDialogue(QListWidgetItem *item)
 {
     int idPhoto = item->data(Qt::UserRole+1).toInt();
     int position = bibliotheque.getPositionImage(idPhoto);
-     Dialog *dialog = new Dialog(position ,bibliotheque.getlisteImage());
+     Dialog *dialog = new Dialog(position ,bibliotheque, bibliotheque.getlisteImage());
      dialog->exec();
+     bibliothequeWigdet->clear();
+     QHBoxLayout *frameLayout = new QHBoxLayout(ui->frame);
+
+     for(unsigned int i = 0; i < bibliotheque.getlisteImage().size(); i++) {
+         QPixmap pixmap = QPixmap::fromImage(*bibliotheque.getlisteImage()[i].getQImage());
+         pixmap = pixmap.scaledToWidth(200);
+         //pixmap.scaledToHeight(200);
+           bibliothequeWigdet->addPiece(pixmap.scaled(200,200), bibliotheque.getlisteImage()[i].getId());
+     }
+    frameLayout->addWidget(bibliothequeWigdet);
 }
 
 void MainWindow::on_treeView_expanded(const QModelIndex &index)
@@ -132,5 +143,24 @@ void MainWindow::on_treeView_expanded(const QModelIndex &index)
         pixmap = pixmap.scaledToWidth(200);
         //pixmap.scaledToHeight(200);
         bibliothequeWigdet->addPiece(pixmap, i);
+    }
+}
+
+void MainWindow::on_lineEdit_textChanged(const QString &arg1)
+{
+    selection = bibliotheque.getTaggedImages(ui->lineEdit->text().toStdString());
+     if(arg1 == "") selection = bibliotheque.getlisteImage();
+
+    if(selection.size() != 0) {
+        bibliothequeWigdet->clear();
+        QHBoxLayout *frameLayout = new QHBoxLayout(ui->frame);
+
+        for(unsigned int i = 0; i < selection.size(); i++) {
+            QPixmap pixmap = QPixmap::fromImage(*selection[i].getQImage());
+            pixmap = pixmap.scaledToWidth(200);
+            //pixmap.scaledToHeight(200);
+              bibliothequeWigdet->addPiece(pixmap.scaled(200,200), selection[i].getId());
+        }
+       frameLayout->addWidget(bibliothequeWigdet);
     }
 }

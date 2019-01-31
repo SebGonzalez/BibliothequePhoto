@@ -17,7 +17,7 @@ Dialog::Dialog(QWidget *parent) :
 }
 
 
-Dialog::Dialog(int position,std::vector<Image> listeImage):
+Dialog::Dialog(int position, Bibliotheque &bibliotheque, std::vector<Image> listeImage):
     ui(new Ui::Dialog)
 {
 
@@ -36,7 +36,7 @@ Dialog::Dialog(int position,std::vector<Image> listeImage):
     connect(ui->buttonInfo, SIGNAL(clicked()),this, SLOT(displayTags()));
     connect(ui->buttonModify, SIGNAL(clicked()),this, SLOT(rotatePicture()));
 
-
+    this->bibliotheque = &bibliotheque;
 }
 
 Dialog::~Dialog()
@@ -174,3 +174,16 @@ void Dialog::rotatePicture(){
 
 }
 
+
+void Dialog::on_buttonThrow_pressed()
+{
+    bibliotheque->removeImage(this->liste_image[this->position].getId());
+    liste_image.erase(liste_image.begin() + position);
+
+    if(position == static_cast<int>(liste_image.size())) {
+        position--;
+    }
+    QPixmap pixmap = QPixmap::fromImage(*liste_image[position].getQImage());
+    pixmap = resizePixmap(ui->current_picture,pixmap);
+    ui->current_picture->setPixmap(pixmap);
+}

@@ -21,7 +21,7 @@ public:
     int rotate;
 
     explicit Dialog(QWidget *parent = nullptr);
-    Dialog(int position,std::vector<Image> listeImage);
+    Dialog(int position, Bibliotheque &bibliotheque, std::vector<Image> listeImage);
     ~Dialog();
 
 
@@ -41,8 +41,12 @@ public slots:
 
 
 
+private slots:
+    void on_buttonThrow_pressed();
+
 private:
     Ui::Dialog *ui;
+    Bibliotheque *bibliotheque;
 };
 
 #endif // DIALOG_H

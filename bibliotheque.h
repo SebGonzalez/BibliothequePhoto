@@ -30,8 +30,9 @@ public:
     void addDirectoryArb(QFrame *frame, string cheminDossier);
     void fillDefaultTag();
     void deleteImgList();
-    void updatePositionPhoto(int idPhoton, int position);
-    int getPositionImage(int idPhoto);
+    void updatePositionPhoto(int idPhotoD, int position);
+    int getPositionImage(int idPhotoD);
+    void removeImage(int idPhotoS);
 private:
     std::vector<Image> listeImage;
     int idPhoto;
