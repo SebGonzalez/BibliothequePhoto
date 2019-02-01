@@ -135,7 +135,7 @@ void Dialog:: displayTags(){
           ui->gridLayout->itemAt(i)->widget()->deleteLater();
 
 
-   std::vector<std::string> tags = liste_image[indice].getTags();
+   std::vector<std::string> tags = liste_image[position].getTags();
    QString label_tags;
 
    for(int i = 0 ; i < tags.size() ; i++){
@@ -155,7 +155,7 @@ QPlainTextEdit* Dialog::labelVisualSettings(QPlainTextEdit *label){
     QFont *font = new QFont();
     font->setPointSize(12);
     label->setFont(*font);
-    label->setFixedWidth(102);
+    label->setFixedWidth(250);
     label->setFixedHeight(40);
     label->setReadOnly(true);
     label->setBackgroundVisible(true);
@@ -216,10 +216,5 @@ void Dialog::validateModifications(){
         liste_image[indice].setTag(i,texte);
         bibliotheque->setTagsListeImage(indice,i,texte);
     }
-
-
-
-
-
 }
 
