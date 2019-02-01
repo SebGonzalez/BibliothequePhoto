@@ -2,6 +2,7 @@
 #define BIBLIOTHEQUEWIDGET_H
 
 #include "bibliotheque.h"
+#include "ajouttag.h"
 #include <QListWidget>
 
 class BibliothequeWidget : public QListWidget
@@ -17,6 +18,7 @@ public:
 
 private slots:
     void ShowContextMenu(const QPoint& pos);
+
 protected:
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dragMoveEvent(QDragMoveEvent *event) override;

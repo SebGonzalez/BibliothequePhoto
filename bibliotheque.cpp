@@ -107,8 +107,8 @@ void Bibliotheque::fillDefaultTag(){
 
     for (int i = 0; i < listeImage.size() ; i++){
 
-        listeImage[i].addTag("default tag");
-        listeImage[i].addTag("default tag2");
+//        listeImage[i].addTag("default tag");
+//        listeImage[i].addTag("default tag2");
 
     }
 }
@@ -236,7 +236,7 @@ void Bibliotheque::addToFile(string filepath, vector<string> tags) {
     outfile << endl;
     outfile.close();
 
-    cout << "New image of path " + filepath + " added to the library" << endl;
+    //cout << "New image of path " + filepath + " added to the library" << endl;
 }
 
 void Bibliotheque::addToFile(string filepath) {

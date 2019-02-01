@@ -36,6 +36,7 @@ public:
     void removeImage(int idPhotoS);
     void setTagsListeImage(int indice,int tag_indice,std::string newtag);
     std::vector<string> getAllTags();
+
 private:
     std::vector<Image> listeImage;
     int idPhoto;

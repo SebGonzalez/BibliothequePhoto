@@ -94,28 +94,43 @@ void BibliothequeWidget::addPiece(const QPixmap &pixmap, int id)
 void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
 {
     QPoint globalPos = QCursor::pos();
-    Bibliotheque biblio;
-    vector<string> listeTags = biblio.getAllTags();
+    vector<string> listeTags = m_bibliotheque->getAllTags();
+    vector<Image> listeImage = m_bibliotheque->getlisteImage();
+    int nbImage = listeImage.size();
 
     QMenu *myMenu = new QMenu();
+
     QMenu* addTag = myMenu->addMenu( "Ajouter un tag..." );
     QAction* tagsMenu;
     for (int i = 0; i < listeTags.size(); ++i) {
         tagsMenu = addTag->addAction( QString::fromStdString(listeTags[i]));
     }
+    tagsMenu = addTag->addAction("Nouveau tag ...");
 
-
-//    myMenu.addMenu()
-//    myMenu.addAction("Supprimer");
-
-    QAction* selectedItem = myMenu->exec(globalPos);
-    if (selectedItem)
+    QList<QListWidgetItem*> listeItems = selectedItems();
+    QAction* selectedTag = myMenu->exec(globalPos);
+    if (selectedTag)
     {
-        // something was chosen, do stuff
-    }
-    else
-    {
-        // nothing was chosen
+        if(!QString::compare(selectedTag->iconText(),"Nouveau tag ...")){
+            string selectedTagToString = selectedTag->iconText().toStdString();
+            for (int i = 0; i < listeItems.size(); ++i) {
+                int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
+                m_bibliotheque->addTag(listeImage[idPhoto-nbImage].getChemin(),selectedTagToString);
+                qDebug() << selectedTag->iconText() << "id : " << idPhoto;
+            }
+        } else {
+            cout << "test" << endl;
+            AjoutTag *ajout = new AjoutTag(this);
+            ajout->exec();
+            if(ajout->result() != 0){
+                string addedTag = ajout->tagName;
+                for (int i = 0; i < listeItems.size(); ++i) {
+                    int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
+                    m_bibliotheque->addTag(listeImage[idPhoto-nbImage].getChemin(),addedTag);
+                }
+                cout << addedTag << endl;
+            }
+        }
     }
 }
 
@@ -141,3 +156,4 @@ void BibliothequeWidget::startDrag(Qt::DropActions)
     if (drag->exec(Qt::MoveAction) == Qt::MoveAction)
        delete takeItem(row(item));
 }
+
