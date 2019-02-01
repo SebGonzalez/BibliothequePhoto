@@ -3,6 +3,7 @@
 #include "bibliotheque.h"
 #include "dialog.h"
 #include "landingpage.h"
+#include "image.h"
 
 #include <QPixmap>
 #include <iostream>
@@ -10,6 +11,7 @@
 #include <QGuiApplication>
 #include <QRect>
 #include <QDesktopWidget>
+#include <QFileDialog>
 
 using namespace std;
 
@@ -149,7 +151,7 @@ void MainWindow::on_treeView_expanded(const QModelIndex &index)
 void MainWindow::on_lineEdit_textChanged(const QString &arg1)
 {
     selection = bibliotheque.getTaggedImages(ui->lineEdit->text().toStdString());
-     if(arg1 == "") selection = bibliotheque.getlisteImage();
+    if(arg1 == "") selection = bibliotheque.getlisteImage();
 
     if(selection.size() != 0) {
         bibliothequeWigdet->clear();
@@ -162,5 +164,30 @@ void MainWindow::on_lineEdit_textChanged(const QString &arg1)
               bibliothequeWigdet->addPiece(pixmap.scaled(200,200), selection[i].getId());
         }
        frameLayout->addWidget(bibliothequeWigdet);
+    }
+}
+
+void MainWindow::on_actionImporter_des_photos_2_triggered()
+{
+    QStringList mimeTypeFilters;
+    mimeTypeFilters << "image/jpeg" << "image/png";
+    QFileDialog dialog(this);
+    dialog.setMimeTypeFilters(mimeTypeFilters);
+    QStringList listeImages = dialog.getOpenFileNames();
+    for (int i = 0; i < listeImages.size(); ++i) {
+        cout << listeImages.size() << endl;
+        Image tmpImage = Image(listeImages[i].toStdString(),bibliotheque.getImgListSize()+i);
+        bibliotheque.addToFile(tmpImage);
+    }
+    bibliothequeWigdet->clear();
+    bibliotheque.deleteImgList();
+    bibliotheque.loadImages();
+    selection = bibliotheque.getlisteImage();
+
+    for(unsigned int i = 0; i < bibliotheque.getImgListSize(); i++) {
+        QPixmap pixmap = QPixmap::fromImage(*selection[i].getQImage());
+        pixmap = pixmap.scaledToWidth(200);
+        //pixmap.scaledToHeight(200);
+        bibliothequeWigdet->addPiece(pixmap.scaled(200,200), selection[i].getId());
     }
 }

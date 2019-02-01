@@ -100,7 +100,7 @@ int Bibliotheque::getImgListSize(){
 }
 
 void Bibliotheque::deleteImgList(){
-    listeImage.empty();
+    listeImage.clear();
 }
 
 void Bibliotheque::fillDefaultTag(){
