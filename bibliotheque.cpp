@@ -254,3 +254,10 @@ void Bibliotheque::addToFile(Image image) {
 void Bibliotheque::initDataFile() {
     remove("../BibliothequePhoto/images.csv");
 }
+
+void Bibliotheque::setTagsListeImage(int image_pos, int tag_pos, std::string tag){
+
+
+    listeImage[image_pos].setTag(tag_pos,tag);
+
+}

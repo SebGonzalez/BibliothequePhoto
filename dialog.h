@@ -38,6 +38,9 @@ public slots:
     void previousImage();
     void displayTags();
     void rotatePicture();
+    void modifierTags();
+    void validateModifications();
+
 
 
 

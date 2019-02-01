@@ -34,7 +34,9 @@ Dialog::Dialog(int position, Bibliotheque &bibliotheque, std::vector<Image> list
     connect(ui->next_photo, SIGNAL(clicked()), this, SLOT(nextImage()));
     connect(ui->previous_photo, SIGNAL(clicked()), this, SLOT(previousImage()) );
     connect(ui->buttonInfo, SIGNAL(clicked()),this, SLOT(displayTags()));
-    connect(ui->buttonModify, SIGNAL(clicked()),this, SLOT(rotatePicture()));
+    connect(ui->buttonRotate, SIGNAL(clicked()),this, SLOT(rotatePicture()));
+    connect(ui->buttonModify, SIGNAL(clicked()),this, SLOT(modifierTags()));
+    connect(ui->buttonValidate, SIGNAL(clicked()),this, SLOT(validateModifications()));
 
     this->bibliotheque = &bibliotheque;
 }
@@ -60,18 +62,15 @@ void Dialog::initLabels()
     ui->next_photo->setIcon(style.standardIcon(QStyle::SP_ArrowRight));
     ui->buttonThrow->setIcon(style.standardIcon(QStyle::SP_TrashIcon));
     ui->buttonInfo->setIcon(style.standardIcon(QStyle::SP_FileDialogInfoView));
-    ui->buttonModify->setIcon(style.standardIcon(QStyle::SP_BrowserReload));
+    ui->buttonRotate->setIcon(style.standardIcon(QStyle::SP_BrowserReload));
 
 
     ui->buttonThrow->resize(45,45);
     ui->buttonInfo->resize(45,45);
     ui->next_photo->resize(100,75);
     ui->previous_photo->resize(100,75);
-    ui->buttonModify->resize(45,45);
-    ui->tagsWidget->setVisible(false);
+    ui->buttonRotate->resize(45,45);
 
-    ui->next_photo->setAttribute(Qt::WA_Hover);
-    ui->previous_photo->setAttribute(Qt::WA_Hover);
 
 
 }
@@ -82,9 +81,8 @@ void Dialog:: nextImage(){
 
     this->rotate = 0;
 
-    for(int i = 0 ; i < ui->gridLayout->count() ; i++)
-        if(!(ui->gridLayout->itemAt(i) == nullptr))
-              ui->gridLayout->itemAt(i)->widget()->setVisible(false);
+    for (int i = 0; i < ui->gridLayout->count(); i++)
+         ui->gridLayout->itemAt(i)->widget()->deleteLater();
 
 
 
@@ -111,9 +109,8 @@ void Dialog:: previousImage(){
 
     this->rotate = 0;
 
-    for(int i = 0 ; i < ui->gridLayout->count() ; i++)
-        if(!(ui->gridLayout->itemAt(i) == nullptr))
-              ui->gridLayout->itemAt(i)->widget()->setVisible(false);
+    for (int i = 0; i < ui->gridLayout->count(); i++)
+         ui->gridLayout->itemAt(i)->widget()->deleteLater();
 
     QObject* button = QObject::sender();
       if(button == ui->previous_photo){
@@ -133,6 +130,10 @@ void Dialog:: previousImage(){
 
 
 void Dialog:: displayTags(){
+
+    for (int i = 0; i < ui->gridLayout->count(); i++)
+          ui->gridLayout->itemAt(i)->widget()->deleteLater();
+
 
    std::vector<std::string> tags = liste_image[indice].getTags();
    QString label_tags;
@@ -187,3 +188,38 @@ void Dialog::on_buttonThrow_pressed()
     pixmap = resizePixmap(ui->current_picture,pixmap);
     ui->current_picture->setPixmap(pixmap);
 }
+
+
+void Dialog::modifierTags(){
+
+    QList<QPlainTextEdit *> list = this -> findChildren<QPlainTextEdit *> ();
+    for(int i = 0 ; i < ui->gridLayout->count() ; i++){
+        if(list[i] != nullptr)
+            list[i]->setReadOnly(false);
+    }
+}
+
+
+void Dialog::validateModifications(){
+
+    QList<QPlainTextEdit *> list = this -> findChildren<QPlainTextEdit *> ();
+    for(int i = 0 ; i < ui->gridLayout->count() ; i++){
+        if(list[i] != nullptr)
+
+             list[i]->setPlainText(list[i]->toPlainText());
+    }
+
+
+    for(int i = 0 ; i < ui->gridLayout->count(); i++){
+
+        std::string texte = list[i]->toPlainText().toUtf8().constData();
+        liste_image[indice].setTag(i,texte);
+        bibliotheque->setTagsListeImage(indice,i,texte);
+    }
+
+
+
+
+
+}
+

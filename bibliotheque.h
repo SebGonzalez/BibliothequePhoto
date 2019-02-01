@@ -33,6 +33,7 @@ public:
     void updatePositionPhoto(int idPhotoD, int position);
     int getPositionImage(int idPhotoD);
     void removeImage(int idPhotoS);
+    void setTagsListeImage(int indice,int tag_indice,std::string newtag);
 private:
     std::vector<Image> listeImage;
     int idPhoto;

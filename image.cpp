@@ -23,6 +23,12 @@ Image::Image(string chemin, vector<string> tags, int id)
     }
 }
 
+void Image::setTag(int indice, std::string string){
+
+    this->tags[indice] = string;
+
+}
+
 int Image::getId() {
     return this->id;
 }
