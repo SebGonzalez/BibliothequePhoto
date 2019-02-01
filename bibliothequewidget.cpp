@@ -4,6 +4,7 @@
 #include <QDrag>
 #include <QDragEnterEvent>
 #include <QMimeData>
+#include <QMenu>
 
 BibliothequeWidget::BibliothequeWidget(int pieceSize, QWidget *parent, Bibliotheque *bibliotheque)
     : QListWidget(parent), m_PieceSize(pieceSize)
@@ -16,6 +17,10 @@ BibliothequeWidget::BibliothequeWidget(int pieceSize, QWidget *parent, Bibliothe
     setDropIndicatorShown(true);
     setUniformItemSizes(true);
     setSelectionMode(QAbstractItemView::ExtendedSelection);
+
+    this->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),this, SLOT(ShowContextMenu(const QPoint&)));
+
     m_bibliotheque = bibliotheque;
 }
 
@@ -84,6 +89,34 @@ void BibliothequeWidget::addPiece(const QPixmap &pixmap, int id)
      pieceItem->setData(Qt::UserRole, QVariant(pixmap));
     pieceItem->setData(Qt::UserRole+1, QVariant(id));
     pieceItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
+}
+
+void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
+{
+    QPoint globalPos = QCursor::pos();
+    Bibliotheque biblio;
+    vector<string> listeTags = biblio.getAllTags();
+
+    QMenu *myMenu = new QMenu();
+    QMenu* addTag = myMenu->addMenu( "Ajouter un tag..." );
+    QAction* tagsMenu;
+    for (int i = 0; i < listeTags.size(); ++i) {
+        tagsMenu = addTag->addAction( QString::fromStdString(listeTags[i]));
+    }
+
+
+//    myMenu.addMenu()
+//    myMenu.addAction("Supprimer");
+
+    QAction* selectedItem = myMenu->exec(globalPos);
+    if (selectedItem)
+    {
+        // something was chosen, do stuff
+    }
+    else
+    {
+        // nothing was chosen
+    }
 }
 
 void BibliothequeWidget::startDrag(Qt::DropActions)

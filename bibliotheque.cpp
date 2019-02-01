@@ -260,3 +260,19 @@ void Bibliotheque::setTagsListeImage(int image_pos, int tag_pos, std::string tag
     listeImage[image_pos].setTag(tag_pos,tag);
 
 }
+
+std::vector<string> Bibliotheque::getAllTags()
+{
+    vector<string> tags;
+    for(unsigned int i = 0; i < listeImage.size(); i++) {
+        vector<string> tagsTmp = listeImage[i].getTags();
+        for(unsigned int j = 0; j < tagsTmp.size(); j++) {
+            if(std::find(tags.begin(), tags.end(), tagsTmp[j]) != tags.end()){
+
+            } else {
+                tags.push_back(tagsTmp[j]);
+            }
+        }
+    }
+    return tags;
+}

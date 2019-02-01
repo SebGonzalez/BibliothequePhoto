@@ -14,6 +14,9 @@ public:
 
     static QString bibliothequeMimeType() { return QStringLiteral("image/icon-photo"); }
 
+
+private slots:
+    void ShowContextMenu(const QPoint& pos);
 protected:
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dragMoveEvent(QDragMoveEvent *event) override;
