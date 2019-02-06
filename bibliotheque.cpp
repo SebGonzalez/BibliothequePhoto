@@ -11,9 +11,9 @@ Bibliotheque::Bibliotheque()
 {
     idPhoto = 0;
     cout << "Création bibliotheque" << endl;
-  initDataFile(); // temporaire
-  addDirectory("../BibliothequePhoto/PicsTmp/");
-   loadImages();
+  //initDataFile(); // temporaire
+  //addDirectory("../BibliothequePhoto/PicsTmp/");
+    loadImages();
     fillDefaultTag();
 }
 
@@ -38,13 +38,14 @@ void Bibliotheque::loadImages() {
                   nextComma = line.find(',', comma);
               }
               tags.push_back(line.substr(comma, nextComma - comma));
-
               Image image(path, tags, idPhoto++);
-              listeImage.push_back(image);
+              if(!image.getQImage()->isNull())
+                listeImage.push_back(image);
           }
           else {
                Image image(line, idPhoto++);
-              listeImage.push_back(image);
+                if(!image.getQImage()->isNull())
+                    listeImage.push_back(image);
           }
         }
         myfile.close();
@@ -177,7 +178,7 @@ bool libContains(string path) {
         }
     }
     fileIn.close();
-    if (found) {https://github.com/SebGonzalez/BibliothequePhoto/commit/64a20293686c1ea971ecddb7dedbfcec115691a6mage
+    if (found) {
         cout << "Your library contains this file" << endl;
         return true;
     }
@@ -190,6 +191,17 @@ void Bibliotheque::addTag(string path, string tag) {
     for(unsigned int i = 0; i < listeImage.size(); i++) {
         Image &img = listeImage[i];
         if(img.getChemin().compare(path) == 0) {
+            img.addTag(tag);
+            return;
+        }
+    }
+}
+
+void Bibliotheque::addTag(int id, string tag) {
+    for(unsigned int i = 0; i < listeImage.size(); i++) {
+        Image img = listeImage[i];
+        if(img.getId() == id) {
+            cout << "trouve" << endl;
             img.addTag(tag);
             return;
         }

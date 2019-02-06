@@ -22,10 +22,9 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-
     //Landing page : Commenter les 3 prochaines lignes pour avoir la galerie
-    LandingPage *lp = new LandingPage(this);
-    lp->exec();
+   // LandingPage *lp = new LandingPage(this);
+   // lp->exec();
 
     QRect rec = QApplication::desktop()->screenGeometry();
     int height = rec.height();
@@ -107,12 +106,6 @@ void MainWindow::handleButton()
     tag->resize(100,100);
    // qDebug() << __FUNCTION__ << "Slot";
 }
-
-void MainWindow::on_lineEdit_textChanged()
-{
-    textChange =true;
-}
-
 
 void MainWindow::displayDialogue(QListWidgetItem *item)
 {

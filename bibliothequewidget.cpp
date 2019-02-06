@@ -111,12 +111,18 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
     QAction* selectedTag = myMenu->exec(globalPos);
     if (selectedTag)
     {
-        if(!QString::compare(selectedTag->iconText(),"Nouveau tag ...")){
+        cout << "1" << endl;
+        if(QString::compare(selectedTag->iconText(),"Nouveau tag")){
+              cout << "2" << endl;
             string selectedTagToString = selectedTag->iconText().toStdString();
+              cout << "3" << endl;
             for (int i = 0; i < listeItems.size(); ++i) {
+  cout << "4" << endl;
                 int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
-                m_bibliotheque->addTag(listeImage[idPhoto-nbImage].getChemin(),selectedTagToString);
+                  cout << "5" << endl;
                 qDebug() << selectedTag->iconText() << "id : " << idPhoto;
+                cout << "OUIUUI : " << idPhoto << endl;
+                m_bibliotheque->addTag(idPhoto,selectedTagToString);
             }
         } else {
             cout << "test" << endl;
@@ -126,7 +132,8 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
                 string addedTag = ajout->tagName;
                 for (int i = 0; i < listeItems.size(); ++i) {
                     int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
-                    m_bibliotheque->addTag(listeImage[idPhoto-nbImage].getChemin(),addedTag);
+                     cout << "OUIUUI : " << idPhoto << " " << addedTag <<  endl;
+                    m_bibliotheque->addTag(idPhoto,addedTag);
                 }
                 cout << addedTag << endl;
             }

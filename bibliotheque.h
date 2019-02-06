@@ -24,6 +24,7 @@ public:
     void addToFile(std::string filepath, std::vector<std::string> tags);
     void addToFile(Image image);
     void addTag(std::string path, std::string tag);
+    void addTag(int id, std::string tag);
     void addTags(std::string path, std::vector<std::string> tags);
     std::vector<Image> getTaggedImages(std::string tag);
     int  getImgListSize();

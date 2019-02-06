@@ -31,6 +31,8 @@ public:
 private slots:
     void on_pushButton_clicked();
 
+    void on_lineEdit_textChanged();
+
     void handleButton();
 
     void showTreeView();
