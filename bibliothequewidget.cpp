@@ -118,6 +118,7 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
                 m_bibliotheque->addTag(idPhoto,selectedTagToString);
             }
         } else {
+
             AjoutTag *ajout = new AjoutTag(this);
             ajout->exec();
             if(ajout->result() != 0){
