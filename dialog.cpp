@@ -27,7 +27,8 @@ Dialog::Dialog(int position, Bibliotheque &bibliotheque, std::vector<Image> list
     initLabels();
 
     QPixmap pixmap = QPixmap::fromImage(*listeImage[position].getQImage());
-    pixmap = resizePixmap(ui->current_picture,pixmap);
+    ui->current_picture->resize(pixmap.size());
+//    pixmap = resizePixmap(ui->current_picture,pixmap);
     ui->current_picture->setPixmap(pixmap);
     indice = position;
 
@@ -97,7 +98,7 @@ void Dialog:: nextImage(){
         }
 
         QPixmap pixmap = QPixmap::fromImage(*liste_image[position].getQImage());
-        pixmap = resizePixmap(ui->current_picture,pixmap);
+        ui->current_picture->resize(pixmap.size());
         ui->current_picture->setPixmap(pixmap);
     }
 
@@ -122,7 +123,7 @@ void Dialog:: previousImage(){
           }
 
           QPixmap pixmap = QPixmap::fromImage(*liste_image[position].getQImage());
-          pixmap = resizePixmap(ui->current_picture,pixmap);
+          ui->current_picture->resize(pixmap.size());
           ui->current_picture->setPixmap(pixmap);
       }
 
@@ -168,9 +169,10 @@ void Dialog::rotatePicture(){
 
     QPixmap pixmap = QPixmap::fromImage(*liste_image[position].getQImage());
     QMatrix rm;
-    this->rotate += 90 % 360;
+    this->rotate += 90 ;
     rm.rotate(this->rotate);
     pixmap = pixmap.transformed(rm);
+    ui->current_picture->resize(pixmap.size());
     ui->current_picture->setPixmap(pixmap);
 
 }
