@@ -201,7 +201,6 @@ void Bibliotheque::addTag(int id, string tag) {
     for(unsigned int i = 0; i < listeImage.size(); i++) {
         Image &img = listeImage[i];
         if(img.getId() == id) {
-            cout << "trouve" << endl;
             img.addTag(tag);
             return;
         }
