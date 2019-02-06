@@ -33,7 +33,8 @@ SOURCES += \
     clickablelabel.cpp \
     bibliothequewidget.cpp \
     landingpage.cpp \
-    ajouttag.cpp
+    ajouttag.cpp \
+    mainwindowredesigned.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -44,14 +45,16 @@ HEADERS += \
     clickablelabel.h \
     bibliothequewidget.h \
     landingpage.h \
-    ajouttag.h
+    ajouttag.h \
+    mainwindowredesigned.h
 
 
 FORMS += \
         mainwindow.ui \
         dialog.ui \
     landingpage.ui \
-    ajouttag.ui
+    ajouttag.ui \
+    mainwindowredesigned.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

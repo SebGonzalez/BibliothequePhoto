@@ -2,10 +2,15 @@
 #include <QApplication>
 #include "bibliotheque.h"
 
+#include "mainwindowredesigned.h"
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
+//    MainWindow w;
+//    w.show();
+
+    MainWindowRedesigned m;
+    m.show();
     return a.exec();
 }
