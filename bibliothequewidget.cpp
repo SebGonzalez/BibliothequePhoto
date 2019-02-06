@@ -56,16 +56,16 @@ void BibliothequeWidget::dropEvent(QDropEvent *event)
         int idPhoto = currentItem()->data(Qt::UserRole+1).toInt();
         QListWidgetItem *pieceItem = new QListWidgetItem();
         pieceItem->setIcon(QIcon(pixmap.scaled(200,200)));
-         pieceItem->setData(Qt::UserRole, QVariant(pixmap));
+        pieceItem->setData(Qt::UserRole, QVariant(pixmap));
         pieceItem->setData(Qt::UserRole+1, QVariant(idPhoto));
 
         pieceItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
 
 
         int rowPhoto = ligne*5 + colonne+1;
-           if(row(currentItem()) >= rowPhoto) {
-               rowPhoto--;
-           }
+        if(row(currentItem()) >= rowPhoto) {
+            rowPhoto--;
+        }
         m_bibliotheque->updatePositionPhoto(idPhoto, rowPhoto);
 
         std::cout << ligne <<" OOOOOOOOO " << colonne << " AAAAAA " << rowPhoto << std::endl;
@@ -73,7 +73,7 @@ void BibliothequeWidget::dropEvent(QDropEvent *event)
 
         insertItem(rowPhoto, pieceItem);
         setCurrentRow(rowPhoto);
-       // addPiece(pixmap, 0);
+        // addPiece(pixmap, 0);
 
         event->setDropAction(Qt::MoveAction);
         event->accept();
@@ -86,7 +86,7 @@ void BibliothequeWidget::addPiece(const QPixmap &pixmap, int id)
 {
     QListWidgetItem *pieceItem = new QListWidgetItem(this);
     pieceItem->setIcon(QIcon(pixmap));
-     pieceItem->setData(Qt::UserRole, QVariant(pixmap));
+    pieceItem->setData(Qt::UserRole, QVariant(pixmap));
     pieceItem->setData(Qt::UserRole+1, QVariant(id));
     pieceItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
 }
@@ -111,28 +111,20 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
     QAction* selectedTag = myMenu->exec(globalPos);
     if (selectedTag)
     {
-        cout << "1" << endl;
         if(QString::compare(selectedTag->iconText(),"Nouveau tag")){
-              cout << "2" << endl;
             string selectedTagToString = selectedTag->iconText().toStdString();
-              cout << "3" << endl;
             for (int i = 0; i < listeItems.size(); ++i) {
-  cout << "4" << endl;
                 int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
-                  cout << "5" << endl;
-                qDebug() << selectedTag->iconText() << "id : " << idPhoto;
-                cout << "OUIUUI : " << idPhoto << endl;
                 m_bibliotheque->addTag(idPhoto,selectedTagToString);
             }
         } else {
-            cout << "test" << endl;
             AjoutTag *ajout = new AjoutTag(this);
             ajout->exec();
             if(ajout->result() != 0){
                 string addedTag = ajout->tagName;
-                for (int i = 0; i < listeItems.size(); ++i) {
+                for (int i = 0; i < listeItems.size(); i++) {
                     int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
-                     cout << "OUIUUI : " << idPhoto << " " << addedTag <<  endl;
+
                     m_bibliotheque->addTag(idPhoto,addedTag);
                 }
                 cout << addedTag << endl;
@@ -161,6 +153,6 @@ void BibliothequeWidget::startDrag(Qt::DropActions)
     drag->setPixmap(pixmap);
 
     if (drag->exec(Qt::MoveAction) == Qt::MoveAction)
-       delete takeItem(row(item));
+        delete takeItem(row(item));
 }
 

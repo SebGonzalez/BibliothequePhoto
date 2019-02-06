@@ -12,7 +12,7 @@ Bibliotheque::Bibliotheque()
     idPhoto = 0;
     cout << "Création bibliotheque" << endl;
   //initDataFile(); // temporaire
-  //addDirectory("../BibliothequePhoto/PicsTmp/");
+ // addDirectory("../BibliothequePhoto/PicsTmp/");
     loadImages();
     fillDefaultTag();
 }
@@ -199,7 +199,7 @@ void Bibliotheque::addTag(string path, string tag) {
 
 void Bibliotheque::addTag(int id, string tag) {
     for(unsigned int i = 0; i < listeImage.size(); i++) {
-        Image img = listeImage[i];
+        Image &img = listeImage[i];
         if(img.getId() == id) {
             cout << "trouve" << endl;
             img.addTag(tag);
@@ -264,7 +264,7 @@ void Bibliotheque::addToFile(Image image) {
 }
 
 void Bibliotheque::initDataFile() {
-    //remove("../BibliothequePhoto/images.csv");
+    remove("../BibliothequePhoto/images.csv");
 }
 
 void Bibliotheque::setTagsListeImage(int image_pos, int tag_pos, std::string tag){

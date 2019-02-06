@@ -57,6 +57,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    cout << "On save les modifs" << endl;
     //Reset file and save all updated data before closing
     bibliotheque.initDataFile();
     for (int i = 0; i < bibliotheque.getImgListSize(); i++) {
