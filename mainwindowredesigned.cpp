@@ -1,21 +1,40 @@
 #include "mainwindowredesigned.h"
 #include "ui_mainwindowredesigned.h"
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
+
 #include "bibliotheque.h"
 #include "dialog.h"
 #include "landingpage.h"
 #include "image.h"
+
 #include <QFileDialog>
 
  Bibliotheque biblio;
  vector<Image> image_affichees;
+
+#include "viewer.h"
+
+#include <QPixmap>
+#include <iostream>
+#include <qdebug.h>
+#include <QGuiApplication>
+#include <QRect>
+#include <QDesktopWidget>
+#include <QFileDialog>
+#include <QGridLayout>
+
+using namespace std;
+
 
 MainWindowRedesigned::MainWindowRedesigned(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindowRedesigned)
 {
     ui->setupUi(this);
+
 
     image_affichees = biblio.getlisteImage();
     QHBoxLayout *frameLayout = new QHBoxLayout(ui->selection);
@@ -33,6 +52,9 @@ MainWindowRedesigned::MainWindowRedesigned(QWidget *parent) :
     connect(ui->bibliButton,SIGNAL(clicked()),this,SLOT(load_selection_on_click()));
     connect(ui->importerButton,SIGNAL(clicked()),this,SLOT(import_on_click()));
 
+
+
+
 }
 
 MainWindowRedesigned::~MainWindowRedesigned()
@@ -42,15 +64,12 @@ MainWindowRedesigned::~MainWindowRedesigned()
 
 
 
+
 void MainWindowRedesigned::load_selection_on_click(){
 
 
-
-
-
-
-
 }
+
 
 void MainWindowRedesigned:: import_on_click(){
 

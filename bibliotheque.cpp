@@ -127,7 +127,7 @@ void Bibliotheque::addDirectory(string cheminDossier) {
       while ((ent = readdir (dir)) != NULL) {
         QString nomFichier(ent->d_name);
         string extension = nomFichier.section(".", -1).toStdString();
-        if(extension == "png" || extension == "jpg") {
+        if(extension == "png" || extension == "jpg" || extension == "jpeg") {
             Image newImage(cheminDossier + ent->d_name, idPhoto++);
             addToFile(cheminDossier + ent->d_name);
         }

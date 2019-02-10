@@ -1,8 +1,9 @@
-#include "mainwindow.h"
+//#include "mainwindow.h"
 #include <QApplication>
-#include "bibliotheque.h"
+//#include "bibliotheque.h"
 
-#include "mainwindowredesigned.h"
+//#include "mainwindowredesigned.h"
+#include "viewer.h"
 
 int main(int argc, char *argv[])
 {
@@ -10,7 +11,10 @@ int main(int argc, char *argv[])
 //    MainWindow w;
 //    w.show();
 
-    MainWindowRedesigned m;
-    m.show();
+//    MainWindowRedesigned m;
+//    m.show();
+
+    viewer v;
+    v.show();
     return a.exec();
 }
