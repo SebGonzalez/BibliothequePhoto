@@ -187,6 +187,10 @@ bool libContains(string path) {
     }
 }
 
+void Bibliotheque::addImage(Image image) {
+    listeImage.push_back(image);
+}
+
 void Bibliotheque::addTag(string path, string tag) {
     for(unsigned int i = 0; i < listeImage.size(); i++) {
         Image &img = listeImage[i];

@@ -17,6 +17,13 @@ public:
 
 private:
     Ui::MainWindowRedesigned *ui;
+
+private slots:
+
+    void load_selection_on_click();
+    void import_on_click();
+
+
 };
 
 #endif // MAINWINDOWREDESIGNED_H
