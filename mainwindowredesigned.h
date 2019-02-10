@@ -48,6 +48,7 @@ private slots:
 
 
 
+    void on_lineEdit_textEdited(const QString &arg1);
 };
 
 #endif // MAINWINDOWREDESIGNED_H

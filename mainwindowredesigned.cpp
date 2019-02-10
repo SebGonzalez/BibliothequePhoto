@@ -100,3 +100,20 @@ void MainWindowRedesigned:: import_on_click(){
 
 }
 
+
+void MainWindowRedesigned::on_lineEdit_textEdited(const QString &arg1)
+{
+    image_affichees = biblio.getTaggedImages(ui->lineEdit->text().toStdString());
+    if(arg1 == "") image_affichees = biblio.getlisteImage();
+
+    if(image_affichees.size() != 0) {
+
+            bibliothequeWidget->clear();
+            for(unsigned int i = 0; i < image_affichees.size(); i++) {
+                QPixmap pixmap = QPixmap::fromImage(*image_affichees[i].getQImage());
+                pixmap = pixmap.scaledToWidth(200);
+                bibliothequeWidget->addPiece(pixmap.scaled(200,200), image_affichees[i].getId());
+            }
+        }
+
+    }
