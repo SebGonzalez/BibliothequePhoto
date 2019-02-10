@@ -43,6 +43,8 @@ private slots:
 
     void on_actionImporter_des_photos_2_triggered();
 
+    void on_lineEdit_textEdited(const QString &arg1);
+
 private:
     Ui::MainWindow *ui;
     QPushButton *tag;

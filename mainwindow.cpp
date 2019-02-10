@@ -185,3 +185,4 @@ void MainWindow::on_actionImporter_des_photos_2_triggered()
         bibliothequeWigdet->addPiece(pixmap.scaled(200,200), selection[i].getId());
     }
 }
+

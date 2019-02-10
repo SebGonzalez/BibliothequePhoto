@@ -37,25 +37,37 @@ MainWindowRedesigned::MainWindowRedesigned(QWidget *parent) :
 
 
     image_affichees = biblio.getlisteImage();
+
+    bibliothequeWidget = new BibliothequeWidget(200,this, &biblio);
     QHBoxLayout *frameLayout = new QHBoxLayout(ui->selection);
-    BibliothequeWidget *bibliothequeWidget = new BibliothequeWidget(200,this, &biblio);
-    for(unsigned int i = 0; i < image_affichees.size(); i++) {
-        QPixmap pixmap = QPixmap::fromImage(*image_affichees[i].getQImage());
+
+    for(unsigned int i = 0; i < biblio.getlisteImage().size(); i++) {
+        QPixmap pixmap = QPixmap::fromImage(*biblio.getlisteImage()[i].getQImage());
         pixmap = pixmap.scaledToWidth(200);
-        pixmap.scaledToHeight(200);
-        bibliothequeWidget->addPiece(pixmap.scaled(200,200), image_affichees[i].getId());
+        //pixmap.scaledToHeight(200);
+          bibliothequeWidget->addPiece(pixmap.scaled(200,200), biblio.getlisteImage()[i].getId());
     }
 
-
-    frameLayout->addWidget(bibliothequeWidget);
-
-    connect(ui->bibliButton,SIGNAL(clicked()),this,SLOT(load_selection_on_click()));
-    connect(ui->importerButton,SIGNAL(clicked()),this,SLOT(import_on_click()));
+   frameLayout->addWidget(bibliothequeWidget);
 
 
+   connect(ui->bibliButton,SIGNAL(clicked()),this,SLOT(load_selection_on_click()));
+   connect(ui->importerButton,SIGNAL(clicked()),this,SLOT(import_on_click()));
+}
 
+
+void MainWindowRedesigned:: refresh_bibliotheque_view(){
+
+    bibliothequeWidget->clear();
+    for(unsigned int i = 0; i < biblio.getlisteImage().size(); i++) {
+        QPixmap pixmap = QPixmap::fromImage(*biblio.getlisteImage()[i].getQImage());
+        pixmap = pixmap.scaledToWidth(200);
+        //pixmap.scaledToHeight(200);
+          bibliothequeWidget->addPiece(pixmap.scaled(200,200), biblio.getlisteImage()[i].getId());
+    }
 
 }
+
 
 MainWindowRedesigned::~MainWindowRedesigned()
 {
@@ -67,16 +79,24 @@ MainWindowRedesigned::~MainWindowRedesigned()
 
 void MainWindowRedesigned::load_selection_on_click(){
 
+    refresh_bibliotheque_view();
+
 
 }
 
 
 void MainWindowRedesigned:: import_on_click(){
 
-   QString fileName = QFileDialog::getOpenFileName(this,
-         tr("Open Image"), "/home", tr("Image Files (*.png *.jpg *.jpeg)"));
-   Image *imported_image = new Image(fileName.toStdString(), 0);
-   biblio.addImage(*imported_image);
-   std::cout << "Image ajoutée" << endl;
+
+    QString fileName = QFileDialog::getOpenFileName(this,
+                                                    tr("Open Image"), "/home", tr("Image Files (*.png *.jpg *.jpeg)"));
+    if(fileName != nullptr){
+
+       Image *imported_image = new Image(fileName.toStdString(), 0);
+       biblio.addImage(*imported_image);
+       refresh_bibliotheque_view();
+    }
+
 
 }
+

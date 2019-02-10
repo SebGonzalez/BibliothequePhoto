@@ -21,20 +21,22 @@ class MainWindowRedesigned : public QMainWindow
 {
     Q_OBJECT
 
-    Bibliotheque bibliotheque;
-    QPushButton *tag;
-    BibliothequeWidget *bibliothequeWigdet;
-    QGridLayout *frameLayout;
+
+
 
 public:
     explicit MainWindowRedesigned(QWidget *parent = nullptr);
     ~MainWindowRedesigned();
+
+    void refresh_bibliotheque_view();
 
 
 
 
 private:
     Ui::MainWindowRedesigned *ui;
+    BibliothequeWidget *bibliothequeWidget;
+
 
 
 private slots:
