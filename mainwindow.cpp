@@ -112,7 +112,7 @@ void MainWindow::displayDialogue(QListWidgetItem *item)
 {
     int idPhoto = item->data(Qt::UserRole+1).toInt();
     int position = bibliotheque.getPositionImage(idPhoto);
-     Dialog *dialog = new Dialog(position ,bibliotheque, bibliotheque.getlisteImage());
+     Dialog *dialog = new Dialog(position, bibliotheque, bibliotheque.getlisteImage());
      dialog->exec();
      bibliothequeWigdet->clear();
      QHBoxLayout *frameLayout = new QHBoxLayout(ui->frame);
