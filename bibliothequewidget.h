@@ -4,6 +4,7 @@
 #include "bibliotheque.h"
 #include "ajouttag.h"
 #include <QListWidget>
+#include <QPainter>
 
 class BibliothequeWidget : public QListWidget
 {

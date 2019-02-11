@@ -142,25 +142,6 @@ void MainWindow::on_treeView_expanded(const QModelIndex &index)
     }
 }
 
-void MainWindow::on_lineEdit_textChanged(const QString &arg1)
-{
-    selection = bibliotheque.getTaggedImages(ui->lineEdit->text().toStdString());
-    if(arg1 == "") selection = bibliotheque.getlisteImage();
-
-    if(selection.size() != 0) {
-        bibliothequeWigdet->clear();
-        QHBoxLayout *frameLayout = new QHBoxLayout(ui->frame);
-
-        for(unsigned int i = 0; i < selection.size(); i++) {
-            QPixmap pixmap = QPixmap::fromImage(*selection[i].getQImage());
-            pixmap = pixmap.scaledToWidth(200);
-            //pixmap.scaledToHeight(200);
-              bibliothequeWigdet->addPiece(pixmap.scaled(200,200), selection[i].getId());
-        }
-       frameLayout->addWidget(bibliothequeWigdet);
-    }
-}
-
 void MainWindow::on_actionImporter_des_photos_2_triggered()
 {
     QStringList mimeTypeFilters;
@@ -186,3 +167,22 @@ void MainWindow::on_actionImporter_des_photos_2_triggered()
     }
 }
 
+
+void MainWindow::on_lineEdit_textEdited(const QString &arg1)
+{
+    selection = bibliotheque.getTaggedImages(ui->lineEdit->text().toStdString());
+    if(arg1 == "") selection = bibliotheque.getlisteImage();
+
+    if(selection.size() != 0) {
+        bibliothequeWigdet->clear();
+        QHBoxLayout *frameLayout = new QHBoxLayout(ui->frame);
+
+        for(unsigned int i = 0; i < selection.size(); i++) {
+            QPixmap pixmap = QPixmap::fromImage(*selection[i].getQImage());
+            pixmap = pixmap.scaledToWidth(200);
+            //pixmap.scaledToHeight(200);
+              bibliothequeWigdet->addPiece(pixmap.scaled(200,200), selection[i].getId());
+        }
+       frameLayout->addWidget(bibliothequeWigdet);
+    }
+}

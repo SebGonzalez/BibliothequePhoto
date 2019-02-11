@@ -30,12 +30,12 @@ SOURCES += \
     bibliotheque.cpp \
     image.cpp \
     dialog.cpp \
-    clickablelabel.cpp \
     bibliothequewidget.cpp \
     landingpage.cpp \
     ajouttag.cpp \
     mainwindowredesigned.cpp \
-    viewer.cpp
+    viewer.cpp \
+    textoverphoto.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -43,12 +43,12 @@ HEADERS += \
     image.h \
     dialog.h \
     global_variables.h \
-    clickablelabel.h \
     bibliothequewidget.h \
     landingpage.h \
     ajouttag.h \
     mainwindowredesigned.h \
-    viewer.h
+    viewer.h \
+    textoverphoto.h
 
 
 FORMS += \

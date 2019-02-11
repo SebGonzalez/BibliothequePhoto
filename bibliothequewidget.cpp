@@ -5,6 +5,7 @@
 #include <QDragEnterEvent>
 #include <QMimeData>
 #include <QMenu>
+#include "textoverphoto.h";
 
 BibliothequeWidget::BibliothequeWidget(int pieceSize, QWidget *parent, Bibliotheque *bibliotheque)
     : QListWidget(parent), m_PieceSize(pieceSize)
@@ -15,8 +16,11 @@ BibliothequeWidget::BibliothequeWidget(int pieceSize, QWidget *parent, Bibliothe
     setSpacing(10);
     setAcceptDrops(true);
     setDropIndicatorShown(true);
+    setResizeMode(QListView::Adjust);
     setUniformItemSizes(true);
     setSelectionMode(QAbstractItemView::ExtendedSelection);
+    TextOverPhoto *textOver = new TextOverPhoto(this);
+    setItemDelegate(textOver);
 
     this->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),this, SLOT(ShowContextMenu(const QPoint&)));
@@ -45,6 +49,9 @@ void BibliothequeWidget::dragMoveEvent(QDragMoveEvent *event)
 void BibliothequeWidget::dropEvent(QDropEvent *event)
 {
     if (event->mimeData()->hasFormat(BibliothequeWidget::bibliothequeMimeType())) {
+
+        this->width();
+        cout << "Width : " << this->width() << endl;
         QByteArray pieceData = event->mimeData()->data(BibliothequeWidget::bibliothequeMimeType());
         QDataStream dataStream(&pieceData, QIODevice::ReadOnly);
         QPixmap pixmap;
@@ -84,11 +91,16 @@ void BibliothequeWidget::dropEvent(QDropEvent *event)
 
 void BibliothequeWidget::addPiece(const QPixmap &pixmap, int id)
 {
-    QListWidgetItem *pieceItem = new QListWidgetItem(this);
+
+    QListWidgetItem *pieceItem = new QListWidgetItem( this);
     pieceItem->setIcon(QIcon(pixmap));
     pieceItem->setData(Qt::UserRole, QVariant(pixmap));
     pieceItem->setData(Qt::UserRole+1, QVariant(id));
+     pieceItem->setData(Qt::UserRole+2, "test2");
+        pieceItem->setData(Qt::UserRole+3, "test2");
+
     pieceItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
+
 }
 
 void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
@@ -96,13 +108,12 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
     QPoint globalPos = QCursor::pos();
     vector<string> listeTags = m_bibliotheque->getAllTags();
     vector<Image> listeImage = m_bibliotheque->getlisteImage();
-    int nbImage = listeImage.size();
 
     QMenu *myMenu = new QMenu();
 
     QMenu* addTag = myMenu->addMenu( "Ajouter un tag..." );
     QAction* tagsMenu;
-    for (int i = 0; i < listeTags.size(); ++i) {
+    for (unsigned int i = 0; i < listeTags.size(); ++i) {
         tagsMenu = addTag->addAction( QString::fromStdString(listeTags[i]));
     }
     tagsMenu = addTag->addAction("Nouveau tag ...");

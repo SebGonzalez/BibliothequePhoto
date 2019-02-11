@@ -35,11 +35,10 @@ MainWindowRedesigned::MainWindowRedesigned(QWidget *parent) :
 {
     ui->setupUi(this);
 
-
     image_affichees = biblio.getlisteImage();
 
     bibliothequeWidget = new BibliothequeWidget(200,this, &biblio);
-    QHBoxLayout *frameLayout = new QHBoxLayout(ui->selection);
+    QHBoxLayout *frameLayout = new QHBoxLayout(ui->photo);
 
     for(unsigned int i = 0; i < biblio.getlisteImage().size(); i++) {
         QPixmap pixmap = QPixmap::fromImage(*biblio.getlisteImage()[i].getQImage());
@@ -103,8 +102,11 @@ void MainWindowRedesigned:: import_on_click(){
 
 void MainWindowRedesigned::on_lineEdit_textEdited(const QString &arg1)
 {
+
     image_affichees = biblio.getTaggedImages(ui->lineEdit->text().toStdString());
-    if(arg1 == "") image_affichees = biblio.getlisteImage();
+    if(arg1 == "") {
+        image_affichees = biblio.getlisteImage();
+    }
 
     if(image_affichees.size() != 0) {
 
@@ -117,3 +119,17 @@ void MainWindowRedesigned::on_lineEdit_textEdited(const QString &arg1)
         }
 
     }
+
+
+void MainWindowRedesigned::on_checkBox_stateChanged(int arg1)
+{
+    cout << arg1 << endl;
+    for(int i = 0; i < bibliothequeWidget->count(); ++i)
+    {
+        QListWidgetItem* item = bibliothequeWidget->item(i);
+        if(arg1 == 2)
+         item->setData(Qt::UserRole+2, "");
+        else
+           item->setData(Qt::UserRole+2, item->data(Qt::UserRole+3));
+    }
+}

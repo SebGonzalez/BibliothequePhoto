@@ -14,7 +14,5 @@ int main(int argc, char *argv[])
     MainWindowRedesigned m;
     m.show();
 
-  //  viewer v;
-   // v.show();
     return a.exec();
 }

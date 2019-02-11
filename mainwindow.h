@@ -39,8 +39,6 @@ private slots:
 
     void on_treeView_expanded(const QModelIndex &index);
 
-    void on_lineEdit_textChanged(const QString &arg1);
-
     void on_actionImporter_des_photos_2_triggered();
 
     void on_lineEdit_textEdited(const QString &arg1);
