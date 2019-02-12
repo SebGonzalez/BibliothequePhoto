@@ -16,9 +16,9 @@ public:
     std::vector<Image> liste_image;
     int position;
     int rotate;
-
+    QSize originalSize ;
     explicit viewer(QWidget *parent = nullptr);
-    viewer(int position, Bibliotheque &bibliotheque, std::vector<Image> listeImage);
+    viewer(int position, Bibliotheque &bibliotheque);
     ~viewer();
 
 private slots:

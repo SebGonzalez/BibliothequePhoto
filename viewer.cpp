@@ -19,26 +19,31 @@ viewer::viewer(QWidget *parent) :
     ui->current_picture->resize(pixmap.size());
     ui->current_picture->setPixmap(pixmap);
 
+
     //info widget
     ui->infoMenu->hide();
 
 }
 
 
-viewer::viewer(int position, Bibliotheque &bibliotheque, std::vector<Image> listeImage):
+viewer::viewer(int position, Bibliotheque &bibliotheque):
     ui(new Ui::viewer)
 {
-
-    this->liste_image = listeImage;
+    this->bibliotheque = &bibliotheque;
+    this->liste_image = this->bibliotheque->getlisteImage();
     this->position = position;
+    this->rotate = 90;
+    this->originalSize = liste_image[position].getQImage()->size();
     ui->setupUi(this);
 
-    QPixmap pixmap = QPixmap::fromImage(*listeImage[position].getQImage());
-    ui->current_picture->resize(pixmap.size());
-//    pixmap = resizePixmap(ui->current_picture,pixmap);
-    ui->current_picture->setPixmap(pixmap);
 
-    this->bibliotheque = &bibliotheque;
+    QPixmap current_image = QPixmap::fromImage(*liste_image[position].getQImage());
+
+    ui->current_picture->resize(current_image.size());
+//  pixmap = resizePixmap(ui->current_picture,pixmap);
+    ui->current_picture->setPixmap(current_image);
+
+
 }
 
 viewer::~viewer()
@@ -49,14 +54,14 @@ viewer::~viewer()
 /********************
  *        ZOOM      *
  * ******************/
-const QSize originalSize = original->size();
+
 static double zoomLevel = 1.0;
 
 void viewer::on_zoom_clicked()
 {
     zoomLevel *= 1.25;
     QSize scaled_size = originalSize * zoomLevel;
-    QPixmap scaled = QPixmap::fromImage(*original).scaledToWidth(scaled_size.width());
+    QPixmap scaled = QPixmap::fromImage(*liste_image[position].getQImage()).scaledToWidth(scaled_size.width());
     ui->current_picture->setPixmap(scaled);
 }
 
@@ -64,7 +69,7 @@ void viewer::on_zoomOut_clicked()
 {
     zoomLevel /= 1.25;
     QSize scaled_size = originalSize * zoomLevel;
-    QPixmap scaled = QPixmap::fromImage(*original).scaledToWidth(scaled_size.width());
+    QPixmap scaled = QPixmap::fromImage(*liste_image[position].getQImage()).scaledToWidth(scaled_size.width());
     ui->current_picture->setPixmap(scaled);
 }
 
@@ -73,9 +78,11 @@ void viewer::on_zoomOut_clicked()
 void viewer::on_rotate_clicked()
 {
     QTransform transform;
-    QTransform trans = transform.rotate(90);
-    original = new QImage(original->transformed(trans));
-    ui->current_picture->setPixmap(QPixmap::fromImage(*original));
+    QTransform trans = transform.rotate(this->rotate);
+    QImage *rotated_image = new QImage(*liste_image[position].getQImage());
+    QImage *current_picture = new QImage(rotated_image->transformed(trans));
+    ui->current_picture->setPixmap(QPixmap::fromImage(*current_picture));
+    this->rotate += 90 % 360;
 }
 
 void viewer::on_info_clicked()
