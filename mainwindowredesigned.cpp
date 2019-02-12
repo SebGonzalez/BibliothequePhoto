@@ -89,15 +89,6 @@ void MainWindowRedesigned::load_selection_on_click(){
 
 void MainWindowRedesigned:: import_on_click(){
 
-
-//    QString fileName = QFileDialog::getOpenFileName(this,tr("Open Image"), "/home", tr("Image Files (*.png *.jpg *.jpeg)"));
-//    if(fileName != nullptr){
-
-//       Image *imported_image = new Image(fileName.toStdString(), 0);
-//       biblio.addImage(*imported_image);
-//       biblio.addToFile(*imported_image);
-//       refresh_bibliotheque_view();
-//    }
     QStringList mimeTypeFilters;
     mimeTypeFilters << "image/jpeg" << "image/png";
     QFileDialog dialog(this);
