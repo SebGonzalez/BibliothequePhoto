@@ -14,11 +14,11 @@ public:
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const Q_DECL_OVERRIDE{
         QStyledItemDelegate::paint(painter,option,index);
         QVariant text = index.data(Qt::UserRole+2);
-        if(text == "false") text = "";
+
         if(text.isValid()){
             const QStyle *style = option.widget ? option.widget->style() : QApplication::style();
 
-            style->drawItemText(painter, option.rect, Qt::AlignCenter, option.palette, option.state & QStyle::State_Enabled, text.toString());
+            style->drawItemText(painter, option.rect, Qt::AlignHCenter|Qt::AlignTop, option.palette, option.state & QStyle::State_Enabled, text.toString());
         }
     }
 };

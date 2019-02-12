@@ -65,6 +65,8 @@ void BibliothequeWidget::dropEvent(QDropEvent *event)
         pieceItem->setIcon(QIcon(pixmap.scaled(200,200)));
         pieceItem->setData(Qt::UserRole, QVariant(pixmap));
         pieceItem->setData(Qt::UserRole+1, QVariant(idPhoto));
+        pieceItem->setData(Qt::UserRole+2, currentItem()->data(Qt::UserRole+2));
+        pieceItem->setData(Qt::UserRole+3, currentItem()->data(Qt::UserRole+3));
 
         pieceItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
 
@@ -89,15 +91,14 @@ void BibliothequeWidget::dropEvent(QDropEvent *event)
     }
 }
 
-void BibliothequeWidget::addPiece(const QPixmap &pixmap, int id)
+void BibliothequeWidget::addPiece(const QPixmap &pixmap, int id, string textTag)
 {
-
     QListWidgetItem *pieceItem = new QListWidgetItem( this);
     pieceItem->setIcon(QIcon(pixmap));
     pieceItem->setData(Qt::UserRole, QVariant(pixmap));
     pieceItem->setData(Qt::UserRole+1, QVariant(id));
-     pieceItem->setData(Qt::UserRole+2, "test2");
-        pieceItem->setData(Qt::UserRole+3, "test2");
+    pieceItem->setData(Qt::UserRole+2, QString::fromStdString(textTag));
+    pieceItem->setData(Qt::UserRole+3, QString::fromStdString(textTag));
 
     pieceItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
 
@@ -123,13 +124,19 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
     if (selectedTag)
     {
         if(QString::compare(selectedTag->iconText(),"Nouveau tag")){
+             cout << "non" << endl;
             string selectedTagToString = selectedTag->iconText().toStdString();
             for (int i = 0; i < listeItems.size(); ++i) {
                 int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
                 m_bibliotheque->addTag(idPhoto,selectedTagToString);
+
+                QString text = currentItem()->data(Qt::UserRole+3).toString() + ", " +  QString::fromStdString(selectedTagToString);
+                if(currentItem()->data(Qt::UserRole+2).toString() != "")
+                    listeItems[i]->setData(Qt::UserRole+2, text);
+                listeItems[i]->setData(Qt::UserRole+3, text);
             }
         } else {
-
+            cout << "oui" << endl;
             AjoutTag *ajout = new AjoutTag(this);
             ajout->exec();
             if(ajout->result() != 0){
@@ -138,6 +145,11 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
                     int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
 
                     m_bibliotheque->addTag(idPhoto,addedTag);
+
+                    QString text = currentItem()->data(Qt::UserRole+3).toString() + ", " + QString::fromStdString(addedTag);
+                    if(currentItem()->data(Qt::UserRole+2).toString() != "")
+                        currentItem()->setData(Qt::UserRole+2, text);
+                    currentItem()->setData(Qt::UserRole+3, text);
                 }
                 cout << addedTag << endl;
             }

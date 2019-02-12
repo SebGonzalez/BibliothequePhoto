@@ -44,7 +44,7 @@ MainWindowRedesigned::MainWindowRedesigned(QWidget *parent) :
         QPixmap pixmap = QPixmap::fromImage(*biblio.getlisteImage()[i].getQImage());
         pixmap = pixmap.scaledToWidth(200);
         //pixmap.scaledToHeight(200);
-          bibliothequeWidget->addPiece(pixmap.scaled(200,200), biblio.getlisteImage()[i].getId());
+          bibliothequeWidget->addPiece(pixmap.scaled(200,200), biblio.getlisteImage()[i].getId(), biblio.getlisteImage()[i].getTagsString());
     }
 
    frameLayout->addWidget(bibliothequeWidget);
@@ -52,6 +52,17 @@ MainWindowRedesigned::MainWindowRedesigned(QWidget *parent) :
 
    connect(ui->bibliButton,SIGNAL(clicked()),this,SLOT(load_selection_on_click()));
    connect(ui->importerButton,SIGNAL(clicked()),this,SLOT(import_on_click()));
+}
+
+MainWindowRedesigned::~MainWindowRedesigned()
+{
+    cout << "On save les modifs" << endl;
+    //Reset file and save all updated data before closing
+    biblio.initDataFile();
+    for (int i = 0; i < biblio.getImgListSize(); i++) {
+        biblio.addToFile(biblio.getlisteImage()[i]);
+    }
+    delete ui;
 }
 
 
@@ -62,19 +73,10 @@ void MainWindowRedesigned:: refresh_bibliotheque_view(){
         QPixmap pixmap = QPixmap::fromImage(*biblio.getlisteImage()[i].getQImage());
         pixmap = pixmap.scaledToWidth(200);
         //pixmap.scaledToHeight(200);
-          bibliothequeWidget->addPiece(pixmap.scaled(200,200), biblio.getlisteImage()[i].getId());
+          bibliothequeWidget->addPiece(pixmap.scaled(200,200), biblio.getlisteImage()[i].getId(), biblio.getlisteImage()[i].getTagsString());
     }
 
 }
-
-
-MainWindowRedesigned::~MainWindowRedesigned()
-{
-    delete ui;
-}
-
-
-
 
 void MainWindowRedesigned::load_selection_on_click(){
 
@@ -114,7 +116,7 @@ void MainWindowRedesigned::on_lineEdit_textEdited(const QString &arg1)
             for(unsigned int i = 0; i < image_affichees.size(); i++) {
                 QPixmap pixmap = QPixmap::fromImage(*image_affichees[i].getQImage());
                 pixmap = pixmap.scaledToWidth(200);
-                bibliothequeWidget->addPiece(pixmap.scaled(200,200), image_affichees[i].getId());
+                bibliothequeWidget->addPiece(pixmap.scaled(200,200), image_affichees[i].getId(), image_affichees[i].getTagsString());
             }
         }
 
@@ -123,7 +125,6 @@ void MainWindowRedesigned::on_lineEdit_textEdited(const QString &arg1)
 
 void MainWindowRedesigned::on_checkBox_stateChanged(int arg1)
 {
-    cout << arg1 << endl;
     for(int i = 0; i < bibliothequeWidget->count(); ++i)
     {
         QListWidgetItem* item = bibliothequeWidget->item(i);
