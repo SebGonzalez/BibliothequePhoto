@@ -53,6 +53,8 @@ MainWindowRedesigned::MainWindowRedesigned(QWidget *parent) :
 
    connect(ui->bibliButton,SIGNAL(clicked()),this,SLOT(load_selection_on_click()));
    connect(ui->importerButton,SIGNAL(clicked()),this,SLOT(import_on_click()));
+   connect(bibliothequeWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(displayViewer(QListWidgetItem*)));
+
 }
 
 MainWindowRedesigned::~MainWindowRedesigned()
@@ -145,4 +147,13 @@ void MainWindowRedesigned::on_checkBox_stateChanged(int arg1)
         else
            item->setData(Qt::UserRole+2, item->data(Qt::UserRole+3));
     }
+}
+
+
+void MainWindowRedesigned::displayViewer(QListWidgetItem *item)
+{
+    int idPhoto = item->data(Qt::UserRole+1).toInt();
+    int position = biblio.getPositionImage(idPhoto);
+     viewer *dialog = new viewer(position, biblio, biblio.getlisteImage());
+     dialog->show();
 }

@@ -24,6 +24,23 @@ viewer::viewer(QWidget *parent) :
 
 }
 
+
+viewer::viewer(int position, Bibliotheque &bibliotheque, std::vector<Image> listeImage):
+    ui(new Ui::viewer)
+{
+
+    this->liste_image = listeImage;
+    this->position = position;
+    ui->setupUi(this);
+
+    QPixmap pixmap = QPixmap::fromImage(*listeImage[position].getQImage());
+    ui->current_picture->resize(pixmap.size());
+//    pixmap = resizePixmap(ui->current_picture,pixmap);
+    ui->current_picture->setPixmap(pixmap);
+
+    this->bibliotheque = &bibliotheque;
+}
+
 viewer::~viewer()
 {
     delete ui;

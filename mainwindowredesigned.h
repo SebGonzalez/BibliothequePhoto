@@ -27,9 +27,7 @@ class MainWindowRedesigned : public QMainWindow
 public:
     explicit MainWindowRedesigned(QWidget *parent = nullptr);
     ~MainWindowRedesigned();
-
     void refresh_bibliotheque_view();
-
 
 
 
@@ -40,6 +38,7 @@ private:
 
 
 private slots:
+    void displayViewer(QListWidgetItem *item);
     void load_selection_on_click();
     void import_on_click();
     void on_lineEdit_textEdited(const QString &arg1);

@@ -17,8 +17,8 @@ class Dialog : public QDialog
 public:
 
     int position;
-    std::vector<Image> liste_image;
     int rotate;
+    std::vector<Image> liste_image;
 
     explicit Dialog(QWidget *parent = nullptr);
     Dialog(int position, Bibliotheque &bibliotheque, std::vector<Image> listeImage);
