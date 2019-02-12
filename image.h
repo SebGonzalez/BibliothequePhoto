@@ -16,6 +16,7 @@ public:
     QImage* getQImage();
     std::string getChemin();
     std::vector<std::string> getTags();
+    std::string getTagsString();
     void addTag(std::string tag);
     void removeTags();
     void removeTag(int indice);

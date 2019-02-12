@@ -48,7 +48,7 @@ MainWindow::MainWindow(QWidget *parent) :
         pixmap = pixmap.scaledToWidth(200);
         //pixmap.scaledToHeight(200);
 
-        bibliothequeWigdet->addPiece(pixmap.scaled(200,200), selection[i].getId());
+        bibliothequeWigdet->addPiece(pixmap.scaled(200,200), selection[i].getId(), selection[i].getTagsString());
     }
    frameLayout->addWidget(bibliothequeWigdet);
 
@@ -91,7 +91,7 @@ void MainWindow::on_pushButton_clicked()
             QPixmap pixmap = QPixmap::fromImage(*selection[i].getQImage());
             pixmap = pixmap.scaledToWidth(200);
             //pixmap.scaledToHeight(200);
-              bibliothequeWigdet->addPiece(pixmap.scaled(200,200), selection[i].getId());
+              bibliothequeWigdet->addPiece(pixmap.scaled(200,200), selection[i].getId(), selection[i].getTagsString());
         }
        frameLayout->addWidget(bibliothequeWigdet);
 
@@ -121,25 +121,9 @@ void MainWindow::displayDialogue(QListWidgetItem *item)
          QPixmap pixmap = QPixmap::fromImage(*bibliotheque.getlisteImage()[i].getQImage());
          pixmap = pixmap.scaledToWidth(200);
          //pixmap.scaledToHeight(200);
-           bibliothequeWigdet->addPiece(pixmap.scaled(200,200), bibliotheque.getlisteImage()[i].getId());
+           bibliothequeWigdet->addPiece(pixmap.scaled(200,200), bibliotheque.getlisteImage()[i].getId(), bibliotheque.getlisteImage()[i].getTagsString());
      }
     frameLayout->addWidget(bibliothequeWigdet);
-}
-
-void MainWindow::on_treeView_expanded(const QModelIndex &index)
-{
-    QFileSystemModel model;
-    qDebug() << model.filePath(index) << endl;
-    bibliotheque.addDirectoryArb(ui->frame, model.filePath(index).toStdString());
-
-    selection = bibliotheque.getlisteImage();
-    bibliothequeWigdet->clear();
-    for(unsigned int i = 0; i < selection.size(); i++) {
-        QPixmap pixmap = QPixmap::fromImage(*selection[i].getQImage());
-        pixmap = pixmap.scaledToWidth(200);
-        //pixmap.scaledToHeight(200);
-        bibliothequeWigdet->addPiece(pixmap, i);
-    }
 }
 
 void MainWindow::on_actionImporter_des_photos_2_triggered()
@@ -163,7 +147,7 @@ void MainWindow::on_actionImporter_des_photos_2_triggered()
         QPixmap pixmap = QPixmap::fromImage(*selection[i].getQImage());
         pixmap = pixmap.scaledToWidth(200);
         //pixmap.scaledToHeight(200);
-        bibliothequeWigdet->addPiece(pixmap.scaled(200,200), selection[i].getId());
+        bibliothequeWigdet->addPiece(pixmap.scaled(200,200), selection[i].getId(), selection[i].getTagsString());
     }
 }
 
@@ -181,7 +165,7 @@ void MainWindow::on_lineEdit_textEdited(const QString &arg1)
             QPixmap pixmap = QPixmap::fromImage(*selection[i].getQImage());
             pixmap = pixmap.scaledToWidth(200);
             //pixmap.scaledToHeight(200);
-              bibliothequeWigdet->addPiece(pixmap.scaled(200,200), selection[i].getId());
+              bibliothequeWigdet->addPiece(pixmap.scaled(200,200), selection[i].getId(), selection[i].getTagsString());
         }
        frameLayout->addWidget(bibliothequeWigdet);
     }

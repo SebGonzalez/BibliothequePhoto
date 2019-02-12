@@ -45,6 +45,17 @@ vector<string> Image::getTags() {
     return this->tags;
 }
 
+string Image::getTagsString() {
+    if(tags.size() > 0) {
+        string textTag = tags[0];
+        for(int i=1; i<tags.size(); i++) {
+          textTag += ", " + tags[i];
+         }
+        return textTag;
+    }
+    return "";
+}
+
 void Image::addTag(string tag) {
     if(!(std::find(this->tags.begin(), this->tags.end(), tag) != this->tags.end()))
         this->tags.push_back(tag);
