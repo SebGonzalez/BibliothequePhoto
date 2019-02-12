@@ -87,7 +87,7 @@ void viewer::on_rotate_clicked()
 
 void viewer::on_info_clicked()
 {
-    QPixmap originalPixmap = QPixmap::fromImage(*original);
+    QPixmap originalPixmap = QPixmap::fromImage(*liste_image[position].getQImage());
     if(ui->infoMenu->isHidden()) {
         ui->infoMenu->show();
         QSize scrollAreaSize = ui->view->size();
