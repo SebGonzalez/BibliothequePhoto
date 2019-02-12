@@ -96,11 +96,24 @@ void BibliothequeWidget::addPiece(const QPixmap &pixmap, int id)
     pieceItem->setIcon(QIcon(pixmap));
     pieceItem->setData(Qt::UserRole, QVariant(pixmap));
     pieceItem->setData(Qt::UserRole+1, QVariant(id));
-     pieceItem->setData(Qt::UserRole+2, "test2");
-        pieceItem->setData(Qt::UserRole+3, "test2");
+    pieceItem->setData(Qt::UserRole+2, "test2");
+    pieceItem->setData(Qt::UserRole+3, "test2");
 
     pieceItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
 
+}
+
+void BibliothequeWidget::refreshView()
+{
+    this->clear();
+    vector<Image> Img = m_bibliotheque->getlisteImage();
+
+    for(unsigned int i = 0; i < m_bibliotheque->getlisteImage().size(); i++) {
+        QPixmap pixmap = QPixmap::fromImage(*Img[i].getQImage());
+        pixmap = pixmap.scaledToWidth(200);
+        //pixmap.scaledToHeight(200);
+        this->addPiece(pixmap.scaled(200,200), m_bibliotheque->getlisteImage()[i].getId());
+    }
 }
 
 void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
@@ -112,6 +125,8 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
     QMenu *myMenu = new QMenu();
 
     QMenu* addTag = myMenu->addMenu( "Ajouter un tag..." );
+    myMenu->addAction( "Supprimer" );
+
     QAction* tagsMenu;
     for (unsigned int i = 0; i < listeTags.size(); ++i) {
         tagsMenu = addTag->addAction( QString::fromStdString(listeTags[i]));
@@ -122,14 +137,15 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
     QAction* selectedTag = myMenu->exec(globalPos);
     if (selectedTag)
     {
-        if(QString::compare(selectedTag->iconText(),"Nouveau tag")){
-            string selectedTagToString = selectedTag->iconText().toStdString();
+        if(!QString::compare(selectedTag->iconText(),"Supprimer")){
             for (int i = 0; i < listeItems.size(); ++i) {
                 int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
-                m_bibliotheque->addTag(idPhoto,selectedTagToString);
+                m_bibliotheque->removeImage(idPhoto);
             }
-        } else {
-
+            refreshView();
+            m_bibliotheque->updateCSV();
+        }
+        else if(!QString::compare(selectedTag->iconText(),"Nouveau tag")){
             AjoutTag *ajout = new AjoutTag(this);
             ajout->exec();
             if(ajout->result() != 0){
@@ -140,6 +156,13 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
                     m_bibliotheque->addTag(idPhoto,addedTag);
                 }
                 cout << addedTag << endl;
+            }
+        } else {
+
+            string selectedTagToString = selectedTag->iconText().toStdString();
+            for (int i = 0; i < listeItems.size(); ++i) {
+                int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
+                m_bibliotheque->addTag(idPhoto,selectedTagToString);
             }
         }
     }

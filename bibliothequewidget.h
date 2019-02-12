@@ -13,13 +13,12 @@ class BibliothequeWidget : public QListWidget
 public:
     explicit BibliothequeWidget(int pieceSize, QWidget *parent = nullptr, Bibliotheque *bibliotheque = nullptr);
     void addPiece(const QPixmap &pixmap, int i);
-
+    void refreshView();
     static QString bibliothequeMimeType() { return QStringLiteral("image/icon-photo"); }
 
 
 private slots:
     void ShowContextMenu(const QPoint& pos);
-
 protected:
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dragMoveEvent(QDragMoveEvent *event) override;

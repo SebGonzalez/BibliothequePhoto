@@ -291,3 +291,11 @@ std::vector<string> Bibliotheque::getAllTags()
     }
     return tags;
 }
+
+void Bibliotheque::updateCSV()
+{
+    initDataFile();
+    for (int i = 0; i < listeImage.size(); ++i) {
+        addToFile(listeImage[i]);
+    }
+}

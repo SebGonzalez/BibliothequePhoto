@@ -38,6 +38,7 @@ public:
     void removeImage(int idPhotoS);
     void setTagsListeImage(int indice,int tag_indice,std::string newtag);
     std::vector<string> getAllTags();
+    void updateCSV();
 
 
 private:

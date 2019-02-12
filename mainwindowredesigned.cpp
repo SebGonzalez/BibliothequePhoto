@@ -37,6 +37,8 @@ MainWindowRedesigned::MainWindowRedesigned(QWidget *parent) :
 
     image_affichees = biblio.getlisteImage();
 
+    setMouseTracking(true);
+
     bibliothequeWidget = new BibliothequeWidget(200,this, &biblio);
     QHBoxLayout *frameLayout = new QHBoxLayout(ui->photo);
 
@@ -48,7 +50,6 @@ MainWindowRedesigned::MainWindowRedesigned(QWidget *parent) :
     }
 
    frameLayout->addWidget(bibliothequeWidget);
-
 
    connect(ui->bibliButton,SIGNAL(clicked()),this,SLOT(load_selection_on_click()));
    connect(ui->importerButton,SIGNAL(clicked()),this,SLOT(import_on_click()));
@@ -67,14 +68,10 @@ void MainWindowRedesigned:: refresh_bibliotheque_view(){
 
 }
 
-
 MainWindowRedesigned::~MainWindowRedesigned()
 {
     delete ui;
 }
-
-
-
 
 void MainWindowRedesigned::load_selection_on_click(){
 
@@ -87,15 +84,35 @@ void MainWindowRedesigned::load_selection_on_click(){
 void MainWindowRedesigned:: import_on_click(){
 
 
-    QString fileName = QFileDialog::getOpenFileName(this,
-                                                    tr("Open Image"), "/home", tr("Image Files (*.png *.jpg *.jpeg)"));
-    if(fileName != nullptr){
+//    QString fileName = QFileDialog::getOpenFileName(this,tr("Open Image"), "/home", tr("Image Files (*.png *.jpg *.jpeg)"));
+//    if(fileName != nullptr){
 
-       Image *imported_image = new Image(fileName.toStdString(), 0);
-       biblio.addImage(*imported_image);
-       refresh_bibliotheque_view();
+//       Image *imported_image = new Image(fileName.toStdString(), 0);
+//       biblio.addImage(*imported_image);
+//       biblio.addToFile(*imported_image);
+//       refresh_bibliotheque_view();
+//    }
+    QStringList mimeTypeFilters;
+    mimeTypeFilters << "image/jpeg" << "image/png";
+    QFileDialog dialog(this);
+    dialog.setMimeTypeFilters(mimeTypeFilters);
+    QStringList listeImages = dialog.getOpenFileNames(this,tr("Open Image"), "/home", tr("Image Files (*.png *.jpg *.jpeg)"));
+    for (int i = 0; i < listeImages.size(); ++i) {
+        cout << listeImages.size() << endl;
+        Image tmpImage = Image(listeImages[i].toStdString(),biblio.getImgListSize()+i);
+        biblio.addToFile(tmpImage);
     }
+    bibliothequeWidget->clear();
+    biblio.deleteImgList();
+    biblio.loadImages();
+    vector <Image> selection = biblio.getlisteImage();
 
+    for(unsigned int i = 0; i < biblio.getImgListSize(); i++) {
+        QPixmap pixmap = QPixmap::fromImage(*selection[i].getQImage());
+        pixmap = pixmap.scaledToWidth(200);
+        //pixmap.scaledToHeight(200);
+        bibliothequeWidget->addPiece(pixmap.scaled(200,200), selection[i].getId());
+    }
 
 }
 
