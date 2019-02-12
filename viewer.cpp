@@ -99,3 +99,36 @@ void viewer::on_info_clicked()
         ui->current_picture->setPixmap(originalPixmap);
     }
 }
+
+void viewer::on_next_picture_clicked()
+{
+    this->rotate = 90;
+    if(position < this->liste_image.size() - 1){
+    position ++;
+
+    }
+    else {
+        position = 0;
+    }
+
+    QPixmap pixmap = QPixmap::fromImage(*liste_image[position].getQImage());
+    ui->current_picture->setPixmap(pixmap);
+
+
+}
+
+void viewer::on_previous_picture_clicked()
+{
+    this->rotate = 90;
+    if(position > 0){
+     position --;
+    }
+    else {
+        position = this->liste_image.size() - 1;
+    }
+
+    QPixmap pixmap = QPixmap::fromImage(*liste_image[position].getQImage());
+    ui->current_picture->resize(pixmap.size());
+    ui->current_picture->setPixmap(pixmap);
+}
+

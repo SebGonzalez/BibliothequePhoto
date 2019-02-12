@@ -30,6 +30,10 @@ private slots:
 
     void on_info_clicked();
 
+    void on_next_picture_clicked();
+
+    void on_previous_picture_clicked();
+
 private:
     Ui::viewer *ui;
 
