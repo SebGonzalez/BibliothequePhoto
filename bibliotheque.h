@@ -42,6 +42,7 @@ public:
     void updateCSV();
     long GetFileSize(Image img);
     QSize getDimension(Image img);
+    Image getImageById(int id);
 private:
     std::vector<Image> listeImage;
     int idPhoto;

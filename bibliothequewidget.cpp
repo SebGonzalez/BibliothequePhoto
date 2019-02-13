@@ -139,7 +139,6 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
                 int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
                 m_bibliotheque->removeImage(idPhoto);
             }
-            m_bibliotheque->updateCSV();
         }
         else if(!QString::compare(selectedTag->iconText(),"Nouveau tag")){
             AjoutTag *ajout = new AjoutTag(this);
@@ -151,10 +150,10 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
 
                     m_bibliotheque->addTag(idPhoto,addedTag);
 
-                    QString text = currentItem()->data(Qt::UserRole+3).toString() + ", " + QString::fromStdString(addedTag);
-                    if(currentItem()->data(Qt::UserRole+2).toString() != "")
-                        currentItem()->setData(Qt::UserRole+2, text);
-                    currentItem()->setData(Qt::UserRole+3, text);
+                    QString text = listeItems[i]->data(Qt::UserRole+3).toString() + ", " + QString::fromStdString(addedTag);
+                    if(listeItems[i]->data(Qt::UserRole+2).toString() != "")
+                        listeItems[i]->setData(Qt::UserRole+2, text);
+                    listeItems[i]->setData(Qt::UserRole+3, text);
                 }
                 cout << addedTag << endl;
             }
@@ -164,30 +163,33 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
             for (int i = 0; i < listeItems.size(); ++i) {
                 int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
                 m_bibliotheque->addTag(idPhoto,selectedTagToString);
+                QString text = listeItems[i]->data(Qt::UserRole+3).toString() + ", " + QString::fromStdString(selectedTagToString);
+                if(listeItems[i]->data(Qt::UserRole+2).toString() != "")
+                    listeItems[i]->setData(Qt::UserRole+2, text);
+                listeItems[i]->setData(Qt::UserRole+3, text);
             }
         }
         refreshView();
+
     }
 }
 
 
 void BibliothequeWidget::displayLabel(QListWidgetItem* item)
 {
-    timer->start(800);
     int idPhoto = item->data(Qt::UserRole+1).toInt();
-    while(timer->remainingTime() > 0){
-
-    }
-    if(idPhoto !=previousIdPhoto){
+    cout << idPhoto << endl;
+    if(idPhoto != previousIdPhoto){
 
         QPoint globalPos = this->mapFromGlobal(QCursor::pos());
         QString infosImages ;
-        QString chemin = QString::fromStdString( m_bibliotheque->getlisteImage()[idPhoto].getChemin());
-        float size = m_bibliotheque->GetFileSize(m_bibliotheque->getlisteImage()[idPhoto])/1000;
-        QSize dimension = m_bibliotheque->getDimension(m_bibliotheque->getlisteImage()[idPhoto]);
+        Image Img = m_bibliotheque->getImageById(idPhoto);
+        QString chemin = QString::fromStdString( Img.getChemin());
+        float size = m_bibliotheque->GetFileSize(Img)/1000;
+        QSize dimension = m_bibliotheque->getDimension(Img);
         QString dimensionW = QString::number(dimension.width());
         QString dimensionH = QString::number(dimension.height());
-        vector <string> tags = m_bibliotheque->getlisteImage()[idPhoto].getTags();
+        vector <string> tags = Img.getTags();
         QString stringTags = "Tags : ";
         for (int i = 0; i < tags.size(); ++i) {
             stringTags = stringTags + " " + QString::fromStdString(tags[i]);

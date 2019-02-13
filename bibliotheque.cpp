@@ -11,7 +11,7 @@ Bibliotheque::Bibliotheque()
 {
     idPhoto = 0;
     cout << "Création bibliotheque" << endl;
-  //initDataFile(); // temporaire
+ // initDataFile(); // temporaire
  // addDirectory("../BibliothequePhoto/PicsTmp/");
     loadImages();
     fillDefaultTag();
@@ -310,6 +310,14 @@ long Bibliotheque::GetFileSize(Image img)
 QSize Bibliotheque::getDimension(Image img)
 {
     return img.getQImage()->size();
+}
+
+Image Bibliotheque::getImageById(int id)
+{
+    for (int i = 0; i < listeImage.size(); ++i) {
+        if(listeImage[i].getId() == id)
+            return listeImage[i];
+    }
 }
 
 
