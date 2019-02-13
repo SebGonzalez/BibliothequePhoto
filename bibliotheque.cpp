@@ -299,3 +299,17 @@ void Bibliotheque::updateCSV()
         addToFile(listeImage[i]);
     }
 }
+
+long Bibliotheque::GetFileSize(Image img)
+{
+    struct stat stat_buf;
+    int rc = stat(img.getChemin().c_str(), &stat_buf);
+    return rc == 0 ? stat_buf.st_size : -1;
+}
+
+QSize Bibliotheque::getDimension(Image img)
+{
+    return img.getQImage()->size();
+}
+
+

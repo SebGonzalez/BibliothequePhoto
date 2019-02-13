@@ -1,11 +1,4 @@
-
 #include "bibliothequewidget.h"
-
-#include <QDrag>
-#include <QDragEnterEvent>
-#include <QMimeData>
-#include <QMenu>
-#include "textoverphoto.h";
 
 BibliothequeWidget::BibliothequeWidget(int pieceSize, QWidget *parent, Bibliotheque *bibliotheque)
     : QListWidget(parent), m_PieceSize(pieceSize)
@@ -18,12 +11,16 @@ BibliothequeWidget::BibliothequeWidget(int pieceSize, QWidget *parent, Bibliothe
     setDropIndicatorShown(true);
     setResizeMode(QListView::Adjust);
     setUniformItemSizes(true);
+    setMouseTracking(true);
     setSelectionMode(QAbstractItemView::ExtendedSelection);
     TextOverPhoto *textOver = new TextOverPhoto(this);
     setItemDelegate(textOver);
 
     this->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),this, SLOT(ShowContextMenu(const QPoint&)));
+
+    connect(this, SIGNAL(itemEntered(QListWidgetItem* )), this, SLOT(displayLabel(QListWidgetItem* )));
+    timer->start(1500);
 
     m_bibliotheque = bibliotheque;
 }
@@ -142,7 +139,6 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
                 int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
                 m_bibliotheque->removeImage(idPhoto);
             }
-            refreshView();
             m_bibliotheque->updateCSV();
         }
         else if(!QString::compare(selectedTag->iconText(),"Nouveau tag")){
@@ -170,7 +166,46 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
                 m_bibliotheque->addTag(idPhoto,selectedTagToString);
             }
         }
+        refreshView();
     }
+}
+
+
+void BibliothequeWidget::displayLabel(QListWidgetItem* item)
+{
+    timer->start(800);
+    int idPhoto = item->data(Qt::UserRole+1).toInt();
+    while(timer->remainingTime() > 0){
+
+    }
+    if(idPhoto !=previousIdPhoto){
+
+        QPoint globalPos = this->mapFromGlobal(QCursor::pos());
+        QString infosImages ;
+        QString chemin = QString::fromStdString( m_bibliotheque->getlisteImage()[idPhoto].getChemin());
+        float size = m_bibliotheque->GetFileSize(m_bibliotheque->getlisteImage()[idPhoto])/1000;
+        QSize dimension = m_bibliotheque->getDimension(m_bibliotheque->getlisteImage()[idPhoto]);
+        QString dimensionW = QString::number(dimension.width());
+        QString dimensionH = QString::number(dimension.height());
+        vector <string> tags = m_bibliotheque->getlisteImage()[idPhoto].getTags();
+        QString stringTags = "Tags : ";
+        for (int i = 0; i < tags.size(); ++i) {
+            stringTags = stringTags + " " + QString::fromStdString(tags[i]);
+            if(i!=tags.size()-1){
+                stringTags = stringTags + ", " ;
+            }
+        }
+        infosImages = infosImages + "Emplacement : " + chemin + "\nTaille : " + QString::number(size) + "Ko"
+                + "\nDimensions : " + dimensionW + "x" + dimensionH + "\n" + stringTags;
+
+        infos->setText(infosImages );
+        infos->setFrameStyle(QFrame::Panel | QFrame::Sunken);
+        infos->setStyleSheet("QLabel { background-color : white; color : black; }");
+        infos->setGeometry(globalPos.x(),globalPos.y(),500,100);
+        infos->show();
+    }
+    previousIdPhoto = idPhoto;
+
 }
 
 void BibliothequeWidget::startDrag(Qt::DropActions)
