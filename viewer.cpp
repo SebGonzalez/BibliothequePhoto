@@ -43,8 +43,6 @@ viewer::viewer(int position, Bibliotheque &bibliotheque, BibliothequeWidget &bib
     ui->current_picture->resize(current_image.size());
 //  pixmap = resizePixmap(ui->current_picture,pixmap);
     ui->current_picture->setPixmap(current_image);
-
-
 }
 
 viewer::~viewer()

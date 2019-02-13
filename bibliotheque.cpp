@@ -11,8 +11,8 @@ Bibliotheque::Bibliotheque()
 {
     idPhoto = 0;
     cout << "Création bibliotheque" << endl;
-  initDataFile(); // temporaire
-  addDirectory("../BibliothequePhoto/PicsTmp/");
+ // initDataFile(); // temporaire
+ // addDirectory("../BibliothequePhoto/PicsTmp/");
     loadImages();
     fillDefaultTag();
 }

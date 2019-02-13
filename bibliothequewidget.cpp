@@ -142,8 +142,6 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
                 int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
                 m_bibliotheque->removeImage(idPhoto);
             }
-            refreshView();
-            m_bibliotheque->updateCSV();
         }
         else if(!QString::compare(selectedTag->iconText(),"Nouveau tag")){
             AjoutTag *ajout = new AjoutTag(this);
@@ -155,10 +153,10 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
 
                     m_bibliotheque->addTag(idPhoto,addedTag);
 
-                    QString text = currentItem()->data(Qt::UserRole+3).toString() + ", " + QString::fromStdString(addedTag);
-                    if(currentItem()->data(Qt::UserRole+2).toString() != "")
-                        currentItem()->setData(Qt::UserRole+2, text);
-                    currentItem()->setData(Qt::UserRole+3, text);
+                    QString text = listeItems[i]->data(Qt::UserRole+3).toString() + ", " + QString::fromStdString(addedTag);
+                    if(listeItems[i]->data(Qt::UserRole+2).toString() != "")
+                        listeItems[i]->setData(Qt::UserRole+2, text);
+                    listeItems[i]->setData(Qt::UserRole+3, text);
                 }
                 cout << addedTag << endl;
             }
@@ -168,8 +166,13 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
             for (int i = 0; i < listeItems.size(); ++i) {
                 int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
                 m_bibliotheque->addTag(idPhoto,selectedTagToString);
+                QString text = listeItems[i]->data(Qt::UserRole+3).toString() + ", " + QString::fromStdString(selectedTagToString);
+                if(listeItems[i]->data(Qt::UserRole+2).toString() != "")
+                    listeItems[i]->setData(Qt::UserRole+2, text);
+                listeItems[i]->setData(Qt::UserRole+3, text);
             }
         }
+         refreshView();
     }
 }
 
