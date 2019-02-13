@@ -2,7 +2,7 @@
 #define VIEWER_H
 
 #include <QMainWindow>
-#include "bibliotheque.h"
+#include "bibliothequewidget.h"
 
 namespace Ui {
 class viewer;
@@ -18,7 +18,7 @@ public:
     int rotate;
     QSize originalSize ;
     explicit viewer(QWidget *parent = nullptr);
-    viewer(int position, Bibliotheque &bibliotheque);
+    viewer(int position, Bibliotheque &bibliotheque, BibliothequeWidget &bibliothequeWidget);
     ~viewer();
 
 private slots:
@@ -34,10 +34,13 @@ private slots:
 
     void on_previous_picture_clicked();
 
+    void on_boutonSupprimer_pressed();
+
 private:
     Ui::viewer *ui;
 
     Bibliotheque *bibliotheque;
+     BibliothequeWidget *bibliothequeWidget;
 };
 
 #endif // VIEWER_H

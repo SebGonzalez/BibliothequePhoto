@@ -154,6 +154,6 @@ void MainWindowRedesigned::displayViewer(QListWidgetItem *item)
 {
     int idPhoto = item->data(Qt::UserRole+1).toInt();
     int position = biblio.getPositionImage(idPhoto);
-     viewer *dialog = new viewer(position, biblio);
+     viewer *dialog = new viewer(position, biblio, *bibliothequeWidget);
      dialog->show();
 }
