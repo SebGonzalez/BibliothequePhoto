@@ -20,7 +20,7 @@ BibliothequeWidget::BibliothequeWidget(int pieceSize, QWidget *parent, Bibliothe
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),this, SLOT(ShowContextMenu(const QPoint&)));
 
     connect(timer, SIGNAL(timeout()), this, SLOT(displayLabel()));
-//    connect(this, SIGNAL(itemEntered(QListWidgetItem* )), this, SLOT(displayLabel(QListWidgetItem* )));
+    //    connect(this, SIGNAL(itemEntered(QListWidgetItem* )), this, SLOT(displayLabel(QListWidgetItem* )));
     timer->start(1500);
 
     m_bibliotheque = bibliotheque;
@@ -155,26 +155,28 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
             ajout->exec();
             if(ajout->result() != 0){
                 string addedTag = ajout->tagName;
-                for (int i = 0; i < listeItems.size(); i++) {
-                    int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
+                if(addedTag.size() != 0){
+                    for (int i = 0; i < listeItems.size(); i++) {
+                        int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
 
-                    m_bibliotheque->addTag(idPhoto,addedTag);
-
-
-                   /* qDebug() << "test de l'ajout de tag";
-                    std::vector<string> string = m_bibliotheque->getAllTags();
-                    for(int i = 0 ; i < string.size();i++)
-                        qDebug() << string[i].c_str();
-                   */
+                        m_bibliotheque->addTag(idPhoto,addedTag);
 
 
-                    QString text = listeItems[i]->data(Qt::UserRole+3).toString() + ", " + QString::fromStdString(addedTag);
-                    if(listeItems[i]->data(Qt::UserRole+2).toString() != "")
-                        listeItems[i]->setData(Qt::UserRole+2, text);
-                    listeItems[i]->setData(Qt::UserRole+3, text);
+                        /* qDebug() << "test de l'ajout de tag";
+                        std::vector<string> string = m_bibliotheque->getAllTags();
+                        for(int i = 0 ; i < string.size();i++)
+                            qDebug() << string[i].c_str();
+                       */
 
+
+                        QString text = listeItems[i]->data(Qt::UserRole+3).toString() + ", " + QString::fromStdString(addedTag);
+                        if(listeItems[i]->data(Qt::UserRole+2).toString() != "")
+                            listeItems[i]->setData(Qt::UserRole+2, text);
+                        listeItems[i]->setData(Qt::UserRole+3, text);
+
+                    }
+                    cout << addedTag << endl;
                 }
-                cout << addedTag << endl;
             }
         } else {
 
@@ -201,7 +203,10 @@ void BibliothequeWidget::displayLabel()
     infos->setStyleSheet("QLabel { background-color : white; color : black; }");
 
     infos->setGeometry(globalPos.x(),globalPos.y(),500,100);
-    infos->show();
+    if(infos->text().size() != 0)
+        infos->show();
+    else
+        infos->hide();
     connect(this, SIGNAL(itemEntered(QListWidgetItem* )), this, SLOT(displayLabel2(QListWidgetItem* )));
 }
 

@@ -21,8 +21,11 @@ private slots:
 
     void on_buttonBox_rejected();
 
+    void on_lineEdit_textChanged(const QString &arg1);
+
 private:
     Ui::AjoutTag *ui;
+    bool asBeenChanged = false;
 };
 
 #endif // AJOUTTAG_H

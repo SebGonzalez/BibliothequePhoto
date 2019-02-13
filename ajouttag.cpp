@@ -18,10 +18,16 @@ AjoutTag::~AjoutTag()
 
 void AjoutTag::on_buttonBox_accepted()
 {
-    tagName.assign(ui->lineEdit->text().toStdString());
+    if(asBeenChanged)
+        tagName.assign(ui->lineEdit->text().toStdString());
 }
 
 void AjoutTag::on_buttonBox_rejected()
 {
     close();
+}
+
+void AjoutTag::on_lineEdit_textChanged(const QString &arg1)
+{
+    asBeenChanged = true;
 }
