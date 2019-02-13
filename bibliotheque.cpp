@@ -11,8 +11,13 @@ Bibliotheque::Bibliotheque()
 {
     idPhoto = 0;
     cout << "Création bibliotheque" << endl;
+
+  //initDataFile(); // temporaire
+  //addDirectory("../BibliothequePhoto/PicsTmp/");
+
  // initDataFile(); // temporaire
  // addDirectory("../BibliothequePhoto/PicsTmp/");
+
     loadImages();
     fillDefaultTag();
 }
@@ -85,6 +90,21 @@ void Bibliotheque::updatePositionPhoto(int idPhotoD, int position) {
     listeImage.erase(listeImage.begin() + index);
     listeImage.insert(listeImage.begin()+position, m);
 }
+
+void Bibliotheque::deleteTag(std::string tag){
+    if(tag != ""){
+    for(int i = 0 ; i < listeImage.size() ; i++){
+        for(int j = 0 ; j < listeImage[i].getTags().size() ; j++){
+            if(!listeImage[i].getTags()[j].compare(tag)){
+                listeImage[i].removeTag(tag);
+            }
+         }
+       }
+     }
+   }
+
+
+
 
 void Bibliotheque::removeImage(int idPhotoS) {
     for(size_t i=0; i<listeImage.size(); i++) {
@@ -221,6 +241,15 @@ void Bibliotheque::addTags(string path, vector<string> tags) {
             return;
         }
     }
+}
+
+std::string Bibliotheque::getChosenTag(){
+    return this->chosen_tag;
+}
+
+std::string Bibliotheque::setChosenTag(std::string tag){
+
+    this->chosen_tag = tag;
 }
 
 vector<Image> Bibliotheque::getTaggedImages(string tag) {

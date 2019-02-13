@@ -43,6 +43,7 @@ private slots:
     void import_on_click();
     void on_lineEdit_textEdited(const QString &arg1);
     void on_checkBox_stateChanged(int arg1);
+    void on_tagsButton_clicked();
 };
 
 #endif // MAINWINDOWREDESIGNED_H
