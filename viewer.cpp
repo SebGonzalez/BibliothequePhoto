@@ -26,10 +26,11 @@ viewer::viewer(QWidget *parent) :
 }
 
 
-viewer::viewer(int position, Bibliotheque &bibliotheque):
+viewer::viewer(int position, Bibliotheque &bibliotheque, BibliothequeWidget &bibliothequeWidget):
     ui(new Ui::viewer)
 {
     this->bibliotheque = &bibliotheque;
+    this->bibliothequeWidget = &bibliothequeWidget;
     this->liste_image = this->bibliotheque->getlisteImage();
     this->position = position;
     this->rotate = 90;
@@ -132,3 +133,18 @@ void viewer::on_previous_picture_clicked()
     ui->current_picture->setPixmap(pixmap);
 }
 
+
+void viewer::on_boutonSupprimer_pressed()
+{
+    bibliotheque->removeImage(this->liste_image[this->position].getId());
+    liste_image.erase(liste_image.begin() + position);
+
+    if(position == static_cast<int>(liste_image.size())) {
+        position--;
+    }
+    QPixmap pixmap = QPixmap::fromImage(*liste_image[position].getQImage());
+    ui->current_picture->resize(pixmap.size());
+    ui->current_picture->setPixmap(pixmap);
+
+    this->bibliothequeWidget->refreshView();
+}

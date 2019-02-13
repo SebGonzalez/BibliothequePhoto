@@ -156,7 +156,7 @@ void MainWindowRedesigned::displayViewer(QListWidgetItem *item)
 {
     int idPhoto = item->data(Qt::UserRole+1).toInt();
     int position = biblio.getPositionImage(idPhoto);
-     viewer *dialog = new viewer(position, biblio);
+     viewer *dialog = new viewer(position, biblio, *bibliothequeWidget);
      dialog->show();
 }
 
@@ -165,14 +165,18 @@ void MainWindowRedesigned::on_tagsButton_clicked()
     tagDialog *tag = new tagDialog(biblio);
     tag->exec();
     if( tag->result() == 0 ){
-
+         biblio.deleteTag(tag->chosenDeletedtag.toUtf8().constData());
          image_affichees = biblio.getTaggedImages(tag->chosen_tag.toUtf8().constData());
+         if(tag->chosen_tag == "") image_affichees = biblio.getlisteImage();
+
          bibliothequeWidget->clear();
          for(unsigned int i = 0; i < image_affichees.size(); i++) {
              QPixmap pixmap = QPixmap::fromImage(*image_affichees[i].getQImage());
              pixmap = pixmap.scaledToWidth(200);
              bibliothequeWidget->addPiece(pixmap.scaled(200,200), image_affichees[i].getId(), image_affichees[i].getTagsString());
          }
+
+
     }
 
 }

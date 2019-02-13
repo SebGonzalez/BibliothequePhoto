@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>444</width>
+    <height>265</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,8 +16,8 @@
   <widget class="QTextBrowser" name="textBrowser">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>10</y>
+     <x>140</x>
+     <y>0</y>
      <width>131</width>
      <height>31</height>
     </rect>
@@ -30,16 +30,16 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt; Ensemble des tags&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
-  <widget class="QWidget" name="verticalLayoutWidget">
+  <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>9</x>
-     <y>60</y>
-     <width>381</width>
-     <height>231</height>
+     <x>10</x>
+     <y>40</y>
+     <width>421</width>
+     <height>211</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="vertLayout"/>
+   <layout class="QGridLayout" name="gridLayout"/>
   </widget>
  </widget>
  <resources/>

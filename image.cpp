@@ -1,5 +1,6 @@
 #include "image.h"
-
+#include <vector>
+#include <iostream>
 using namespace std;
 
 Image::Image(string chemin, int id)
@@ -70,4 +71,24 @@ void Image::removeTags(){
 
 void Image::removeTag(int indice){
     this->tags[indice] = "";
+}
+
+void Image::removeTag(std::string tag){
+
+     //std::vector<std::string> tags;
+    std::vector <std::string> tag_2;
+    for(int i = 0 ; i < tags.size() ; i++ ){
+        if(tags[i].compare(tag))
+        tag_2.push_back(tags[i]);
+        }
+
+    tags.clear();
+
+
+    for(int i = 0 ; i < tag_2.size() ; i++){
+        tags.push_back(tag_2[i]);
+    }
+
+
+
 }

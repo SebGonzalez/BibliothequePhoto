@@ -41,6 +41,7 @@ public:
     void updateCSV();
     std::string getChosenTag();
     std::string setChosenTag(std::string tag);
+    void deleteTag(std::string tag);
 
 private:
     std::vector<Image> listeImage;

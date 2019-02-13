@@ -1,6 +1,7 @@
 #include "tagdialog.h"
 #include "ui_tagdialog.h"
 #include "QPushButton"
+#include <QCommonStyle>
 tagDialog::tagDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::tagDialog)
@@ -22,7 +23,7 @@ tagDialog::tagDialog(Bibliotheque bibliotheque):
 
  }
 
-void tagDialog::on_click_button(){
+void tagDialog::on_clickButton(){
 
     QObject* button = QObject::sender();
     QString clicked_tag = button->objectName();
@@ -31,16 +32,43 @@ void tagDialog::on_click_button(){
 
 }
 
+void tagDialog::on_DeleteButton(){
+    QObject* button = QObject::sender();
+    QString deleted_tag = button->objectName();
+    chosenDeletedtag = deleted_tag;
+    this->close();
+}
+
 void tagDialog::init(){
 
-    ui->vertLayout->setMargin(45);
     tags = biblio_.getAllTags();
     for(int i = 0 ; i < tags.size() ; i ++){
         QPushButton *button = new QPushButton(tags[i].c_str());
+        QPushButton *button2 = new QPushButton("Supprimer le tag");
+
         button->setObjectName(tags[i].c_str());
-        connect(button, SIGNAL(clicked()), this, SLOT(on_click_button()));
-        ui->vertLayout->addWidget(button);
+        button2->setObjectName(tags[i].c_str());
+
+        graphicsEffects(button);
+
+        connect(button, SIGNAL(clicked()), this, SLOT(on_clickButton()));
+        connect(button2, SIGNAL(clicked()), this, SLOT(on_DeleteButton()));
+
+
+        ui->gridLayout->addWidget(button,i,0);
+        ui->gridLayout->addWidget(button2,i,1);
+
+
 
    }
 }
+
+void tagDialog::graphicsEffects(QPushButton *button){
+    button->setStyleSheet("border: 1px solid black; background: white;");
+    button->setStyleSheet(" QPushButton:hover{background: grey;}");
+    button->resize(150,20);
+    button->setMinimumSize(150,20);
+}
+
+
 

@@ -20,14 +20,18 @@ public:
     Bibliotheque biblio_;
     std::vector<string> tags;
     QString chosen_tag = "";
+    QString chosenDeletedtag = "";
 
     void init();
+    void graphicsEffects(QPushButton *button);
+
 private:
     Ui::tagDialog *ui;
 
 public slots:
 
-    void on_click_button();
+    void on_clickButton();
+    void on_DeleteButton();
 };
 
 #endif // TAGDIALOG_H

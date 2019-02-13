@@ -100,9 +100,9 @@ QPushButton #next_picture{
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_4">
+          <widget class="QPushButton" name="boutonSupprimer">
            <property name="text">
-            <string>PushButton</string>
+            <string>Supprimer</string>
            </property>
           </widget>
          </item>
@@ -142,7 +142,7 @@ QPushButton #next_picture{
          <x>0</x>
          <y>0</y>
          <width>435</width>
-         <height>545</height>
+         <height>551</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -254,7 +254,7 @@ QPushButton #next_picture{
      <x>0</x>
      <y>0</y>
      <width>899</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
