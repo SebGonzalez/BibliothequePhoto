@@ -71,3 +71,12 @@ void Image::removeTags(){
 void Image::removeTag(int indice){
     this->tags[indice] = "";
 }
+
+void Image::removeTag(std::string tag)
+{
+    for (int i = 0; i < tags.size(); ++i) {
+        if(tags[i].compare(tag)){
+            tags.erase(tags.begin()+i-1);
+        }
+    }
+}

@@ -19,7 +19,8 @@ BibliothequeWidget::BibliothequeWidget(int pieceSize, QWidget *parent, Bibliothe
     this->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),this, SLOT(ShowContextMenu(const QPoint&)));
 
-    connect(this, SIGNAL(itemEntered(QListWidgetItem* )), this, SLOT(displayLabel(QListWidgetItem* )));
+    connect(timer, SIGNAL(timeout()), this, SLOT(displayLabel()));
+//    connect(this, SIGNAL(itemEntered(QListWidgetItem* )), this, SLOT(displayLabel(QListWidgetItem* )));
     timer->start(1500);
 
     m_bibliotheque = bibliotheque;
@@ -115,6 +116,10 @@ void BibliothequeWidget::refreshView()
 
 void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
 {
+    infos->clear();
+    infos->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
+    infos->setStyleSheet("QLabel { background-color : none;}");
+
     QPoint globalPos = QCursor::pos();
     vector<string> listeTags = m_bibliotheque->getAllTags();
     vector<Image> listeImage = m_bibliotheque->getlisteImage();
@@ -122,11 +127,13 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
     QMenu *myMenu = new QMenu();
 
     QMenu* addTag = myMenu->addMenu( "Ajouter un tag..." );
+    QMenu* deleteTag = myMenu->addMenu( "Supprimer un tag..." );
     myMenu->addAction( "Supprimer" );
 
     QAction* tagsMenu;
     for (unsigned int i = 0; i < listeTags.size(); ++i) {
         tagsMenu = addTag->addAction( QString::fromStdString(listeTags[i]));
+        tagsMenu = deleteTag->addAction( QString::fromStdString(listeTags[i]));
     }
     tagsMenu = addTag->addAction("Nouveau tag ...");
 
@@ -175,13 +182,24 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
 }
 
 
-void BibliothequeWidget::displayLabel(QListWidgetItem* item)
+void BibliothequeWidget::displayLabel()
 {
+    QPoint globalPos = this->mapFromGlobal(QCursor::pos());
+    infos->setFrameStyle(QFrame::Panel | QFrame::Sunken);
+    infos->setStyleSheet("QLabel { background-color : white; color : black; }");
+
+    infos->setGeometry(globalPos.x(),globalPos.y(),500,100);
+    infos->show();
+    connect(this, SIGNAL(itemEntered(QListWidgetItem* )), this, SLOT(displayLabel2(QListWidgetItem* )));
+}
+
+void BibliothequeWidget::displayLabel2(QListWidgetItem* item)
+{
+    infos->hide();
+    timer->start(800);
     int idPhoto = item->data(Qt::UserRole+1).toInt();
     cout << idPhoto << endl;
     if(idPhoto != previousIdPhoto){
-
-        QPoint globalPos = this->mapFromGlobal(QCursor::pos());
         QString infosImages ;
         Image Img = m_bibliotheque->getImageById(idPhoto);
         QString chemin = QString::fromStdString( Img.getChemin());
@@ -199,14 +217,12 @@ void BibliothequeWidget::displayLabel(QListWidgetItem* item)
         }
         infosImages = infosImages + "Emplacement : " + chemin + "\nTaille : " + QString::number(size) + "Ko"
                 + "\nDimensions : " + dimensionW + "x" + dimensionH + "\n" + stringTags;
-
         infos->setText(infosImages );
-        infos->setFrameStyle(QFrame::Panel | QFrame::Sunken);
-        infos->setStyleSheet("QLabel { background-color : white; color : black; }");
-        infos->setGeometry(globalPos.x(),globalPos.y(),500,100);
-        infos->show();
+
+
     }
     previousIdPhoto = idPhoto;
+
 
 }
 

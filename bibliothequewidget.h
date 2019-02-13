@@ -31,7 +31,8 @@ public:
 private slots:
     void ShowContextMenu(const QPoint& pos);
     //void mouseMoveEvent(QMouseEvent *event) override;
-    void displayLabel(QListWidgetItem* item);
+    void displayLabel();
+    void displayLabel2(QListWidgetItem *item);
 protected:
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dragMoveEvent(QDragMoveEvent *event) override;

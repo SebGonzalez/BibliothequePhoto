@@ -20,6 +20,7 @@ public:
     void addTag(std::string tag);
     void removeTags();
     void removeTag(int indice);
+    void removeTag(std::string tag);
     void setTag(int indice,std::string string);
 
 private:
