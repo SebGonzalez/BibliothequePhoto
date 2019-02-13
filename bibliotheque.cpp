@@ -223,6 +223,15 @@ void Bibliotheque::addTags(string path, vector<string> tags) {
     }
 }
 
+std::string Bibliotheque::getChosenTag(){
+    return this->chosen_tag;
+}
+
+std::string Bibliotheque::setChosenTag(std::string tag){
+
+    this->chosen_tag = tag;
+}
+
 vector<Image> Bibliotheque::getTaggedImages(string tag) {
     vector<Image> tagged;
 

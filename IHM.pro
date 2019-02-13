@@ -35,7 +35,8 @@ SOURCES += \
     ajouttag.cpp \
     mainwindowredesigned.cpp \
     viewer.cpp \
-    textoverphoto.cpp
+    textoverphoto.cpp \
+    tagdialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -48,7 +49,8 @@ HEADERS += \
     ajouttag.h \
     mainwindowredesigned.h \
     viewer.h \
-    textoverphoto.h
+    textoverphoto.h \
+    tagdialog.h
 
 
 FORMS += \
@@ -57,7 +59,8 @@ FORMS += \
     landingpage.ui \
     ajouttag.ui \
     mainwindowredesigned.ui \
-    viewer.ui
+    viewer.ui \
+    tagdialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

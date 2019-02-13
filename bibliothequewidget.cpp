@@ -142,7 +142,6 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
                 int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
                 m_bibliotheque->removeImage(idPhoto);
             }
-            refreshView();
             m_bibliotheque->updateCSV();
         }
         else if(!QString::compare(selectedTag->iconText(),"Nouveau tag")){
@@ -154,6 +153,12 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
                     int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
 
                     m_bibliotheque->addTag(idPhoto,addedTag);
+
+                   /* qDebug() << "test de l'ajout de tag";
+                    std::vector<string> string = m_bibliotheque->getAllTags();
+                    for(int i = 0 ; i < string.size();i++)
+                        qDebug() << string[i].c_str();
+                   */
 
                     QString text = currentItem()->data(Qt::UserRole+3).toString() + ", " + QString::fromStdString(addedTag);
                     if(currentItem()->data(Qt::UserRole+2).toString() != "")
@@ -170,6 +175,7 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
                 m_bibliotheque->addTag(idPhoto,selectedTagToString);
             }
         }
+        refreshView();
     }
 }
 

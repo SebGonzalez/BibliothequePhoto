@@ -4,6 +4,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "tagdialog.h"
+
 
 #include "bibliotheque.h"
 #include "dialog.h"
@@ -156,4 +158,21 @@ void MainWindowRedesigned::displayViewer(QListWidgetItem *item)
     int position = biblio.getPositionImage(idPhoto);
      viewer *dialog = new viewer(position, biblio);
      dialog->show();
+}
+
+void MainWindowRedesigned::on_tagsButton_clicked()
+{
+    tagDialog *tag = new tagDialog(biblio);
+    tag->exec();
+    if( tag->result() == 0 ){
+
+         image_affichees = biblio.getTaggedImages(tag->chosen_tag.toUtf8().constData());
+         bibliothequeWidget->clear();
+         for(unsigned int i = 0; i < image_affichees.size(); i++) {
+             QPixmap pixmap = QPixmap::fromImage(*image_affichees[i].getQImage());
+             pixmap = pixmap.scaledToWidth(200);
+             bibliothequeWidget->addPiece(pixmap.scaled(200,200), image_affichees[i].getId(), image_affichees[i].getTagsString());
+         }
+    }
+
 }
