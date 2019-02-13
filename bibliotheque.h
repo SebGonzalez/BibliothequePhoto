@@ -9,6 +9,7 @@
 #include <QPixmap>
 #include <QSizePolicy>
 #include <algorithm>
+#include <sys/stat.h>
 
 using namespace std;
 
@@ -39,9 +40,15 @@ public:
     void setTagsListeImage(int indice,int tag_indice,std::string newtag);
     std::vector<string> getAllTags();
     void updateCSV();
+
     std::string getChosenTag();
     std::string setChosenTag(std::string tag);
     void deleteTag(std::string tag);
+
+
+    long GetFileSize(Image img);
+    QSize getDimension(Image img);
+    Image getImageById(int id);
 
 private:
     std::vector<Image> listeImage;
