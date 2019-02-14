@@ -135,7 +135,7 @@ void MainWindow::on_actionImporter_des_photos_2_triggered()
     QStringList listeImages = dialog.getOpenFileNames();
     for (int i = 0; i < listeImages.size(); ++i) {
         cout << listeImages.size() << endl;
-        Image tmpImage = Image(listeImages[i].toStdString(),bibliotheque.getImgListSize()+i);
+        Image tmpImage = Image(listeImages[i].toStdString(),bibliotheque.getImgListSize()+i, "NULL");
         bibliotheque.addToFile(tmpImage);
     }
     bibliothequeWigdet->clear();

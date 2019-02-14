@@ -11,7 +11,7 @@
 #include <string>
 #include <QScrollArea>
 #include "bibliothequewidget.h"
-#include "clickablelabel.h"
+#include "albumDialog.h"
 
 namespace Ui {
 class MainWindowRedesigned;
@@ -44,6 +44,7 @@ private slots:
     void on_lineEdit_textEdited(const QString &arg1);
     void on_checkBox_stateChanged(int arg1);
     void on_tagsButton_clicked();
+    void on_Album_pressed();
 };
 
 #endif // MAINWINDOWREDESIGNED_H

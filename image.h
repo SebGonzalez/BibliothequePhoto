@@ -10,11 +10,13 @@
 class Image
 {
 public:
-    Image(std::string chemin, int id);
-    Image(std::string chemin, std::vector<std::string> tags, int id);
+    Image(std::string chemin, int id, std::string album);
+    Image(std::string chemin, std::vector<std::string> tags, int id, std::string album);
     int getId();
     QImage* getQImage();
     std::string getChemin();
+    std::string getAlbum();
+    void setAlbum(std::string album);
     std::vector<std::string> getTags();
     std::string getTagsString();
     void addTag(std::string tag);
@@ -27,7 +29,9 @@ private:
     int id;
     std::string chemin;
     std::vector<std::string> tags;
+    std::string album;
     QImage *image;
+
 };
 
 #endif // IMAGE_H

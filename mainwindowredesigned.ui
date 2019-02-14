@@ -96,6 +96,13 @@ QLabel#selectionSize {
            </widget>
           </item>
           <item>
+           <widget class="QPushButton" name="Album">
+            <property name="text">
+             <string>Album</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QLineEdit" name="lineEdit">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">

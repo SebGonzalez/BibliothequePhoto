@@ -3,8 +3,9 @@
 #include <iostream>
 using namespace std;
 
-Image::Image(string chemin, int id)
+Image::Image(string chemin, int id, string album)
 {
+    this->album = album;
     this->id = id;
     this->chemin = chemin;
     this->image = new QImage(QString::fromStdString(chemin));
@@ -13,8 +14,9 @@ Image::Image(string chemin, int id)
     }
 }
 
-Image::Image(string chemin, vector<string> tags, int id)
+Image::Image(string chemin, vector<string> tags, int id, string album)
 {
+    this->album = album;
     this->id = id;
     this->chemin    = chemin;
     this->tags      = tags;
@@ -40,6 +42,15 @@ QImage* Image::getQImage() {
 
 string Image::getChemin() {
     return this->chemin;
+}
+
+string Image::getAlbum() {
+    return this->album;
+}
+
+void Image::setAlbum(string album) {
+    cout << "Album changé : " << album << endl;
+   this->album = album;
 }
 
 vector<string> Image::getTags() {

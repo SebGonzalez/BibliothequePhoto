@@ -2,7 +2,6 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <clickablelabel.h>
 #include <assert.h>
 
 class ClickableLabel;
@@ -13,9 +12,6 @@ Bibliotheque::Bibliotheque()
     cout << "Création bibliotheque" << endl;
 
   //initDataFile(); // temporaire
-  //addDirectory("../BibliothequePhoto/PicsTmp/");
-
- // initDataFile(); // temporaire
  // addDirectory("../BibliothequePhoto/PicsTmp/");
 
     loadImages();
@@ -29,26 +25,34 @@ void Bibliotheque::loadImages() {
     if (myfile.is_open()) {
         while (getline (myfile, line)) {
           std::size_t comma = line.find(",");
-          if (comma != std::string::npos){ // if the image has tags
+
+          string album = line.substr(0, comma);
+           comma = comma + 2;
+          std::size_t nextComma = line.find(',', comma);
+          if (nextComma != std::string::npos){ // if the image has tags
               vector<string> tags(0);
               // Parse path
-              string path = line.substr(0, comma);
+
+              string path = line.substr(comma, nextComma - comma);
+               cout << "PATH : " << path << endl;
 
               // Parse tags
-              comma = comma + 2;
-              std::size_t nextComma = line.find(',', comma);
+              comma = nextComma + 2;
+              nextComma = line.find(',', comma);
               while(nextComma != std::string::npos) {
+                  cout << "TAG : " << (line.substr(comma, nextComma - comma)) << endl;
                   tags.push_back(line.substr(comma, nextComma - comma));
                   comma = nextComma + 2;
                   nextComma = line.find(',', comma);
               }
               tags.push_back(line.substr(comma, nextComma - comma));
-              Image image(path, tags, idPhoto++);
+              Image image(path, tags, idPhoto++, album);
               if(!image.getQImage()->isNull())
                 listeImage.push_back(image);
           }
           else {
-               Image image(line, idPhoto++);
+              string path = line.substr(comma, line.length());
+               Image image(path, idPhoto++, album);
                 if(!image.getQImage()->isNull())
                     listeImage.push_back(image);
           }
@@ -75,7 +79,7 @@ int Bibliotheque::getPositionImage(int idPhotoD) {
 }
 
 void Bibliotheque::updatePositionPhoto(int idPhotoD, int position) {
-    Image m("",0);
+    Image m("",0, "");
     int index = 0;
     for(size_t i=0; i<listeImage.size(); i++) {
         if(listeImage[i].getId() == idPhotoD) {
@@ -148,7 +152,7 @@ void Bibliotheque::addDirectory(string cheminDossier) {
         QString nomFichier(ent->d_name);
         string extension = nomFichier.section(".", -1).toStdString();
         if(extension == "png" || extension == "jpg" || extension == "jpeg") {
-            Image newImage(cheminDossier + ent->d_name, idPhoto++);
+            Image newImage(cheminDossier + ent->d_name, idPhoto++, "NULL");
             addToFile(cheminDossier + ent->d_name);
         }
       }
@@ -156,32 +160,6 @@ void Bibliotheque::addDirectory(string cheminDossier) {
     } else {
       perror ("Erreur lors de l'ouverture du dossier");
     }
-}
-
-void Bibliotheque::addDirectoryArb(QFrame *frame, string cheminDossier) {
-    cout << "Lecture des fichiers : " << cheminDossier << endl;
-    DIR *dir;
-    struct dirent *ent;
-    vector<Image> images;
-    if ((dir = opendir (cheminDossier.c_str())) != NULL) {
-      while ((ent = readdir (dir)) != NULL) {
-        QString nomFichier(ent->d_name);
-        string extension = nomFichier.section(".", -1).toStdString();
-        if(extension == "png" || extension == "jpg") {
-            cout << cheminDossier << ent->d_name << endl;
-            Image newImage(cheminDossier +"/"+ ent->d_name, idPhoto++);
-            newImage.addTag("default tag");
-            newImage.addTag("default tag2");
-            images.push_back(newImage);
-
-        }
-      }
-      closedir (dir);
-    } else {
-      perror ("Erreur lors de l'ouverture du dossier");
-    }
-
-    listeImage = images;
 }
 
 bool libContains(string path) {
@@ -267,32 +245,34 @@ vector<Image> Bibliotheque::getTaggedImages(string tag) {
     return tagged;
 }
 
-void Bibliotheque::addToFile(string filepath, vector<string> tags) {
+void Bibliotheque::addToFile(string filepath, vector<string> tags, string album) {
     if (libContains(filepath)) return;
 
     ofstream outfile;
     outfile.open("../BibliothequePhoto/images.csv", ios::app);
     assert (!outfile.fail());
+
+    outfile << album << ", ";
     outfile << filepath;
     for(unsigned int i = 0; i < tags.size(); i++) {
         outfile << ", " + tags[i];
     }
     outfile << endl;
     outfile.close();
-
-    //cout << "New image of path " + filepath + " added to the library" << endl;
 }
 
 void Bibliotheque::addToFile(string filepath) {
     vector<string> tags(0);
-    addToFile(filepath, tags);
+    string album = "NULL";
+    addToFile(filepath, tags, album);
 }
 
 void Bibliotheque::addToFile(Image image) {
     string path = image.getChemin();
+    string album = image.getAlbum();
     vector<string> tags = image.getTags();
 
-    addToFile(path, tags);
+    addToFile(path, tags, album);
 }
 
 void Bibliotheque::initDataFile() {
@@ -321,6 +301,27 @@ std::vector<string> Bibliotheque::getAllTags()
     return tags;
 }
 
+vector<string> Bibliotheque::getAllAlbums()
+{
+    vector<string> albums;
+    for(unsigned int i = 0; i < listeImage.size(); i++) {
+        string albumTmp = listeImage[i].getAlbum();
+        if(albumTmp != "NULL" && !(find(albums.begin(), albums.end(), albumTmp) != albums.end() )) {
+            albums.push_back(albumTmp);
+        }
+    }
+    return albums;
+}
+
+bool Bibliotheque::isAlbum(string nom) {
+    vector<string> albums = getAllAlbums();
+    for (unsigned int i = 0; i < albums.size(); ++i) {
+        if(nom == albums[i]) return true;
+    }
+    return false;
+
+}
+
 void Bibliotheque::updateCSV()
 {
     initDataFile();
@@ -341,11 +342,11 @@ QSize Bibliotheque::getDimension(Image img)
     return img.getQImage()->size();
 }
 
-Image Bibliotheque::getImageById(int id)
+Image* Bibliotheque::getImageById(int id)
 {
     for (int i = 0; i < listeImage.size(); ++i) {
         if(listeImage[i].getId() == id)
-            return listeImage[i];
+            return &listeImage[i];
     }
 }
 
