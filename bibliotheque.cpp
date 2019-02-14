@@ -34,13 +34,11 @@ void Bibliotheque::loadImages() {
               // Parse path
 
               string path = line.substr(comma, nextComma - comma);
-               cout << "PATH : " << path << endl;
 
               // Parse tags
               comma = nextComma + 2;
               nextComma = line.find(',', comma);
               while(nextComma != std::string::npos) {
-                  cout << "TAG : " << (line.substr(comma, nextComma - comma)) << endl;
                   tags.push_back(line.substr(comma, nextComma - comma));
                   comma = nextComma + 2;
                   nextComma = line.find(',', comma);
