@@ -216,6 +216,5 @@ void viewer::on_quitButton_clicked()
 
 void viewer::on_addTag_clicked(){
  QObject* button = QObject::sender();
- qDebug() << "test";
 
 }
