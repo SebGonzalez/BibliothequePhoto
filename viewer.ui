@@ -43,6 +43,37 @@ QPushButton #next_picture{
 	color: rgb(71, 71, 71);
 	border-style: outset;
 	border: none;
+}
+
+QLabel{
+	color: rgb(80, 80, 80);
+	font: 12pt &quot;Myriad Web Pro&quot;;
+}
+
+QWidget#infoMenu {
+	background-color: rgb(203, 203, 203);
+}
+
+QLineEdit {
+	color: black;
+	background-color:transparent;
+	border-style: outset;
+	border-width: 2px;
+	border-color: black;
+	padding: 8% 5% 8% 5%;
+}
+
+QLabel#size {
+	color: black;
+}
+
+QLabel#dimensions {
+	color: black;
+}
+
+QPushButton#quitButton {
+	font-size : 20px;
+	border-width: 2px;
 }</string>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -142,7 +173,7 @@ QPushButton #next_picture{
          <x>0</x>
          <y>0</y>
          <width>435</width>
-         <height>551</height>
+         <height>550</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -219,27 +250,74 @@ QPushButton #next_picture{
        <bool>true</bool>
       </property>
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_5">
-       <item>
-        <widget class="QLabel" name="label">
+      <layout class="QGridLayout" name="gridLayout_3">
+       <item row="2" column="0">
+        <widget class="QLabel" name="filename">
+         <property name="text">
+          <string>Nom du fichier</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="header">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="styleSheet">
-          <string notr="true">QLabel#label {
-	color:black;
-}</string>
-         </property>
          <property name="text">
-          <string>ssssssssssssssssssssssssssss</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Infos sur le fichier&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLineEdit" name="lineEdit"/>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="size">
+         <property name="text">
+          <string>DisplayTaille</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="0">
+        <widget class="QLabel" name="tagHeader">
+         <property name="text">
+          <string>Tags</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="sizeHeader">
+         <property name="text">
+          <string>Taille</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0">
+        <widget class="QLabel" name="dimensions">
+         <property name="text">
+          <string>DisplayDimensions</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="dimensionsHeader">
+         <property name="text">
+          <string>Dimensions</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QPushButton" name="quitButton">
+         <property name="text">
+          <string> X </string>
          </property>
         </widget>
        </item>
@@ -254,7 +332,7 @@ QPushButton #next_picture{
      <x>0</x>
      <y>0</y>
      <width>899</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>
