@@ -11,11 +11,10 @@ Bibliotheque::Bibliotheque()
     idPhoto = 0;
     cout << "Création bibliotheque" << endl;
 
-    //initDataFile(); // temporaire
-    // addDirectory("../BibliothequePhoto/PicsTmp/");
+    initDataFile(); // temporaire
+    addDirectory("../BibliothequePhoto/PicsTmp/");
 
     loadImages();
-    fillDefaultTag();
 }
 
 void Bibliotheque::loadImages() {
@@ -29,12 +28,15 @@ void Bibliotheque::loadImages() {
             string album = line.substr(0, comma);
             comma = comma + 2;
             std::size_t nextComma = line.find(',', comma);
+            int fav = stoi(line.substr(comma, nextComma - comma));
+
+            comma = comma + 3;
+            nextComma = line.find(',', comma);
             if (nextComma != std::string::npos){ // if the image has tags
                 vector<string> tags(0);
                 // Parse path
 
                 string path = line.substr(comma, nextComma - comma);
-
                 // Parse tags
                 comma = nextComma + 2;
                 nextComma = line.find(',', comma);
@@ -44,13 +46,13 @@ void Bibliotheque::loadImages() {
                     nextComma = line.find(',', comma);
                 }
                 tags.push_back(line.substr(comma, nextComma - comma));
-                Image image(path, tags, idPhoto++, album);
+                Image image(path, tags, idPhoto++, album, fav);
                 if(!image.getQImage()->isNull())
                     listeImage.push_back(image);
             }
             else {
-                string path = line.substr(comma, line.length());
-                Image image(path, idPhoto++, album);
+                string path = line.substr(comma, line.length()-comma);
+                Image image(path, idPhoto++, album, fav);
                 if(!image.getQImage()->isNull())
                     listeImage.push_back(image);
             }
@@ -64,22 +66,22 @@ void Bibliotheque::loadImages() {
 }
 
 int Bibliotheque::getPositionImage(int idPhotoD) {
-    int position;
+    unsigned int position = 0;
 
-    for(size_t i=0; i<listeImage.size(); i++) {
+    for(unsigned int i=0; i<listeImage.size(); i++) {
         if(listeImage[i].getId() == idPhotoD) {
             position = i;
             break;
         }
     }
 
-    return position;
+    return static_cast<int>(position);
 }
 
 void Bibliotheque::updatePositionPhoto(int idPhotoD, int position) {
-    Image m("",0, "");
-    int index = 0;
-    for(size_t i=0; i<listeImage.size(); i++) {
+    Image m("",0, "",0);
+    unsigned int index = 0;
+    for(unsigned int i=0; i<listeImage.size(); i++) {
         if(listeImage[i].getId() == idPhotoD) {
             m = listeImage[i];
             index = i;
@@ -88,15 +90,15 @@ void Bibliotheque::updatePositionPhoto(int idPhotoD, int position) {
         }
     }
 
-    if(index < position) position--;
+    if(index < static_cast<unsigned int>(position)) position--;
     listeImage.erase(listeImage.begin() + index);
     listeImage.insert(listeImage.begin()+position, m);
 }
 
 void Bibliotheque::deleteTag(std::string tag){
     if(tag != ""){
-        for(int i = 0 ; i < listeImage.size() ; i++){
-            for(int j = 0 ; j < listeImage[i].getTags().size() ; j++){
+        for(unsigned int i = 0 ; i < listeImage.size() ; i++){
+            for(unsigned int j = 0 ; j < listeImage[i].getTags().size() ; j++){
                 if(!listeImage[i].getTags()[j].compare(tag)){
                     listeImage[i].removeTag(tag);
                 }
@@ -107,15 +109,16 @@ void Bibliotheque::deleteTag(std::string tag){
 
 void Bibliotheque::deleteTag(string tag, int i)
 {
-    for(int j = 0 ; j < listeImage[i].getTags().size() ; j++){
-        if(!listeImage[i].getTags()[j].compare(tag)){
-            listeImage[i].removeTag(tag);
+    unsigned int i2 = static_cast<unsigned int>(i);
+    for(unsigned int j = 0 ; j < listeImage[i2].getTags().size() ; j++){
+        if(!listeImage[i2].getTags()[j].compare(tag)){
+            listeImage[i2].removeTag(tag);
         }
     }
 }
 
 void Bibliotheque::removeImage(int idPhotoS) {
-    for(size_t i=0; i<listeImage.size(); i++) {
+    for(unsigned int i=0; i<listeImage.size(); i++) {
         if(listeImage[i].getId() == idPhotoS) {
             cout << "Image supprimé ! " << endl;
             listeImage.erase(listeImage.begin() + i);
@@ -125,21 +128,11 @@ void Bibliotheque::removeImage(int idPhotoS) {
 }
 
 int Bibliotheque::getImgListSize(){
-    return listeImage.size();
+    return static_cast<int>(listeImage.size());
 }
 
 void Bibliotheque::deleteImgList(){
     listeImage.clear();
-}
-
-void Bibliotheque::fillDefaultTag(){
-
-    for (int i = 0; i < listeImage.size() ; i++){
-
-        //        listeImage[i].addTag("default tag");
-        //        listeImage[i].addTag("default tag2");
-
-    }
 }
 
 std::vector<Image> Bibliotheque::getlisteImage(){
@@ -156,7 +149,7 @@ void Bibliotheque::addDirectory(string cheminDossier) {
             QString nomFichier(ent->d_name);
             string extension = nomFichier.section(".", -1).toStdString();
             if(extension == "png" || extension == "jpg" || extension == "jpeg") {
-                Image newImage(cheminDossier + ent->d_name, idPhoto++, "NULL");
+                Image newImage(cheminDossier + ent->d_name, idPhoto++, "NULL", 0);
                 addToFile(cheminDossier + ent->d_name);
             }
         }
@@ -229,10 +222,7 @@ std::string Bibliotheque::getChosenTag(){
     return this->chosen_tag;
 }
 
-std::string Bibliotheque::setChosenTag(std::string tag){
 
-    this->chosen_tag = tag;
-}
 
 vector<Image> Bibliotheque::getTaggedImages(string tag) {
     vector<Image> tagged;
@@ -271,7 +261,7 @@ void Bibliotheque::delFav(int id){
 }
 
 
-void Bibliotheque::addToFile(string filepath, vector<string> tags, string album) {
+void Bibliotheque::addToFile(string filepath, vector<string> tags, string album, int fav) {
     if (libContains(filepath)) return;
 
     ofstream outfile;
@@ -279,6 +269,7 @@ void Bibliotheque::addToFile(string filepath, vector<string> tags, string album)
     assert (!outfile.fail());
 
     outfile << album << ", ";
+    outfile << fav << ", ";
     outfile << filepath;
     for(unsigned int i = 0; i < tags.size(); i++) {
         outfile << ", " + tags[i];
@@ -290,7 +281,7 @@ void Bibliotheque::addToFile(string filepath, vector<string> tags, string album)
 void Bibliotheque::addToFile(string filepath) {
     vector<string> tags(0);
     string album = "NULL";
-    addToFile(filepath, tags, album);
+    addToFile(filepath, tags, album, 0);
 }
 
 void Bibliotheque::addToFile(Image image) {
@@ -298,7 +289,7 @@ void Bibliotheque::addToFile(Image image) {
     string album = image.getAlbum();
     vector<string> tags = image.getTags();
 
-    addToFile(path, tags, album);
+    addToFile(path, tags, album, image.getFav());
 }
 
 void Bibliotheque::initDataFile() {
@@ -307,7 +298,7 @@ void Bibliotheque::initDataFile() {
 
 void Bibliotheque::setTagsListeImage(int image_pos, int tag_pos, std::string tag){
 
-    listeImage[image_pos].setTag(tag_pos,tag);
+    listeImage[static_cast<unsigned int>(image_pos)].setTag(tag_pos,tag);
 
 }
 
@@ -351,7 +342,7 @@ bool Bibliotheque::isAlbum(string nom) {
 void Bibliotheque::updateCSV()
 {
     initDataFile();
-    for (int i = 0; i < listeImage.size(); ++i) {
+    for (unsigned int i = 0; i < listeImage.size(); ++i) {
         addToFile(listeImage[i]);
     }
 }
@@ -370,10 +361,11 @@ QSize Bibliotheque::getDimension(Image img)
 
 Image* Bibliotheque::getImageById(int id)
 {
-    for (int i = 0; i < listeImage.size(); ++i) {
+    for (unsigned int i = 0; i < listeImage.size(); ++i) {
         if(listeImage[i].getId() == id)
             return &listeImage[i];
     }
+    return nullptr;
 }
 
 

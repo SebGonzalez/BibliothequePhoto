@@ -29,5 +29,6 @@ void AjoutTag::on_buttonBox_rejected()
 
 void AjoutTag::on_lineEdit_textChanged(const QString &arg1)
 {
+    arg1.size();
     asBeenChanged = true;
 }

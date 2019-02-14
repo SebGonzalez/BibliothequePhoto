@@ -3,7 +3,7 @@
 #include <iostream>
 using namespace std;
 
-Image::Image(string chemin, int id, string album)
+Image::Image(string chemin, int id, string album, int fav)
 {
     this->album = album;
     this->id = id;
@@ -12,10 +12,10 @@ Image::Image(string chemin, int id, string album)
     if(image->isNull()) {
         qDebug() << "Erreur lors de l'ouverture" << endl;
     }
-    this->fav = false;
+    this->fav = fav;
 }
 
-Image::Image(string chemin, vector<string> tags, int id, string album)
+Image::Image(string chemin, vector<string> tags, int id, string album, int fav)
 {
     this->album = album;
     this->id = id;
@@ -26,12 +26,11 @@ Image::Image(string chemin, vector<string> tags, int id, string album)
         qDebug() << "Erreur lors de l'ouverture" << endl;
     }
 
-     this->fav = false;
+     this->fav = fav;
 }
 
 void Image::setTag(int indice, std::string string){
-
-    this->tags[indice] = string;
+    this->tags[static_cast<size_t>(indice)] = string;
 
 }
 
@@ -63,7 +62,7 @@ vector<string> Image::getTags() {
 string Image::getTagsString() {
     if(tags.size() > 0) {
         string textTag = tags[0];
-        for(int i=1; i<tags.size(); i++) {
+        for(unsigned int i=1; i<tags.size(); i++) {
           textTag += ", " + tags[i];
          }
         return textTag;
@@ -78,20 +77,20 @@ void Image::addTag(string tag) {
 
 void Image::removeTags(){
 
-    for(int i = 0 ; i < tags.size() ; i++)
+    for(unsigned int i = 0 ; i < tags.size() ; i++)
      this->tags.pop_back();
 }
 
 
 void Image::removeTag(int indice){
-    this->tags[indice] = "";
+    this->tags[static_cast<size_t>(indice)] = "";
 }
 
 void Image::removeTag(std::string tag){
 
      //std::vector<std::string> tags;
     std::vector <std::string> tag_2;
-    for(int i = 0 ; i < tags.size() ; i++ ){
+    for(unsigned int i = 0 ; i < tags.size() ; i++ ){
         if(tags[i].compare(tag))
         tag_2.push_back(tags[i]);
         }
@@ -99,12 +98,12 @@ void Image::removeTag(std::string tag){
     tags.clear();
 
 
-    for(int i = 0 ; i < tag_2.size() ; i++){
+    for(unsigned int i = 0 ; i < tag_2.size() ; i++){
         tags.push_back(tag_2[i]);
     }
 }
 
-bool Image::getFav(){
+int Image::getFav(){
     return this->fav;
 }
 
@@ -116,6 +115,3 @@ void Image::setFav(){
 void Image::delFav(){
     this->fav = false;
 }
-
-
-
