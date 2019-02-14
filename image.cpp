@@ -38,6 +38,10 @@ int Image::getId() {
     return this->id;
 }
 
+std::string Image::getPath(){
+    return this->chemin;
+}
+
 QImage* Image::getQImage() {
     return this->image;
 }

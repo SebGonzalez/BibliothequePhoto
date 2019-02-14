@@ -154,13 +154,19 @@ void MainWindowRedesigned::on_checkBox_stateChanged(int arg1)
 
 void MainWindowRedesigned::displayViewer(QListWidgetItem *item)
 {
+
     int idPhoto = item->data(Qt::UserRole+1).toInt();
     int position = biblio.getPositionImage(idPhoto);
     viewer *dialog;
-    if(biblio.fav_window == true)
+    if(biblio.fav_window == true){
+
+        position = biblio.position_from_list(biblio.getFavImages(),idPhoto);
         dialog = new viewer(position, biblio, *bibliothequeWidget,biblio.getFavImages());
+
+    }
     else if(biblio.fav_window == false)
          dialog = new viewer(position, biblio, *bibliothequeWidget);
+
      dialog->show();
 }
 

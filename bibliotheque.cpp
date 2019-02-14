@@ -372,4 +372,13 @@ Image* Bibliotheque::getImageById(int id)
     return nullptr;
 }
 
+int Bibliotheque::position_from_list(std::vector<Image> listeImageFav,int position){
+
+           string path = listeImage[position].getPath();
+
+           for(int i = 0 ; i < listeImageFav.size() ; i++)
+               if(listeImageFav[i].getPath() == path)
+                    return i;
+    return -1;
+}
 

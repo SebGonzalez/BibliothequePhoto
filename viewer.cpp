@@ -57,7 +57,7 @@ viewer::viewer(int position, Bibliotheque &bibliotheque, BibliothequeWidget &bib
     this->liste_image = liste_image;
     this->position = position;
     this->rotate = 90;
-    this->originalSize = liste_image[position].getQImage()->size();
+    this->originalSize = liste_image [position].getQImage()->size();
     ui->setupUi(this);
 
 

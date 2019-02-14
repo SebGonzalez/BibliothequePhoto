@@ -27,6 +27,8 @@ public:
     void setFav();
     void delFav();
     int getFav();
+    std::string getPath();
+
 
 private:
     int id;

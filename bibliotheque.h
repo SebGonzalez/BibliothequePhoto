@@ -51,6 +51,7 @@ public:
     std::vector<Image> getFavImages();
     void setFav(int id);
     void delFav(int id);
+    int position_from_list(std::vector<Image> listeImage,int position);
 
 
     long GetFileSize(Image img);
