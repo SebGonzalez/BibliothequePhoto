@@ -1,4 +1,4 @@
-#include "viewer.h"
+    #include "viewer.h"
 #include "ui_viewer.h"
 #include <iostream>
 #include <QLabel>
@@ -33,6 +33,28 @@ viewer::viewer(int position, Bibliotheque &bibliotheque, BibliothequeWidget &bib
     this->bibliotheque = &bibliotheque;
     this->bibliothequeWidget = &bibliothequeWidget;
     this->liste_image = this->bibliotheque->getlisteImage();
+    this->position = position;
+    this->rotate = 90;
+    this->originalSize = liste_image[position].getQImage()->size();
+    ui->setupUi(this);
+
+
+    QPixmap current_image = QPixmap::fromImage(*liste_image[position].getQImage());
+
+    ui->current_picture->resize(current_image.size());
+//  pixmap = resizePixmap(ui->current_picture,pixmap);
+    ui->current_picture->setPixmap(current_image);
+
+    //info widget
+    ui->infoMenu->hide();
+}
+
+viewer::viewer(int position, Bibliotheque &bibliotheque, BibliothequeWidget &bibliothequeWidget,std::vector<Image> liste_image):
+    ui(new Ui::viewer)
+{
+    this->bibliotheque = &bibliotheque;
+    this->bibliothequeWidget = &bibliothequeWidget;
+    this->liste_image = liste_image;
     this->position = position;
     this->rotate = 90;
     this->originalSize = liste_image[position].getQImage()->size();
@@ -207,6 +229,7 @@ void viewer::on_boutonSupprimer_pressed()
     ui->current_picture->setPixmap(pixmap);
 
     this->bibliothequeWidget->refreshView();
+
 }
 
 void viewer::on_quitButton_clicked()

@@ -94,7 +94,7 @@ void MainWindowRedesigned::load_selection_on_click(){
 void MainWindowRedesigned:: import_on_click(){
 
     QStringList mimeTypeFilters;
-    mimeTypeFilters << "image/jpeg" << "image/png";
+    mimeTypeFilters << "imadiagramme de navigation ihm exemplege/jpeg" << "image/png";
     QFileDialog dialog(this);
     dialog.setMimeTypeFilters(mimeTypeFilters);
     QStringList listeImages = dialog.getOpenFileNames(this,tr("Open Image"), "/home", tr("Image Files (*.png *.jpg *.jpeg)"));
@@ -156,7 +156,11 @@ void MainWindowRedesigned::displayViewer(QListWidgetItem *item)
 {
     int idPhoto = item->data(Qt::UserRole+1).toInt();
     int position = biblio.getPositionImage(idPhoto);
-     viewer *dialog = new viewer(position, biblio, *bibliothequeWidget);
+    viewer *dialog;
+    if(biblio.fav_window == true)
+        dialog = new viewer(position, biblio, *bibliothequeWidget,biblio.getFavImages());
+    else if(biblio.fav_window == false)
+         dialog = new viewer(position, biblio, *bibliothequeWidget);
      dialog->show();
 }
 

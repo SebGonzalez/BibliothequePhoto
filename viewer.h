@@ -1,4 +1,4 @@
-#ifndef VIEWER_H
+ #ifndef VIEWER_H
 #define VIEWER_H
 
 #include <QMainWindow>
@@ -19,6 +19,7 @@ public:
     QSize originalSize ;
     explicit viewer(QWidget *parent = nullptr);
     viewer(int position, Bibliotheque &bibliotheque, BibliothequeWidget &bibliothequeWidget);
+    viewer(int position, Bibliotheque &bibliotheque, BibliothequeWidget &bibliothequeWidget, std::vector<Image> liste_image);
     ~viewer();
 
 private slots:
