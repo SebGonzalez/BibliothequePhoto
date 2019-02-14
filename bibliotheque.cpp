@@ -41,6 +41,7 @@ void Bibliotheque::loadImages() {
                 // Parse tags
                 comma = nextComma + 2;
                 nextComma = line.find(',', comma);
+
                 while(nextComma != std::string::npos) {
                     tags.push_back(line.substr(comma, nextComma - comma));
                     comma = nextComma + 2;
