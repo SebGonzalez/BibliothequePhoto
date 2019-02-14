@@ -38,11 +38,14 @@ private slots:
 
     void on_quitButton_clicked();
 
+    void on_addTag_clicked();
+
 private:
     Ui::viewer *ui;
 
     Bibliotheque *bibliotheque;
-     BibliothequeWidget *bibliothequeWidget;
+    BibliothequeWidget *bibliothequeWidget;
+    void updateInfoBar();
 };
 
 #endif // VIEWER_H

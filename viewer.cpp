@@ -3,6 +3,7 @@
 #include <iostream>
 #include <QLabel>
 #include <QPixmap>
+#include <QComboBox>
 
 using namespace std;
 static QImage *original = new QImage("../BibliothequePhoto/firstbackground.jpg");
@@ -115,9 +116,10 @@ void viewer::on_info_clicked()
         /**************************************************************
          *                          Tags in infobar
          * ************************************************************/
+
         //Create lineEdit for each tag
         QWidget *tags = new QWidget(ui->tagScrollArea);
-        ui->tagScrollArea->setStyleSheet("background : transparent");
+        //ui->tagScrollArea->setStyleSheet("background : transparent");
         tags->setLayout(new QVBoxLayout());
         for (int i = 0; i < thisImage.getTags().size(); i++) {
             QLineEdit *tag = new QLineEdit(tags);
@@ -126,8 +128,19 @@ void viewer::on_info_clicked()
             tags->layout()->addWidget(tag);
             cout << thisImage.getTags()[i] << endl;
         }
+        //TODO Spacer in tagScrollArea
+//        QObject *spacer = ui->tagScrollArea->children()[0];
         ui->tagScrollArea->setWidget(tags);
+
         //New link for add tag
+        QWidget *addTag = new QWidget(ui->tagScrollArea);
+        QPushButton *addTagButton = new QPushButton(addTag);
+        addTagButton->setText("Ajouter un tag");
+        connect(addTagButton,SIGNAL(clicked()),this,SLOT(on_addTag_clicked()));
+        QComboBox *cb = new QComboBox(ui->tagScrollArea);
+        tags->layout()->addWidget(addTag);
+        tags->layout()->addWidget(cb);
+
     }
     else {
         ui->infoMenu->hide();
@@ -149,8 +162,7 @@ void viewer::on_next_picture_clicked()
     QPixmap pixmap = QPixmap::fromImage(*liste_image[position].getQImage());
     ui->current_picture->setPixmap(pixmap);
 
-    //update infobar
-    on_info_clicked();
+    updateInfoBar();
 }
 
 void viewer::on_previous_picture_clicked()
@@ -167,8 +179,18 @@ void viewer::on_previous_picture_clicked()
     ui->current_picture->resize(pixmap.size());
     ui->current_picture->setPixmap(pixmap);
 
-    //update infobar
-    on_info_clicked();
+    updateInfoBar();
+}
+
+void viewer::updateInfoBar() {
+    if (ui->infoMenu->isHidden()) {
+        on_info_clicked();
+        ui->infoMenu->hide();
+    }
+    else {
+        ui->infoMenu->hide();
+        on_info_clicked();
+    }
 }
 
 
@@ -190,4 +212,10 @@ void viewer::on_boutonSupprimer_pressed()
 void viewer::on_quitButton_clicked()
 {
     on_info_clicked();
+}
+
+void viewer::on_addTag_clicked(){
+ QObject* button = QObject::sender();
+ qDebug() << "test";
+
 }

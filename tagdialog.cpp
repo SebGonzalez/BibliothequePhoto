@@ -36,7 +36,7 @@ void tagDialog::on_DeleteButton(){
     QObject* button = QObject::sender();
     QString deleted_tag = button->objectName();
     chosenDeletedtag = deleted_tag;
-    this->close();
+    //this->close();
 }
 
 void tagDialog::init(){
