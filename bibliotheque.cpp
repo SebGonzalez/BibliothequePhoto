@@ -245,13 +245,13 @@ vector<Image> Bibliotheque::getTaggedImages(string tag) {
 
 vector<Image> Bibliotheque::getFavImages() {
 
-     vector<Image> tagged;
+    vector<Image> fav;
     for(unsigned int i = 0; i < listeImage.size(); i++) {
         Image img = listeImage[i];
-        if(img.getFav()) tagged.push_back(img) ;
+        if(img.getFav() == true) fav.push_back(img) ;
     }
 
-    return tagged;
+    return fav;
 
 }
 

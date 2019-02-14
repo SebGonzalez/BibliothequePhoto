@@ -176,6 +176,7 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
             }
 
             m_bibliotheque->updateCSV();
+            refreshView();
 
         }
         else if(!QString::compare(selectedTag->iconText(),"Nouveau tag")){
@@ -235,7 +236,7 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
             for (int i = 0; i < listeItems.size(); ++i) {
             int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
             m_bibliotheque->setFav(idPhoto);
-            qDebug() << idPhoto ;
+
         }
             refreshView();
 
@@ -248,8 +249,7 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
             int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
             m_bibliotheque->delFav(idPhoto);
             }
-            refreshFavView();
-            if(m_bibliotheque->getFavImages().size() == 0) refreshView();
+
         }
         else if(m_bibliotheque->isAlbum(selectedTag->iconText().toStdString())) {
             //cout << "OOOOOOOOOO" << endl;

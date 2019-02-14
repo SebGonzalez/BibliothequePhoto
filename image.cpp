@@ -25,6 +25,8 @@ Image::Image(string chemin, vector<string> tags, int id, string album)
     if(image->isNull()) {
         qDebug() << "Erreur lors de l'ouverture" << endl;
     }
+
+     this->fav = false;
 }
 
 void Image::setTag(int indice, std::string string){
@@ -108,9 +110,12 @@ bool Image::getFav(){
 
 void Image::setFav(){
     this->fav = true;
+
 }
 
 void Image::delFav(){
     this->fav = false;
 }
+
+
 

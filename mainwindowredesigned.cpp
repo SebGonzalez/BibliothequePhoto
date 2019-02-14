@@ -1,4 +1,4 @@
-#include "mainwindowredesigned.h"
+    #include "mainwindowredesigned.h"
 #include "ui_mainwindowredesigned.h"
 
 #include "mainwindow.h"
@@ -189,6 +189,7 @@ void MainWindowRedesigned::on_Album_pressed()
 
 void MainWindowRedesigned::on_pushButton_clicked()
 {
+
 
       image_affichees  = biblio.getFavImages();
       bibliothequeWidget->clear();
