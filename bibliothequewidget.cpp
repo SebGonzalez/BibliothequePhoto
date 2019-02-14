@@ -253,8 +253,6 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
         }
 
         else if(!QString::compare(selectedTag->iconText(),"Supprimer des favoris")){
-
-
             for (int i = 0; i < listeItems.size(); ++i) {
                 int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
                 m_bibliotheque->getImageById(idPhoto)->delFav();
@@ -263,7 +261,6 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
 
         }
         else if(m_bibliotheque->isAlbum(selectedTag->iconText().toStdString())) {
-            //cout << "OOOOOOOOOO" << endl;
             for (int i = 0; i < listeItems.size(); i++) {
                 int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
                 string selectedAlbumToString = selectedTag->iconText().toStdString();
