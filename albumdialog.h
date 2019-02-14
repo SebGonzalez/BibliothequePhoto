@@ -17,6 +17,10 @@ public:
     AlbumDialog(Bibliotheque &bibliotheque, BibliothequeWidget &bibliothequeWidget);
     ~AlbumDialog();
 
+private slots:
+    void acceptedSlot();
+    void rejectedSlot();
+
 private:
     Ui::AlbumDialog *ui;
     Bibliotheque *bibliotheque;

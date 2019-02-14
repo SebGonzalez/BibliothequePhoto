@@ -22,13 +22,21 @@ AlbumDialog::AlbumDialog(Bibliotheque &bibliotheque, BibliothequeWidget &bibliot
     for(unsigned int i=0; i<albums.size(); i++) {
        QListWidgetItem *pieceItem = new QListWidgetItem( ui->listWidget);
        pieceItem->setText(albums[i].c_str());
-
-
     }
+
+    connect(ui->buttonBox,SIGNAL(accepted()),this,SLOT(acceptedSlot()));
 
 }
 
 AlbumDialog::~AlbumDialog()
 {
     delete ui;
+}
+
+void AlbumDialog::acceptedSlot() {
+    cout << "oui" << endl;
+}
+
+void AlbumDialog::rejectedSlot() {
+    cout << "non" << endl;
 }
