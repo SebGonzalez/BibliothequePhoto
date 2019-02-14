@@ -49,7 +49,7 @@ void BibliothequeWidget::dropEvent(QDropEvent *event)
     if (event->mimeData()->hasFormat(BibliothequeWidget::bibliothequeMimeType())) {
 
         this->width();
-        cout << "Width : " << this->width() << endl;
+    //    cout << "Width : " << this->width() << endl;
         QByteArray pieceData = event->mimeData()->data(BibliothequeWidget::bibliothequeMimeType());
         QDataStream dataStream(&pieceData, QIODevice::ReadOnly);
         QPixmap pixmap;
@@ -75,7 +75,7 @@ void BibliothequeWidget::dropEvent(QDropEvent *event)
         }
         m_bibliotheque->updatePositionPhoto(idPhoto, rowPhoto);
 
-        std::cout << ligne <<" OOOOOOOOO " << colonne << " AAAAAA " << rowPhoto << std::endl;
+       // std::cout << ligne <<" OOOOOOOOO " << colonne << " AAAAAA " << rowPhoto << std::endl;
 
 
         insertItem(rowPhoto, pieceItem);
@@ -147,8 +147,20 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
     myMenu->addAction( "Supprimer" );
     QAction* supprimerAlbum = myMenu->addAction( "Supprimer de l'album" );
 
-    myMenu->addAction("Ajouter aux favoris");
-    myMenu->addAction("Supprimer des favoris");
+    QAction del_fav("Supprimer des favoris");
+    myMenu->addAction(&del_fav);
+
+    QAction add_fav("Ajouter aux favoris");
+    myMenu->addAction(&add_fav);
+
+    if(m_bibliotheque->fav_window == true)
+        myMenu->removeAction(&add_fav);
+
+
+    else if(m_bibliotheque->fav_window == false)
+        myMenu->removeAction(&del_fav);
+
+
 
     QAction* tagsMenu;
     for (unsigned int i = 0; i < listeTags.size(); ++i) {
@@ -250,6 +262,7 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
                 int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
                 m_bibliotheque->delFav(idPhoto);
             }
+            refreshFavView();
 
         }
         else if(m_bibliotheque->isAlbum(selectedTag->iconText().toStdString())) {

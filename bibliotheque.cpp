@@ -8,6 +8,7 @@ class ClickableLabel;
 
 Bibliotheque::Bibliotheque()
 {
+    fav_window = false;
     idPhoto = 0;
     cout << "Création bibliotheque" << endl;
 

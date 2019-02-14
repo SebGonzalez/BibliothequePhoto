@@ -16,6 +16,7 @@ using namespace std;
 class Bibliotheque
 {
 public:
+    bool fav_window;
     Bibliotheque();
     void addDirectory(std::string cheminDossier);
     void loadImages();
