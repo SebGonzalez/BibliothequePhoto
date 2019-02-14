@@ -84,8 +84,9 @@ void MainWindowRedesigned:: refresh_bibliotheque_view(){
 
 void MainWindowRedesigned::load_selection_on_click(){
 
-    refresh_bibliotheque_view();
 
+    refresh_bibliotheque_view();
+    ui->titre->setText("Ma Bibliothèque");
 
 }
 
@@ -161,6 +162,7 @@ void MainWindowRedesigned::displayViewer(QListWidgetItem *item)
 
 void MainWindowRedesigned::on_tagsButton_clicked()
 {
+    ui->titre->setText("Ma Bibliothèque");
     tagDialog *tag = new tagDialog(biblio);
     tag->exec();
     if( tag->result() == 0 ){
@@ -190,6 +192,7 @@ void MainWindowRedesigned::on_Album_pressed()
 void MainWindowRedesigned::on_pushButton_clicked()
 {
 
+      ui->titre->setText("Mes favoris");
 
       image_affichees  = biblio.getFavImages();
       bibliothequeWidget->clear();
