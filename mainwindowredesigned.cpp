@@ -87,6 +87,7 @@ void MainWindowRedesigned::load_selection_on_click(){
 
     refresh_bibliotheque_view();
     ui->titre->setText("Ma Bibliothèque");
+    biblio.fav_window = false;
 
 }
 
@@ -191,6 +192,7 @@ void MainWindowRedesigned::on_Album_pressed()
 void MainWindowRedesigned::on_pushButton_clicked()
 {
 
+      biblio.fav_window = true;
       ui->titre->setText("Mes favoris");
 
       image_affichees  = biblio.getFavImages();

@@ -19,6 +19,8 @@ tagDialog::tagDialog(Bibliotheque bibliotheque):
 {
     ui->setupUi(this);
     biblio_ = bibliotheque;
+    ui->label->setStyleSheet("font-weight: bold");
+    QSizePolicy *size = new QSizePolicy();
     init();
 
  }
