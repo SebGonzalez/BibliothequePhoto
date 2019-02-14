@@ -188,9 +188,6 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
             }
             refreshView();
 
-            //            m_bibliotheque->updateCSV();
-            //            refreshView();
-
         }
         else if(!QString::compare(selectedTag->iconText(),"Nouveau tag")){
             AjoutTag *ajout = new AjoutTag(this);
