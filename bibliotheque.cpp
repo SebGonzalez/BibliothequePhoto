@@ -11,8 +11,8 @@ Bibliotheque::Bibliotheque()
     idPhoto = 0;
     cout << "Création bibliotheque" << endl;
 
-  //initDataFile(); // temporaire
- // addDirectory("../BibliothequePhoto/PicsTmp/");
+    //initDataFile(); // temporaire
+    // addDirectory("../BibliothequePhoto/PicsTmp/");
 
     loadImages();
     fillDefaultTag();
@@ -24,43 +24,43 @@ void Bibliotheque::loadImages() {
     ifstream myfile ("../BibliothequePhoto/images.csv");
     if (myfile.is_open()) {
         while (getline (myfile, line)) {
-          std::size_t comma = line.find(",");
+            std::size_t comma = line.find(",");
 
-          string album = line.substr(0, comma);
-           comma = comma + 2;
-          std::size_t nextComma = line.find(',', comma);
-          if (nextComma != std::string::npos){ // if the image has tags
-              vector<string> tags(0);
-              // Parse path
+            string album = line.substr(0, comma);
+            comma = comma + 2;
+            std::size_t nextComma = line.find(',', comma);
+            if (nextComma != std::string::npos){ // if the image has tags
+                vector<string> tags(0);
+                // Parse path
 
-              string path = line.substr(comma, nextComma - comma);
+                string path = line.substr(comma, nextComma - comma);
 
-              // Parse tags
-              comma = nextComma + 2;
-              nextComma = line.find(',', comma);
-              while(nextComma != std::string::npos) {
-                  tags.push_back(line.substr(comma, nextComma - comma));
-                  comma = nextComma + 2;
-                  nextComma = line.find(',', comma);
-              }
-              tags.push_back(line.substr(comma, nextComma - comma));
-              Image image(path, tags, idPhoto++, album);
-              if(!image.getQImage()->isNull())
-                listeImage.push_back(image);
-          }
-          else {
-              string path = line.substr(comma, line.length());
-               Image image(path, idPhoto++, album);
+                // Parse tags
+                comma = nextComma + 2;
+                nextComma = line.find(',', comma);
+                while(nextComma != std::string::npos) {
+                    tags.push_back(line.substr(comma, nextComma - comma));
+                    comma = nextComma + 2;
+                    nextComma = line.find(',', comma);
+                }
+                tags.push_back(line.substr(comma, nextComma - comma));
+                Image image(path, tags, idPhoto++, album);
                 if(!image.getQImage()->isNull())
                     listeImage.push_back(image);
-          }
+            }
+            else {
+                string path = line.substr(comma, line.length());
+                Image image(path, idPhoto++, album);
+                if(!image.getQImage()->isNull())
+                    listeImage.push_back(image);
+            }
         }
         myfile.close();
     }
 
     else cout << "Unable to open file" << endl;
 
-   cout << "Nombre de photo : " << listeImage.size() << endl;
+    cout << "Nombre de photo : " << listeImage.size() << endl;
 }
 
 int Bibliotheque::getPositionImage(int idPhotoD) {
@@ -95,18 +95,24 @@ void Bibliotheque::updatePositionPhoto(int idPhotoD, int position) {
 
 void Bibliotheque::deleteTag(std::string tag){
     if(tag != ""){
-    for(int i = 0 ; i < listeImage.size() ; i++){
-        for(int j = 0 ; j < listeImage[i].getTags().size() ; j++){
-            if(!listeImage[i].getTags()[j].compare(tag)){
-                listeImage[i].removeTag(tag);
+        for(int i = 0 ; i < listeImage.size() ; i++){
+            for(int j = 0 ; j < listeImage[i].getTags().size() ; j++){
+                if(!listeImage[i].getTags()[j].compare(tag)){
+                    listeImage[i].removeTag(tag);
+                }
             }
-         }
-       }
-     }
-   }
+        }
+    }
+}
 
-
-
+void Bibliotheque::deleteTag(string tag, int i)
+{
+    for(int j = 0 ; j < listeImage[i].getTags().size() ; j++){
+        if(!listeImage[i].getTags()[j].compare(tag)){
+            listeImage[i].removeTag(tag);
+        }
+    }
+}
 
 void Bibliotheque::removeImage(int idPhotoS) {
     for(size_t i=0; i<listeImage.size(); i++) {
@@ -130,8 +136,8 @@ void Bibliotheque::fillDefaultTag(){
 
     for (int i = 0; i < listeImage.size() ; i++){
 
-//        listeImage[i].addTag("default tag");
-//        listeImage[i].addTag("default tag2");
+        //        listeImage[i].addTag("default tag");
+        //        listeImage[i].addTag("default tag2");
 
     }
 }
@@ -146,17 +152,17 @@ void Bibliotheque::addDirectory(string cheminDossier) {
     DIR *dir;
     struct dirent *ent;
     if ((dir = opendir (cheminDossier.c_str())) != NULL) {
-      while ((ent = readdir (dir)) != NULL) {
-        QString nomFichier(ent->d_name);
-        string extension = nomFichier.section(".", -1).toStdString();
-        if(extension == "png" || extension == "jpg" || extension == "jpeg") {
-            Image newImage(cheminDossier + ent->d_name, idPhoto++, "NULL");
-            addToFile(cheminDossier + ent->d_name);
+        while ((ent = readdir (dir)) != NULL) {
+            QString nomFichier(ent->d_name);
+            string extension = nomFichier.section(".", -1).toStdString();
+            if(extension == "png" || extension == "jpg" || extension == "jpeg") {
+                Image newImage(cheminDossier + ent->d_name, idPhoto++, "NULL");
+                addToFile(cheminDossier + ent->d_name);
+            }
         }
-      }
-      closedir (dir);
+        closedir (dir);
     } else {
-      perror ("Erreur lors de l'ouverture du dossier");
+        perror ("Erreur lors de l'ouverture du dossier");
     }
 }
 

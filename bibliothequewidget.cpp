@@ -1,4 +1,4 @@
-    #include "bibliothequewidget.h"
+#include "bibliothequewidget.h"
 
 BibliothequeWidget::BibliothequeWidget(int pieceSize, QWidget *parent, Bibliotheque *bibliotheque)
     : QListWidget(parent), m_PieceSize(pieceSize)
@@ -153,7 +153,7 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
     QAction* tagsMenu;
     for (unsigned int i = 0; i < listeTags.size(); ++i) {
         tagsMenu = addTag->addAction( QString::fromStdString(listeTags[i]));
-        tagsMenu = deleteTag->addAction( QString::fromStdString(listeTags[i]));
+        tagsMenu = deleteTag->addAction( "~" + QString::fromStdString(listeTags[i]));
     }
     tagsMenu = addTag->addAction("Nouveau tag ...");
 
@@ -168,6 +168,7 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
 
     if (selectedTag)
     {
+
         if(!QString::compare(selectedTag->iconText(),"Supprimer")){
             for (int i = 0; i < listeItems.size(); ++i) {
                 int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
@@ -175,8 +176,8 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
             }
             refreshView();
 
-//            m_bibliotheque->updateCSV();
-//            refreshView();
+            //            m_bibliotheque->updateCSV();
+            //            refreshView();
 
         }
         else if(!QString::compare(selectedTag->iconText(),"Nouveau tag")){
@@ -234,20 +235,20 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
 
 
             for (int i = 0; i < listeItems.size(); ++i) {
-            int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
-            m_bibliotheque->setFav(idPhoto);
+                int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
+                m_bibliotheque->setFav(idPhoto);
 
-        }
+            }
             refreshView();
 
-       }
+        }
 
-         else if(!QString::compare(selectedTag->iconText(),"Supprimer des favoris")){
+        else if(!QString::compare(selectedTag->iconText(),"Supprimer des favoris")){
 
 
             for (int i = 0; i < listeItems.size(); ++i) {
-            int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
-            m_bibliotheque->delFav(idPhoto);
+                int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
+                m_bibliotheque->delFav(idPhoto);
             }
 
         }
@@ -260,8 +261,15 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
             }
             refreshView();
 
-        }
-        else {
+        } else if (!QString::compare(selectedTag->iconText().at(0),"~")){
+            QString tagTodDelete = selectedTag->iconText();
+            tagTodDelete.remove(0,1);
+            for (int i = 0; i < listeItems.size(); i++) {
+                int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
+                m_bibliotheque->getImageById(idPhoto)->removeTag(tagTodDelete.toStdString());
+            }
+            refreshView();
+        } else {
 
             string selectedTagToString = selectedTag->iconText().toStdString();
             for (int i = 0; i < listeItems.size(); ++i) {
@@ -275,7 +283,7 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
             refreshView();
 
         }
-     //   refreshView();
+        //   refreshView();
 
     }
 }
@@ -318,7 +326,7 @@ void BibliothequeWidget::displayLabel2(QListWidgetItem* item)
             }
         }
         infosImages = infosImages + "Emplacement : " + chemin + "\nTaille : " + QString::number(size) + "Ko"
-            + "\nDimensions : " + dimensionW + "x" + dimensionH + "\n" + stringTags + "\n" + "Album : " + album;
+                + "\nDimensions : " + dimensionW + "x" + dimensionH + "\n" + stringTags + "\n" + "Album : " + album;
         infos->setText(infosImages );
     }
     previousIdPhoto = idPhoto;
