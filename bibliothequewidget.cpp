@@ -341,6 +341,7 @@ void BibliothequeWidget::displayLabel2(QListWidgetItem* item)
 
 void BibliothequeWidget::startDrag(Qt::DropActions)
 {
+    if(m_bibliotheque->fav_window == false){
     QListWidgetItem *item = currentItem();
 
     QByteArray itemData;
@@ -360,5 +361,6 @@ void BibliothequeWidget::startDrag(Qt::DropActions)
 
     if (drag->exec(Qt::MoveAction) == Qt::MoveAction)
         delete takeItem(row(item));
+    }
 }
 
