@@ -23,7 +23,7 @@ public:
     void drawImages(QFrame *frame, std::vector<Image> listeImage);
     void initDataFile();
     void addToFile(std::string filepath);
-    void addToFile(std::string filepath, std::vector<std::string> tags, std::string album);
+    void addToFile(std::string filepath, std::vector<std::string> tags, std::string album, int fav);
     void addToFile(Image image);
     void addTag(std::string path, std::string tag);
     void addTag(int id, std::string tag);
