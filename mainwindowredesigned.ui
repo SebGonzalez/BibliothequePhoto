@@ -103,6 +103,13 @@ QLabel#selectionSize {
            </widget>
           </item>
           <item>
+           <widget class="QPushButton" name="pushButton">
+            <property name="text">
+             <string>Favoris</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QLineEdit" name="lineEdit">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -223,7 +230,7 @@ QLabel#selectionSize {
      <x>0</x>
      <y>0</y>
      <width>995</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

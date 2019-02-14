@@ -12,6 +12,7 @@ Image::Image(string chemin, int id, string album)
     if(image->isNull()) {
         qDebug() << "Erreur lors de l'ouverture" << endl;
     }
+    this->fav = false;
 }
 
 Image::Image(string chemin, vector<string> tags, int id, string album)
@@ -100,3 +101,16 @@ void Image::removeTag(std::string tag){
         tags.push_back(tag_2[i]);
     }
 }
+
+bool Image::getFav(){
+    return this->fav;
+}
+
+void Image::setFav(){
+    this->fav = true;
+}
+
+void Image::delFav(){
+    this->fav = false;
+}
+

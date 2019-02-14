@@ -186,3 +186,16 @@ void MainWindowRedesigned::on_Album_pressed()
     albumDialog->exec();
 
 }
+
+void MainWindowRedesigned::on_pushButton_clicked()
+{
+
+      image_affichees  = biblio.getFavImages();
+      bibliothequeWidget->clear();
+      for(unsigned int i = 0; i < image_affichees.size(); i++) {
+          QPixmap pixmap = QPixmap::fromImage(*image_affichees[i].getQImage());
+          pixmap = pixmap.scaledToWidth(200);
+          bibliothequeWidget->addPiece(pixmap.scaled(200,200), image_affichees[i].getId(), image_affichees[i].getTagsString());
+      }
+
+}

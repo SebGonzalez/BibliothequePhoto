@@ -1,5 +1,5 @@
 #include "albumdialog.h"
-#include "ui_albumdialog.h"
+#include "ui_albumDialog.h"
 
 AlbumDialog::AlbumDialog(QWidget *parent) :
     QDialog(parent),

@@ -114,6 +114,20 @@ void BibliothequeWidget::refreshView()
     }
 }
 
+void BibliothequeWidget::refreshFavView(){
+
+    this->clear();
+    vector<Image> Img = m_bibliotheque->getFavImages();
+    for(unsigned int i = 0; i < m_bibliotheque->getFavImages().size(); i++) {
+        QPixmap pixmap = QPixmap::fromImage(*Img[i].getQImage());
+        pixmap = pixmap.scaledToWidth(200);
+        //pixmap.scaledToHeight(200);
+        this->addPiece(pixmap.scaled(200,200), m_bibliotheque->getFavImages()[i].getId(),m_bibliotheque->getFavImages()[i].getTagsString());
+    }
+
+}
+
+
 void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
 {
     infos->clear();
@@ -132,6 +146,9 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
     QMenu* addAlbum = myMenu->addMenu( "Ajouter à un album..." );
     myMenu->addAction( "Supprimer" );
     QAction* supprimerAlbum = myMenu->addAction( "Supprimer de l'album" );
+
+    myMenu->addAction("Ajouter aux favoris");
+    myMenu->addAction("Supprimer des favoris");
 
     QAction* tagsMenu;
     for (unsigned int i = 0; i < listeTags.size(); ++i) {
@@ -180,6 +197,8 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
                     cout << addedTag << endl;
                 }
             }
+            refreshView();
+
         }
         else if(selectedTag == albumsMenu) {
             cout << "Nouvel album" << endl;
@@ -195,6 +214,8 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
                     }
                 }
             }
+            refreshView();
+
         }
         else if(selectedTag == supprimerAlbum) {
 
@@ -203,16 +224,43 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
 
                 m_bibliotheque->getImageById(idPhoto)->setAlbum("NULL");
             }
+            refreshView();
+
 
         }
+        else if(!QString::compare(selectedTag->iconText(),"Ajouter aux favoris")) {
+
+
+            for (int i = 0; i < listeItems.size(); ++i) {
+            int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
+            m_bibliotheque->setFav(idPhoto);
+            qDebug() << idPhoto ;
+        }
+            refreshView();
+
+       }
+
+         else if(!QString::compare(selectedTag->iconText(),"Supprimer des favoris")){
+
+
+            for (int i = 0; i < listeItems.size(); ++i) {
+            int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
+            m_bibliotheque->delFav(idPhoto);
+            }
+            refreshFavView();
+            if(m_bibliotheque->getFavImages().size() == 0) refreshView();
+        }
         else if(m_bibliotheque->isAlbum(selectedTag->iconText().toStdString())) {
-            cout << "OOOOOOOOOO" << endl;
+            //cout << "OOOOOOOOOO" << endl;
             for (int i = 0; i < listeItems.size(); i++) {
                 int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
                 string selectedAlbumToString = selectedTag->iconText().toStdString();
                 m_bibliotheque->getImageById(idPhoto)->setAlbum(selectedAlbumToString);
             }
-        }else {
+            refreshView();
+
+        }
+        else {
 
             string selectedTagToString = selectedTag->iconText().toStdString();
             for (int i = 0; i < listeItems.size(); ++i) {
@@ -223,8 +271,10 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
                     listeItems[i]->setData(Qt::UserRole+2, text);
                 listeItems[i]->setData(Qt::UserRole+3, text);
             }
+            refreshView();
+
         }
-        refreshView();
+     //   refreshView();
 
     }
 }
