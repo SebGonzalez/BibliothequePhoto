@@ -99,7 +99,7 @@ void MainWindowRedesigned:: import_on_click(){
     QStringList listeImages = dialog.getOpenFileNames(this,tr("Open Image"), "/home", tr("Image Files (*.png *.jpg *.jpeg)"));
     for (int i = 0; i < listeImages.size(); ++i) {
         cout << listeImages.size() << endl;
-        Image tmpImage = Image(listeImages[i].toStdString(),biblio.getImgListSize()+i);
+        Image tmpImage = Image(listeImages[i].toStdString(),biblio.getImgListSize()+i, "NULL");
         biblio.addToFile(tmpImage);
     }
     bibliothequeWidget->clear();
@@ -177,5 +177,12 @@ void MainWindowRedesigned::on_tagsButton_clicked()
 
 
     }
+
+}
+
+void MainWindowRedesigned::on_Album_pressed()
+{
+    AlbumDialog *albumDialog = new AlbumDialog(biblio, *bibliothequeWidget);
+    albumDialog->exec();
 
 }

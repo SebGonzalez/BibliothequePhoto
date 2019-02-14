@@ -22,7 +22,7 @@ public:
     void drawImages(QFrame *frame, std::vector<Image> listeImage);
     void initDataFile();
     void addToFile(std::string filepath);
-    void addToFile(std::string filepath, std::vector<std::string> tags);
+    void addToFile(std::string filepath, std::vector<std::string> tags, std::string album);
     void addToFile(Image image);
     void addTag(std::string path, std::string tag);
     void addTag(int id, std::string tag);
@@ -39,6 +39,8 @@ public:
     void removeImage(int idPhotoS);
     void setTagsListeImage(int indice,int tag_indice,std::string newtag);
     std::vector<string> getAllTags();
+    std::vector<string> getAllAlbums();
+    bool isAlbum(std::string nom);
     void updateCSV();
 
     std::string getChosenTag();
@@ -48,7 +50,7 @@ public:
 
     long GetFileSize(Image img);
     QSize getDimension(Image img);
-    Image getImageById(int id);
+    Image* getImageById(int id);
 
 private:
     std::vector<Image> listeImage;

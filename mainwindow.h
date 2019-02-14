@@ -11,7 +11,6 @@
 #include <string>
 #include <QScrollArea>
 #include "bibliothequewidget.h"
-#include "clickablelabel.h"
 
 using namespace std;
 

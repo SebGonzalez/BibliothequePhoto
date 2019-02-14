@@ -1,4 +1,4 @@
-#include "bibliothequewidget.h"
+    #include "bibliothequewidget.h"
 
 BibliothequeWidget::BibliothequeWidget(int pieceSize, QWidget *parent, Bibliotheque *bibliotheque)
     : QListWidget(parent), m_PieceSize(pieceSize)
@@ -122,13 +122,16 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
 
     QPoint globalPos = QCursor::pos();
     vector<string> listeTags = m_bibliotheque->getAllTags();
+    vector<string> listeAlbums = m_bibliotheque->getAllAlbums();
     vector<Image> listeImage = m_bibliotheque->getlisteImage();
 
     QMenu *myMenu = new QMenu();
 
     QMenu* addTag = myMenu->addMenu( "Ajouter un tag..." );
     QMenu* deleteTag = myMenu->addMenu( "Supprimer un tag..." );
+    QMenu* addAlbum = myMenu->addMenu( "Ajouter à un album..." );
     myMenu->addAction( "Supprimer" );
+    QAction* supprimerAlbum = myMenu->addAction( "Supprimer de l'album" );
 
     QAction* tagsMenu;
     for (unsigned int i = 0; i < listeTags.size(); ++i) {
@@ -137,8 +140,15 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
     }
     tagsMenu = addTag->addAction("Nouveau tag ...");
 
+    QAction* albumsMenu;
+    for (unsigned int i = 0; i < listeAlbums.size(); ++i) {
+        albumsMenu = addAlbum->addAction( QString::fromStdString(listeAlbums[i]));
+    }
+    albumsMenu = addAlbum->addAction("Nouvel album ...");
+
     QList<QListWidgetItem*> listeItems = selectedItems();
     QAction* selectedTag = myMenu->exec(globalPos);
+
     if (selectedTag)
     {
         if(!QString::compare(selectedTag->iconText(),"Supprimer")){
@@ -161,14 +171,6 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
 
                         m_bibliotheque->addTag(idPhoto,addedTag);
 
-
-                        /* qDebug() << "test de l'ajout de tag";
-                        std::vector<string> string = m_bibliotheque->getAllTags();
-                        for(int i = 0 ; i < string.size();i++)
-                            qDebug() << string[i].c_str();
-                       */
-
-
                         QString text = listeItems[i]->data(Qt::UserRole+3).toString() + ", " + QString::fromStdString(addedTag);
                         if(listeItems[i]->data(Qt::UserRole+2).toString() != "")
                             listeItems[i]->setData(Qt::UserRole+2, text);
@@ -178,7 +180,39 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
                     cout << addedTag << endl;
                 }
             }
-        } else {
+        }
+        else if(selectedTag == albumsMenu) {
+            cout << "Nouvel album" << endl;
+            AjoutTag *ajout = new AjoutTag(this);
+            ajout->exec();
+            if(ajout->result() != 0){
+                string addedAlbum = ajout->tagName;
+                if(addedAlbum.size() != 0){
+                    for (int i = 0; i < listeItems.size(); i++) {
+                        int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
+
+                        m_bibliotheque->getImageById(idPhoto)->setAlbum(addedAlbum);
+                    }
+                }
+            }
+        }
+        else if(selectedTag == supprimerAlbum) {
+
+            for (int i = 0; i < listeItems.size(); i++) {
+                int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
+
+                m_bibliotheque->getImageById(idPhoto)->setAlbum("NULL");
+            }
+
+        }
+        else if(m_bibliotheque->isAlbum(selectedTag->iconText().toStdString())) {
+            cout << "OOOOOOOOOO" << endl;
+            for (int i = 0; i < listeItems.size(); i++) {
+                int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
+                string selectedAlbumToString = selectedTag->iconText().toStdString();
+                m_bibliotheque->getImageById(idPhoto)->setAlbum(selectedAlbumToString);
+            }
+        }else {
 
             string selectedTagToString = selectedTag->iconText().toStdString();
             for (int i = 0; i < listeItems.size(); ++i) {
@@ -217,13 +251,14 @@ void BibliothequeWidget::displayLabel2(QListWidgetItem* item)
     int idPhoto = item->data(Qt::UserRole+1).toInt();
     if(idPhoto != previousIdPhoto){
         QString infosImages ;
-        Image Img = m_bibliotheque->getImageById(idPhoto);
-        QString chemin = QString::fromStdString( Img.getChemin());
-        float size = m_bibliotheque->GetFileSize(Img)/1000;
-        QSize dimension = m_bibliotheque->getDimension(Img);
+        Image *Img = m_bibliotheque->getImageById(idPhoto);
+        QString chemin = QString::fromStdString( Img->getChemin());
+        QString album = QString::fromStdString( Img->getAlbum());
+        float size = m_bibliotheque->GetFileSize(*Img)/1000;
+        QSize dimension = m_bibliotheque->getDimension(*Img);
         QString dimensionW = QString::number(dimension.width());
         QString dimensionH = QString::number(dimension.height());
-        vector <string> tags = Img.getTags();
+        vector <string> tags = Img->getTags();
         QString stringTags = "Tags : ";
         for (int i = 0; i < tags.size(); ++i) {
             stringTags = stringTags + " " + QString::fromStdString(tags[i]);
@@ -232,12 +267,10 @@ void BibliothequeWidget::displayLabel2(QListWidgetItem* item)
             }
         }
         infosImages = infosImages + "Emplacement : " + chemin + "\nTaille : " + QString::number(size) + "Ko"
-                + "\nDimensions : " + dimensionW + "x" + dimensionH + "\n" + stringTags;
+            + "\nDimensions : " + dimensionW + "x" + dimensionH + "\n" + stringTags + "\n" + "Album : " + album;
         infos->setText(infosImages );
     }
     previousIdPhoto = idPhoto;
-
-
 }
 
 void BibliothequeWidget::startDrag(Qt::DropActions)
