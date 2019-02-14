@@ -108,10 +108,10 @@ int Image::getFav(){
 }
 
 void Image::setFav(){
-    this->fav = true;
+    this->fav = 1;
 
 }
 
 void Image::delFav(){
-    this->fav = false;
+    this->fav = 0;
 }

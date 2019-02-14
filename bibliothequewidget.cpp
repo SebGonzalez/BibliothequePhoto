@@ -242,10 +242,10 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
         }
         else if(!QString::compare(selectedTag->iconText(),"Ajouter aux favoris")) {
 
-
+            cout << "oui" << endl;
             for (int i = 0; i < listeItems.size(); ++i) {
                 int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
-                m_bibliotheque->setFav(idPhoto);
+                m_bibliotheque->getImageById(idPhoto)->setFav();
 
             }
             refreshView();
@@ -257,7 +257,7 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
 
             for (int i = 0; i < listeItems.size(); ++i) {
                 int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
-                m_bibliotheque->delFav(idPhoto);
+                m_bibliotheque->getImageById(idPhoto)->delFav();
             }
             refreshFavView();
 
