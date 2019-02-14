@@ -63,7 +63,7 @@ MainWindowRedesigned::~MainWindowRedesigned()
     cout << "On save les modifs" << endl;
     //Reset file and save all updated data before closing
     biblio.initDataFile();
-    for (int i = 0; i < biblio.getImgListSize(); i++) {
+    for (unsigned int i = 0; i < biblio.getImgListSize(); i++) {
         biblio.addToFile(biblio.getlisteImage()[i]);
     }
     delete ui;
@@ -89,7 +89,6 @@ void MainWindowRedesigned::load_selection_on_click(){
     ui->titre->setText("Ma Bibliothèque");
 
 }
-
 
 void MainWindowRedesigned:: import_on_click(){
 

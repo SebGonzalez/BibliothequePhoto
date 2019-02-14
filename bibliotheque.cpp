@@ -11,8 +11,8 @@ Bibliotheque::Bibliotheque()
     idPhoto = 0;
     cout << "Création bibliotheque" << endl;
 
-    initDataFile(); // temporaire
-    addDirectory("../BibliothequePhoto/PicsTmp/");
+    //initDataFile(); // temporaire
+    //addDirectory("../BibliothequePhoto/PicsTmp/");
 
     loadImages();
 }
@@ -28,6 +28,7 @@ void Bibliotheque::loadImages() {
             string album = line.substr(0, comma);
             comma = comma + 2;
             std::size_t nextComma = line.find(',', comma);
+            cout << "fav : " << line.substr(comma, nextComma - comma) << " : " << stoi(line.substr(comma, nextComma - comma)) << endl;
             int fav = stoi(line.substr(comma, nextComma - comma));
 
             comma = comma + 3;
@@ -289,6 +290,7 @@ void Bibliotheque::addToFile(Image image) {
     string album = image.getAlbum();
     vector<string> tags = image.getTags();
 
+    cout << "Fav : " << image.getFav() << endl;
     addToFile(path, tags, album, image.getFav());
 }
 
