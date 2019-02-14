@@ -34,13 +34,11 @@ void Bibliotheque::loadImages() {
               // Parse path
 
               string path = line.substr(comma, nextComma - comma);
-               cout << "PATH : " << path << endl;
 
               // Parse tags
               comma = nextComma + 2;
               nextComma = line.find(',', comma);
               while(nextComma != std::string::npos) {
-                  cout << "TAG : " << (line.substr(comma, nextComma - comma)) << endl;
                   tags.push_back(line.substr(comma, nextComma - comma));
                   comma = nextComma + 2;
                   nextComma = line.find(',', comma);
@@ -244,6 +242,28 @@ vector<Image> Bibliotheque::getTaggedImages(string tag) {
 
     return tagged;
 }
+
+vector<Image> Bibliotheque::getFavImages() {
+
+     vector<Image> tagged;
+    for(unsigned int i = 0; i < listeImage.size(); i++) {
+        Image img = listeImage[i];
+        if(img.getFav()) tagged.push_back(img) ;
+    }
+
+    return tagged;
+
+}
+
+
+void Bibliotheque::setFav(int id){
+    listeImage[id].setFav();
+}
+
+void Bibliotheque::delFav(int id){
+    listeImage[id].delFav();
+}
+
 
 void Bibliotheque::addToFile(string filepath, vector<string> tags, string album) {
     if (libContains(filepath)) return;

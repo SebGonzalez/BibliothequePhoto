@@ -24,6 +24,7 @@ public:
     explicit BibliothequeWidget(int pieceSize, QWidget *parent = nullptr, Bibliotheque *bibliotheque = nullptr);
 
     void refreshView();
+    void refreshFavView();
     void addPiece(const QPixmap &pixmap, int i,std::string textTag);
     static QString bibliothequeMimeType() { return QStringLiteral("image/icon-photo"); }
 

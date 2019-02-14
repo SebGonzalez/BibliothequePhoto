@@ -46,6 +46,9 @@ public:
     std::string getChosenTag();
     std::string setChosenTag(std::string tag);
     void deleteTag(std::string tag);
+    std::vector<Image> getFavImages();
+    void setFav(int id);
+    void delFav(int id);
 
 
     long GetFileSize(Image img);

@@ -24,6 +24,9 @@ public:
     void removeTag(int indice);
     void removeTag(std::string );
     void setTag(int indice,std::string string);
+    void setFav();
+    void delFav();
+    bool getFav();
 
 private:
     int id;
@@ -31,6 +34,7 @@ private:
     std::vector<std::string> tags;
     std::string album;
     QImage *image;
+    bool fav;
 
 };
 
