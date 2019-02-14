@@ -172,11 +172,11 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
             for (int i = 0; i < listeItems.size(); ++i) {
                 int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
                 m_bibliotheque->removeImage(idPhoto);
-                 refreshView();
             }
-
-            m_bibliotheque->updateCSV();
             refreshView();
+
+//            m_bibliotheque->updateCSV();
+//            refreshView();
 
         }
         else if(!QString::compare(selectedTag->iconText(),"Nouveau tag")){
