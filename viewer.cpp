@@ -43,6 +43,9 @@ viewer::viewer(int position, Bibliotheque &bibliotheque, BibliothequeWidget &bib
     ui->current_picture->resize(current_image.size());
 //  pixmap = resizePixmap(ui->current_picture,pixmap);
     ui->current_picture->setPixmap(current_image);
+
+    //info widget
+    ui->infoMenu->hide();
 }
 
 viewer::~viewer()
@@ -59,7 +62,7 @@ static double zoomLevel = 1.0;
 void viewer::on_zoom_clicked()
 {
     zoomLevel *= 1.25;
-    QSize scaled_size = originalSize * zoomLevel;
+    QSize scaled_size = this->originalSize * zoomLevel;
     QPixmap scaled = QPixmap::fromImage(*liste_image[position].getQImage()).scaledToWidth(scaled_size.width());
     ui->current_picture->setPixmap(scaled);
 }
@@ -67,7 +70,7 @@ void viewer::on_zoom_clicked()
 void viewer::on_zoomOut_clicked()
 {
     zoomLevel /= 1.25;
-    QSize scaled_size = originalSize * zoomLevel;
+    QSize scaled_size = this->originalSize * zoomLevel;
     QPixmap scaled = QPixmap::fromImage(*liste_image[position].getQImage()).scaledToWidth(scaled_size.width());
     ui->current_picture->setPixmap(scaled);
 }
@@ -80,7 +83,8 @@ void viewer::on_rotate_clicked()
     QTransform trans = transform.rotate(this->rotate);
     QImage *rotated_image = new QImage(*liste_image[position].getQImage());
     QImage *current_picture = new QImage(rotated_image->transformed(trans));
-    ui->current_picture->setPixmap(QPixmap::fromImage(*current_picture));
+    QSize scaled_size = this->originalSize * zoomLevel;
+    ui->current_picture->setPixmap(QPixmap::fromImage(*current_picture).scaledToWidth(scaled_size.width()));
     this->rotate += 90 % 360;
 }
 
@@ -89,9 +93,41 @@ void viewer::on_info_clicked()
     QPixmap originalPixmap = QPixmap::fromImage(*liste_image[position].getQImage());
     if(ui->infoMenu->isHidden()) {
         ui->infoMenu->show();
-        QSize scrollAreaSize = ui->view->size();
-        QPixmap scaled = originalPixmap.scaledToWidth(scrollAreaSize.width() * 0.9);
-        ui->current_picture->setPixmap(scaled);
+
+
+        /**************************************************************
+         *                          Infobar data
+         * ************************************************************/
+        Image thisImage = liste_image[position];
+        //Show filename
+        //TODO Parse only filename without exception to allow modification
+        ui->filename->setText(QString::fromStdString(thisImage.getChemin()));
+        //Show size
+        QFile file(QString::fromStdString(thisImage.getChemin()));
+        string stringSize = std::to_string(file.size() / 1000);
+        ui->size->setText(QString::fromStdString(stringSize) + " ko");
+        //Show dimensions
+        string height = std::to_string(thisImage.getQImage()->height());
+        string width  = std::to_string(thisImage.getQImage()->width ());
+        ui->dimensions->setText(QString::fromStdString(height + "x" + width));
+
+
+        /**************************************************************
+         *                          Tags in infobar
+         * ************************************************************/
+        //Create lineEdit for each tag
+        QWidget *tags = new QWidget(ui->tagScrollArea);
+        ui->tagScrollArea->setStyleSheet("background : transparent");
+        tags->setLayout(new QVBoxLayout());
+        for (int i = 0; i < thisImage.getTags().size(); i++) {
+            QLineEdit *tag = new QLineEdit(tags);
+            string currentTag  = thisImage.getTags()[i];
+            tag->setText(QString::fromStdString(currentTag));
+            tags->layout()->addWidget(tag);
+            cout << thisImage.getTags()[i] << endl;
+        }
+        ui->tagScrollArea->setWidget(tags);
+        //New link for add tag
     }
     else {
         ui->infoMenu->hide();
@@ -113,7 +149,8 @@ void viewer::on_next_picture_clicked()
     QPixmap pixmap = QPixmap::fromImage(*liste_image[position].getQImage());
     ui->current_picture->setPixmap(pixmap);
 
-
+    //update infobar
+    on_info_clicked();
 }
 
 void viewer::on_previous_picture_clicked()
@@ -129,6 +166,9 @@ void viewer::on_previous_picture_clicked()
     QPixmap pixmap = QPixmap::fromImage(*liste_image[position].getQImage());
     ui->current_picture->resize(pixmap.size());
     ui->current_picture->setPixmap(pixmap);
+
+    //update infobar
+    on_info_clicked();
 }
 
 
@@ -145,4 +185,9 @@ void viewer::on_boutonSupprimer_pressed()
     ui->current_picture->setPixmap(pixmap);
 
     this->bibliothequeWidget->refreshView();
+}
+
+void viewer::on_quitButton_clicked()
+{
+    on_info_clicked();
 }

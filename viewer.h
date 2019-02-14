@@ -36,6 +36,8 @@ private slots:
 
     void on_boutonSupprimer_pressed();
 
+    void on_quitButton_clicked();
+
 private:
     Ui::viewer *ui;
 

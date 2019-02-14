@@ -22,6 +22,14 @@ QHBoxLayout {
 	background-color: white;
 }
 
+QScrollArea#view {
+	background: transparent;
+}
+
+QWidget#scrollAreaWidgetContents {
+	background: transparent;
+}
+
 QPushButton {
 	opacity: 200;
 	color: rgb(71, 71, 71);
@@ -61,6 +69,11 @@ QLineEdit {
 	border-width: 2px;
 	border-color: black;
 	padding: 8% 5% 8% 5%;
+}
+
+QLabel#header {
+	color: black;
+	margin : 40% 0%;
 }
 
 QLabel#size {
@@ -164,6 +177,12 @@ QPushButton#quitButton {
     </item>
     <item row="1" column="2">
      <widget class="QScrollArea" name="view">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="widgetResizable">
        <bool>true</bool>
       </property>
@@ -172,8 +191,8 @@ QPushButton#quitButton {
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>435</width>
-         <height>550</height>
+         <width>473</width>
+         <height>545</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -250,20 +269,133 @@ QPushButton#quitButton {
        <bool>true</bool>
       </property>
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="minimumSize">
+       <size>
+        <width>400</width>
+        <height>0</height>
+       </size>
+      </property>
       <layout class="QGridLayout" name="gridLayout_3">
-       <item row="2" column="0">
-        <widget class="QLabel" name="filename">
+       <item row="0" column="1" rowspan="2">
+        <widget class="QPushButton" name="quitButton">
+         <property name="text">
+          <string> X </string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="filenameHeader">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="text">
           <string>Nom du fichier</string>
          </property>
         </widget>
        </item>
-       <item row="0" column="0">
+       <item row="2" column="0">
+        <spacer name="verticalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="sizeHeader">
+         <property name="text">
+          <string>Taille</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0">
+        <widget class="QLabel" name="dimensionsHeader">
+         <property name="text">
+          <string>Dimensions</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLineEdit" name="filename"/>
+       </item>
+       <item row="11" column="0">
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="9" column="0">
+        <widget class="QLabel" name="tagHeader">
+         <property name="text">
+          <string>Tags</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="0">
+        <widget class="QLabel" name="dimensions">
+         <property name="text">
+          <string>height x width</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="size">
+         <property name="text">
+          <string>DisplayTaille</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="0">
+        <widget class="QScrollArea" name="tagScrollArea">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>250</height>
+          </size>
+         </property>
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="tags">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>348</width>
+            <height>248</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout"/>
+         </widget>
+        </widget>
+       </item>
+       <item row="0" column="0" rowspan="2">
         <widget class="QLabel" name="header">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
@@ -273,51 +405,6 @@ QPushButton#quitButton {
          </property>
          <property name="text">
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Infos sur le fichier&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLineEdit" name="lineEdit"/>
-       </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="size">
-         <property name="text">
-          <string>DisplayTaille</string>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="0">
-        <widget class="QLabel" name="tagHeader">
-         <property name="text">
-          <string>Tags</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="sizeHeader">
-         <property name="text">
-          <string>Taille</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="0">
-        <widget class="QLabel" name="dimensions">
-         <property name="text">
-          <string>DisplayDimensions</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="dimensionsHeader">
-         <property name="text">
-          <string>Dimensions</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QPushButton" name="quitButton">
-         <property name="text">
-          <string> X </string>
          </property>
         </widget>
        </item>
@@ -332,7 +419,7 @@ QPushButton#quitButton {
      <x>0</x>
      <y>0</y>
      <width>899</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
