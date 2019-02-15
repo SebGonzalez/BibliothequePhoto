@@ -5,7 +5,7 @@
 #include <QPixmap>
 #include <QComboBox>
 #include <algorithm>
-
+#include "confirmdelete.h"
 
 using namespace std;
 static QImage *original = new QImage("../BibliothequePhoto/firstbackground.jpg");
@@ -268,7 +268,7 @@ void viewer::updateInfoBar() {
 }
 
 
-void viewer::on_boutonSupprimer_pressed()
+void viewer::deleteImage()
 {
     bibliotheque->removeImage(this->liste_image[this->position].getId());
     liste_image.erase(liste_image.begin() + position);
@@ -297,29 +297,29 @@ void viewer::on_filename_editingFinished()
     unsigned long long lastSlash = fullpath.find_last_of('/');
     unsigned long long extension = fullpath.find_last_of('.');
 
-    string path = fullpath.substr(0            , lastSlash + 1);
-    string ext = fullpath.substr(extension, fullpath.size());
+    string path = fullpath.substr(0        , lastSlash + 1);
+    string ext  = fullpath.substr(extension, fullpath.size());
     string newPath = path + ui->filename->text().toStdString() + ext;
-
-    //update in bibliotheque
-    cout << "Bibliotheque before " << endl;
-    for (int i = 0; i < bibliotheque->getlisteImage().size(); i++) {
-        cout << bibliotheque->getlisteImage()[i].getChemin() + " ";
-    }
-    bibliotheque->removeImage(thisImage.getId());
-    Image *renamedImg = new Image(newPath, thisImage.getTags(), thisImage.getId(), thisImage.getAlbum());
-    bibliotheque->addImage(*renamedImg);
-    cout << endl << "Bibliotheque after " << endl;
-    for (int i = 0; i < bibliotheque->getlisteImage().size(); i++) {
-        cout << bibliotheque->getlisteImage()[i].getChemin() + " ";
-    }
 
     //update in file system
     QFile f(QString::fromStdString(fullpath));
     f.rename(QString::fromStdString(newPath));
+    
+    //update in bibliotheque
+    bibliotheque->removeImage(thisImage.getId());
+    Image *renamedImg = new Image(newPath, thisImage.getTags(), thisImage.getId(), thisImage.getAlbum());
+    bibliotheque->addImage(*renamedImg);
 
     //update the viewer
     liste_image[position] = *renamedImg;
     this->liste_image = bibliotheque->getlisteImage();
     ui->current_picture->setPixmap(QPixmap::fromImage(*thisImage.getQImage()));
+}
+
+void viewer::on_deleteButton_clicked()
+{
+    confirmDelete *cd = new confirmDelete();
+    cd->exec();
+    if(cd->getValue() == true)
+        deleteImage();
 }

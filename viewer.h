@@ -34,8 +34,6 @@ private slots:
 
     void on_previous_picture_clicked();
 
-    void on_boutonSupprimer_pressed();
-
     void on_quitButton_clicked();
 
     void on_addTag_clicked();
@@ -44,12 +42,16 @@ private slots:
 
     void on_filename_editingFinished();
 
+    void on_deleteButton_clicked();
+
 private:
     Ui::viewer *ui;
 
     Bibliotheque *bibliotheque;
     BibliothequeWidget *bibliothequeWidget;
     void updateInfoBar();
+    void deleteImage();
+
 };
 
 #endif // VIEWER_H
