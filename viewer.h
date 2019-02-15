@@ -47,6 +47,8 @@ private slots:
 
     void on_comboBox_currentIndexChanged(const QString &arg1);
 
+    void on_favourite_pressed();
+
 private:
     Ui::viewer *ui;
 

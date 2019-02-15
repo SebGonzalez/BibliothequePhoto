@@ -10,7 +10,9 @@
 class Image
 {
 public:
+    Image(std::string chemin, int id, std::string album);
     Image(std::string chemin, int id, std::string album, int fav);
+    Image(std::string chemin, std::vector<std::string> tags, int id, std::string album);
     Image(std::string chemin, std::vector<std::string> tags, int id, std::string album, int fav);
     int getId();
     QImage* getQImage();

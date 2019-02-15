@@ -8,6 +8,7 @@
 #include <algorithm>
 #include "confirmdelete.h"
 #include "ajouttagdialog.h"
+#include "image.h"
 
 using namespace std;
 static QImage *original = new QImage("../BibliothequePhoto/firstbackground.jpg");
@@ -79,10 +80,16 @@ viewer::viewer(int position, Bibliotheque &bibliotheque, BibliothequeWidget &bib
     ui->info->setIcon(ButtonIcon5);
 
     //Favori
-    QPixmap pixmap6("../BibliothequePhoto/icons/star.svg");
-    QIcon ButtonIcon6(pixmap6);
-    ui->favourite->setIcon(ButtonIcon6);
-
+    if (this->liste_image[this->position].getFav() == 0) {
+        QPixmap pixmap6("../BibliothequePhoto/icons/star.svg");
+        QIcon ButtonIcon6(pixmap6);
+        ui->favourite->setIcon(ButtonIcon6);
+    }
+    else {
+        QPixmap pixmap6("../BibliothequePhoto/icons/star-filled.svg");
+        QIcon ButtonIcon6(pixmap6);
+        ui->favourite->setIcon(ButtonIcon6);
+    }
 
 
     //button->setIconSize(pixmap.rect().size());
@@ -321,7 +328,7 @@ void viewer::on_filename_editingFinished()
 
     //update in bibliotheque
     bibliotheque->removeImage(thisImage.getId());
-    Image *renamedImg = new Image(newPath, thisImage.getTags(), thisImage.getId(), thisImage.getAlbum());
+    Image *renamedImg = new Image(newPath, thisImage.getTags(), thisImage.getId(), thisImage.getAlbum(), thisImage.getFav());
     bibliotheque->addImage(*renamedImg);
     this->bibliothequeWidget->refreshView();
 
@@ -395,4 +402,25 @@ void viewer::on_deleteButton_clicked()
     if(cd->getValue() == true)
         deleteImage();
     delete cd;
+}
+
+void viewer::on_favourite_pressed()
+{
+    Image thisImage = bibliotheque->getlisteImage()[this->position];
+    if (thisImage.getFav() == 0) {
+        thisImage.setFav();
+        bibliotheque->setFav(thisImage.getId());
+        QPixmap pixmap6("../BibliothequePhoto/icons/star-filled.svg");
+        QIcon ButtonIcon6(pixmap6);
+        ui->favourite->setIcon(ButtonIcon6);
+        cout << "Ajoutée aux favoris" << endl;
+    }
+    else {
+        thisImage.delFav();
+        bibliotheque->delFav(thisImage.getId());
+        QPixmap pixmap7("../BibliothequePhoto/icons/star.svg");
+        QIcon ButtonIcon7(pixmap7);
+        ui->favourite->setIcon(ButtonIcon7);
+        cout << "supprimée des favoris" << endl;
+    }
 }
