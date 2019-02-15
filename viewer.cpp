@@ -43,6 +43,7 @@ viewer::viewer(int position, Bibliotheque &bibliotheque, BibliothequeWidget &bib
     this->originalSize = liste_image[position].getQImage()->size();
     ui->setupUi(this);
 
+    QMainWindow::setWindowTitle(QString::fromStdString(this->liste_image[this->position].getChemin()));
 
     QPixmap current_image = QPixmap::fromImage(*liste_image[position].getQImage());
 
@@ -394,6 +395,7 @@ void viewer::on_next_picture_clicked()
     QPixmap pixmap = QPixmap::fromImage(*liste_image[position].getQImage());
     ui->current_picture->setPixmap(pixmap);
     updateInfoBar();
+    QMainWindow::setWindowTitle(QString::fromStdString(this->liste_image[this->position].getChemin()));
 }
 
 void viewer::on_previous_picture_clicked()
@@ -411,6 +413,7 @@ void viewer::on_previous_picture_clicked()
     ui->current_picture->setPixmap(pixmap);
 
     updateInfoBar();
+    QMainWindow::setWindowTitle(QString::fromStdString(this->liste_image[this->position].getChemin()));
 }
 
 /*****************************************************************************************
