@@ -26,7 +26,7 @@ public:
     void setTag(int indice,std::string string);
     void setFav();
     void delFav();
-    int getFav();
+    int  getFav();
     std::string getPath();
 
 
