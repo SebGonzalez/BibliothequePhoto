@@ -19,9 +19,9 @@ BibliothequeWidget::BibliothequeWidget(int pieceSize, QWidget *parent, Bibliothe
     this->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),this, SLOT(ShowContextMenu(const QPoint&)));
 
-    /* connect(timer, SIGNAL(timeout()), this, SLOT(displayLabel()));
-    timer->start(1500);*/
-    connect(this, SIGNAL(itemEntered(QListWidgetItem* )), this, SLOT(displayLabel(QListWidgetItem* )));
+     connect(timer, SIGNAL(timeout()), this, SLOT(displayLabel()));
+    timer->start(1500);
+    //connect(this, SIGNAL(itemEntered(QListWidgetItem* )), this, SLOT(displayLabel(QListWidgetItem* )));
 
 
     m_bibliotheque = bibliotheque;
@@ -298,27 +298,28 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
 }
 
 
-void BibliothequeWidget::displayLabel(QListWidgetItem* item)
+void BibliothequeWidget::displayLabel()
 {
-    this->itemHovered = item;
-    if(previousIdPhoto == NULL || itemHovered != previousItemHovered) {
-        connect(timer, SIGNAL(timeout()), this, SLOT(displayLabel2()));
-        timer->start(600);
-    }
-}
-
-void BibliothequeWidget::displayLabel2()
-{
-    connect(timer, SIGNAL(timeout()), this, SLOT(hideLabel()));
-    timer->start(200);
     QPoint globalPos = this->mapFromGlobal(QCursor::pos());
     infos->setFrameStyle(QFrame::Panel | QFrame::Sunken);
     infos->setStyleSheet("QLabel { background-color : white; color : black; }");
 
+    int nbPhotoParLigne =  this->width()/200 - 1;
     infos->setGeometry(globalPos.x(),globalPos.y(),500,100);
-    timer->start(800);
-    int idPhoto = this->itemHovered->data(Qt::UserRole+1).toInt();
+    if(infos->text().size() != 0 && globalPos.x() < nbPhotoParLigne*215){
+        infos->show();
+    }
+    else
+        infos->hide();
+    connect(this, SIGNAL(itemEntered(QListWidgetItem* )), this, SLOT(displayLabel2(QListWidgetItem* )));
+}
+
+void BibliothequeWidget::displayLabel2(QListWidgetItem* item)
+{
+    timer->start(1500);
+    int idPhoto = item->data(Qt::UserRole+1).toInt();
     if(idPhoto != previousIdPhoto){
+        infos->hide();
         QString infosImages ;
         Image *Img = m_bibliotheque->getImageById(idPhoto);
         QString chemin = QString::fromStdString( Img->getChemin());
@@ -336,15 +337,11 @@ void BibliothequeWidget::displayLabel2()
             }
         }
         infosImages = infosImages + "Emplacement : " + chemin + "\nTaille : " + QString::number(size) + "Ko"
-            + "\nDimensions : " + dimensionW + "x" + dimensionH + "\n" + stringTags + "\n" + "Album : " + album;
+                + "\nDimensions : " + dimensionW + "x" + dimensionH + "\n" + stringTags + "\n" + "Album : " + album;
         infos->setText(infosImages );
     }
     previousIdPhoto = idPhoto;
-    infos->show();
-    previousItemHovered = itemHovered;
-
 }
-
 void BibliothequeWidget::hideLabel() {
     infos->hide();
 }
