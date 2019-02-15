@@ -19,9 +19,10 @@ BibliothequeWidget::BibliothequeWidget(int pieceSize, QWidget *parent, Bibliothe
     this->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),this, SLOT(ShowContextMenu(const QPoint&)));
 
-    connect(timer, SIGNAL(timeout()), this, SLOT(displayLabel()));
-    //    connect(this, SIGNAL(itemEntered(QListWidgetItem* )), this, SLOT(displayLabel(QListWidgetItem* )));
-    timer->start(1500);
+    /* connect(timer, SIGNAL(timeout()), this, SLOT(displayLabel()));
+    timer->start(1500);*/
+    connect(this, SIGNAL(itemEntered(QListWidgetItem* )), this, SLOT(displayLabel(QListWidgetItem* )));
+
 
     m_bibliotheque = bibliotheque;
 }
@@ -49,7 +50,7 @@ void BibliothequeWidget::dropEvent(QDropEvent *event)
     if (event->mimeData()->hasFormat(BibliothequeWidget::bibliothequeMimeType())) {
 
         this->width();
-    //    cout << "Width : " << this->width() << endl;
+        //    cout << "Width : " << this->width() << endl;
         QByteArray pieceData = event->mimeData()->data(BibliothequeWidget::bibliothequeMimeType());
         QDataStream dataStream(&pieceData, QIODevice::ReadOnly);
         QPixmap pixmap;
@@ -75,7 +76,7 @@ void BibliothequeWidget::dropEvent(QDropEvent *event)
         }
         m_bibliotheque->updatePositionPhoto(idPhoto, rowPhoto);
 
-       // std::cout << ligne <<" OOOOOOOOO " << colonne << " AAAAAA " << rowPhoto << std::endl;
+        // std::cout << ligne <<" OOOOOOOOO " << colonne << " AAAAAA " << rowPhoto << std::endl;
 
 
         insertItem(rowPhoto, pieceItem);
@@ -296,25 +297,26 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
 }
 
 
-void BibliothequeWidget::displayLabel()
+void BibliothequeWidget::displayLabel(QListWidgetItem* item)
 {
+    this->itemHovered = item;
+    if(previousIdPhoto == NULL || itemHovered != previousItemHovered) {
+        connect(timer, SIGNAL(timeout()), this, SLOT(displayLabel2()));
+        timer->start(600);
+    }
+}
+
+void BibliothequeWidget::displayLabel2()
+{
+    connect(timer, SIGNAL(timeout()), this, SLOT(hideLabel()));
+    timer->start(200);
     QPoint globalPos = this->mapFromGlobal(QCursor::pos());
     infos->setFrameStyle(QFrame::Panel | QFrame::Sunken);
     infos->setStyleSheet("QLabel { background-color : white; color : black; }");
 
     infos->setGeometry(globalPos.x(),globalPos.y(),500,100);
-    if(infos->text().size() != 0)
-        infos->show();
-    else
-        infos->hide();
-    connect(this, SIGNAL(itemEntered(QListWidgetItem* )), this, SLOT(displayLabel2(QListWidgetItem* )));
-}
-
-void BibliothequeWidget::displayLabel2(QListWidgetItem* item)
-{
-    infos->hide();
     timer->start(800);
-    int idPhoto = item->data(Qt::UserRole+1).toInt();
+    int idPhoto = this->itemHovered->data(Qt::UserRole+1).toInt();
     if(idPhoto != previousIdPhoto){
         QString infosImages ;
         Image *Img = m_bibliotheque->getImageById(idPhoto);
@@ -333,34 +335,42 @@ void BibliothequeWidget::displayLabel2(QListWidgetItem* item)
             }
         }
         infosImages = infosImages + "Emplacement : " + chemin + "\nTaille : " + QString::number(size) + "Ko"
-                + "\nDimensions : " + dimensionW + "x" + dimensionH + "\n" + stringTags + "\n" + "Album : " + album;
+            + "\nDimensions : " + dimensionW + "x" + dimensionH + "\n" + stringTags + "\n" + "Album : " + album;
         infos->setText(infosImages );
     }
     previousIdPhoto = idPhoto;
+    infos->show();
+    previousItemHovered = itemHovered;
+
+}
+
+void BibliothequeWidget::hideLabel() {
+    cout << "non" << endl;
+    infos->hide();
 }
 
 void BibliothequeWidget::startDrag(Qt::DropActions)
 {
     if(m_bibliotheque->fav_window == false){
-    QListWidgetItem *item = currentItem();
+        QListWidgetItem *item = currentItem();
 
-    QByteArray itemData;
-    QDataStream dataStream(&itemData, QIODevice::WriteOnly);
-    QPixmap pixmap = qvariant_cast<QPixmap>(item->data(Qt::UserRole));
-    QPoint location = item->data(Qt::UserRole+1).toPoint();
+        QByteArray itemData;
+        QDataStream dataStream(&itemData, QIODevice::WriteOnly);
+        QPixmap pixmap = qvariant_cast<QPixmap>(item->data(Qt::UserRole));
+        QPoint location = item->data(Qt::UserRole+1).toPoint();
 
-    dataStream << pixmap << location;
+        dataStream << pixmap << location;
 
-    QMimeData *mimeData = new QMimeData;
-    mimeData->setData(BibliothequeWidget::bibliothequeMimeType(), itemData);
+        QMimeData *mimeData = new QMimeData;
+        mimeData->setData(BibliothequeWidget::bibliothequeMimeType(), itemData);
 
-    QDrag *drag = new QDrag(this);
-    drag->setMimeData(mimeData);
-    drag->setHotSpot(QPoint(pixmap.width()/2, pixmap.height()/2));
-    drag->setPixmap(pixmap);
+        QDrag *drag = new QDrag(this);
+        drag->setMimeData(mimeData);
+        drag->setHotSpot(QPoint(pixmap.width()/2, pixmap.height()/2));
+        drag->setPixmap(pixmap);
 
-    if (drag->exec(Qt::MoveAction) == Qt::MoveAction)
-        delete takeItem(row(item));
+        if (drag->exec(Qt::MoveAction) == Qt::MoveAction)
+            delete takeItem(row(item));
     }
 }
 

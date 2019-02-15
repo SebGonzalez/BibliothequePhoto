@@ -13,6 +13,7 @@
 #include <QListWidget>
 #include <QPainter>
 #include <QCursor>
+#include <QSignalMapper>
 
 
 
@@ -32,8 +33,9 @@ public:
 private slots:
     void ShowContextMenu(const QPoint& pos);
     //void mouseMoveEvent(QMouseEvent *event) override;
-    void displayLabel();
-    void displayLabel2(QListWidgetItem *item);
+    void displayLabel(QListWidgetItem* item);
+    void displayLabel2();
+    void hideLabel();
 protected:
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dragMoveEvent(QDragMoveEvent *event) override;
@@ -45,6 +47,8 @@ protected:
     Bibliotheque *m_bibliotheque;
     QTimer *timer = new QTimer(this);
     QCursor *cursor = new QCursor();
+    QListWidgetItem* itemHovered;
+     QListWidgetItem* previousItemHovered;
     QLabel *infos = new QLabel(this);
 };
 #endif // BIBLIOTHEQUEWIDGET_H
