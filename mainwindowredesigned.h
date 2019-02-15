@@ -46,8 +46,6 @@ private slots:
     void on_checkBox_stateChanged(int arg1);
     void on_tagsButton_clicked();
     void on_Album_pressed();
-    void on_pushButton_clicked();
-    void on_favButton_clicked(bool checked);
     void on_favButton_clicked();
 };
 
