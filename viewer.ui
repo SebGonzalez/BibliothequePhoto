@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>899</width>
-    <height>697</height>
+    <height>736</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -53,11 +53,14 @@ QPushButton:hover {
 	border-color: black;
 }
 
-QPushButton #next_picture{
-	opacity: 200;
+QPushButton#next_picture, QPushButton#previous_picture{
 	color: rgb(71, 71, 71);
-	border-style: outset;
 	border: none;
+}
+
+QPushButton#next_picture:hover, QPushButton#previous_picture:hover{
+	color: black;
+	background-color: rgb(167, 167, 167)
 }
 
 QLabel{
@@ -83,13 +86,7 @@ QLabel#header {
 	margin : 40% 0%;
 }
 
-QLabel#size {
-	color: black;
-	margin-bottom: 30px
-
-}
-
-QLabel#dimensions {
+QLabel#size, QLabel#dimensions {
 	color: black;
 	margin-bottom: 30px
 
@@ -104,7 +101,10 @@ QLineEdit#filename {
 	margin-bottom: 30px
 }
 
-</string>
+QPushButton#zoom, QPushButton#zoomOut, QPushButton#rotate, QPushButton#info, QPushButton#deleteButton, QPushButton#favourite {
+	border-width: 2px;
+	padding: 10%;
+}</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -161,16 +161,16 @@ QLineEdit#filename {
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="boutonSupprimer">
+          <widget class="QPushButton" name="deleteButton">
            <property name="text">
             <string>Supprimer</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_6">
+          <widget class="QPushButton" name="favourite">
            <property name="text">
-            <string>PushButton</string>
+            <string>Favori</string>
            </property>
           </widget>
          </item>
@@ -269,25 +269,11 @@ QLineEdit#filename {
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>350</width>
+                 <width>348</width>
                  <height>200</height>
                 </rect>
                </property>
-               <layout class="QVBoxLayout" name="verticalLayout">
-                <item>
-                 <spacer name="verticalSpacer">
-                  <property name="orientation">
-                   <enum>Qt::Vertical</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>20</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-               </layout>
+               <layout class="QVBoxLayout" name="verticalLayout"/>
               </widget>
              </widget>
             </item>
@@ -375,7 +361,7 @@ QLineEdit#filename {
               <x>0</x>
               <y>0</y>
               <width>455</width>
-              <height>566</height>
+              <height>593</height>
              </rect>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -386,6 +372,12 @@ QLineEdit#filename {
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>30</width>
+                 <height>0</height>
+                </size>
                </property>
                <property name="text">
                 <string>&lt;</string>
@@ -437,6 +429,12 @@ QLineEdit#filename {
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="minimumSize">
+                <size>
+                 <width>30</width>
+                 <height>0</height>
+                </size>
+               </property>
                <property name="text">
                 <string>&gt;</string>
                </property>
@@ -459,7 +457,7 @@ QLineEdit#filename {
      <x>0</x>
      <y>0</y>
      <width>899</width>
-     <height>22</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>

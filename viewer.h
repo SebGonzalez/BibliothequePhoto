@@ -40,6 +40,10 @@ private slots:
 
     void on_addTag_clicked();
 
+    void on_tag_editingFinished(int i);
+
+    void on_filename_editingFinished();
+
 private:
     Ui::viewer *ui;
 
