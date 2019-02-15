@@ -30,7 +30,6 @@ SOURCES += \
     image.cpp \
     bibliothequewidget.cpp \
     landingpage.cpp \
-    ajouttag.cpp \
     mainwindowredesigned.cpp \
     viewer.cpp \
     textoverphoto.cpp \
@@ -45,7 +44,6 @@ HEADERS += \
     global_variables.h \
     bibliothequewidget.h \
     landingpage.h \
-    ajouttag.h \
     mainwindowredesigned.h \
     viewer.h \
     textoverphoto.h \
@@ -57,7 +55,6 @@ HEADERS += \
 
 FORMS += \
     landingpage.ui \
-    ajouttag.ui \
     mainwindowredesigned.ui \
     viewer.ui \
     tagdialog.ui \
