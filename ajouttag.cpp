@@ -5,7 +5,7 @@ AjoutTag::AjoutTag(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AjoutTag)
 {
-    this->setFixedSize(380, 100);
+    this->setFixedSize(480, 150);
     ui->setupUi(this);
 
     //Backgound image
