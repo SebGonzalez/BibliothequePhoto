@@ -81,19 +81,20 @@ int Bibliotheque::getPositionImage(int idPhotoD) {
 }
 
 void Bibliotheque::updatePositionPhoto(int idPhotoD, int position) {
-    Image *m = nullptr;
-    unsigned int index = 0;
-    for(unsigned int i=0; i<listeImage.size(); i++) {
+    Image m("",0, "");
+    int index = 0;
+    for(size_t i=0; i<listeImage.size(); i++) {
         if(listeImage[i].getId() == idPhotoD) {
-            m = &listeImage[i];
+            m = listeImage[i];
             index = i;
+            cout << "trouve : " << i << endl;
             break;
         }
     }
 
-    if(index < static_cast<unsigned int>(position)) position--;
+    if(index < position) position--;
     listeImage.erase(listeImage.begin() + index);
-    listeImage.insert(listeImage.begin()+position, *m);
+    listeImage.insert(listeImage.begin()+position, m);
 }
 
 void Bibliotheque::deleteTag(std::string tag){
@@ -371,11 +372,11 @@ Image* Bibliotheque::getImageById(int id)
 
 int Bibliotheque::position_from_list(std::vector<Image> listeImageFav,int position){
 
-           string path = listeImage[position].getPath();
+    string path = listeImage[position].getPath();
 
-           for(int i = 0 ; i < listeImageFav.size() ; i++)
-               if(listeImageFav[i].getPath() == path)
-                    return i;
+    for(int i = 0 ; i < listeImageFav.size() ; i++)
+        if(listeImageFav[i].getPath() == path)
+            return i;
     return -1;
 }
 
