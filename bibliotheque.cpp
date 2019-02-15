@@ -29,7 +29,6 @@ void Bibliotheque::loadImages() {
             string album = line.substr(0, comma);
             comma = comma + 2;
             std::size_t nextComma = line.find(',', comma);
-            cout << "fav : " << line.substr(comma, nextComma - comma) << " : " << stoi(line.substr(comma, nextComma - comma)) << endl;
             int fav = stoi(line.substr(comma, nextComma - comma));
 
             comma = comma + 3;
@@ -82,20 +81,19 @@ int Bibliotheque::getPositionImage(int idPhotoD) {
 }
 
 void Bibliotheque::updatePositionPhoto(int idPhotoD, int position) {
-    Image m("",0, "",0);
+    Image *m = nullptr;
     unsigned int index = 0;
     for(unsigned int i=0; i<listeImage.size(); i++) {
         if(listeImage[i].getId() == idPhotoD) {
-            m = listeImage[i];
+            m = &listeImage[i];
             index = i;
-            cout << "trouve : " << i << endl;
             break;
         }
     }
 
     if(index < static_cast<unsigned int>(position)) position--;
     listeImage.erase(listeImage.begin() + index);
-    listeImage.insert(listeImage.begin()+position, m);
+    listeImage.insert(listeImage.begin()+position, *m);
 }
 
 void Bibliotheque::deleteTag(std::string tag){
@@ -292,7 +290,6 @@ void Bibliotheque::addToFile(Image image) {
     string album = image.getAlbum();
     vector<string> tags = image.getTags();
 
-    cout << "Fav : " << image.getFav() << endl;
     addToFile(path, tags, album, image.getFav());
 }
 

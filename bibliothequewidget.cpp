@@ -48,9 +48,6 @@ void BibliothequeWidget::dragMoveEvent(QDragMoveEvent *event)
 void BibliothequeWidget::dropEvent(QDropEvent *event)
 {
     if (event->mimeData()->hasFormat(BibliothequeWidget::bibliothequeMimeType())) {
-
-        this->width();
-        //    cout << "Width : " << this->width() << endl;
         QByteArray pieceData = event->mimeData()->data(BibliothequeWidget::bibliothequeMimeType());
         QDataStream dataStream(&pieceData, QIODevice::ReadOnly);
         QPixmap pixmap;
@@ -59,8 +56,11 @@ void BibliothequeWidget::dropEvent(QDropEvent *event)
 
         int ligne = event->pos().y()/210;
         int colonne = (event->pos().x())/210;
+        int nbPhotoParLigne =  this->width()/200 - 1;
         int idPhoto = currentItem()->data(Qt::UserRole+1).toInt();
+        cout << "Widht : " << this->width() << " : " << nbPhotoParLigne << endl;
         QListWidgetItem *pieceItem = new QListWidgetItem();
+        cout << "1"<< endl;
         pieceItem->setIcon(QIcon(pixmap.scaled(200,200)));
         pieceItem->setData(Qt::UserRole, QVariant(pixmap));
         pieceItem->setData(Qt::UserRole+1, QVariant(idPhoto));
@@ -69,14 +69,15 @@ void BibliothequeWidget::dropEvent(QDropEvent *event)
 
         pieceItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
 
-
-        int rowPhoto = ligne*5 + colonne+1;
+        cout << "2"<< endl;
+        int rowPhoto = ligne*nbPhotoParLigne + colonne+1;
         if(row(currentItem()) >= rowPhoto) {
             rowPhoto--;
         }
+            cout << "3"<< endl;
         m_bibliotheque->updatePositionPhoto(idPhoto, rowPhoto);
 
-        // std::cout << ligne <<" OOOOOOOOO " << colonne << " AAAAAA " << rowPhoto << std::endl;
+         cout << "4"<< endl;
 
 
         insertItem(rowPhoto, pieceItem);
@@ -345,7 +346,6 @@ void BibliothequeWidget::displayLabel2()
 }
 
 void BibliothequeWidget::hideLabel() {
-    cout << "non" << endl;
     infos->hide();
 }
 

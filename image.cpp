@@ -55,7 +55,6 @@ string Image::getAlbum() {
 }
 
 void Image::setAlbum(string album) {
-    cout << "Album changé : " << album << endl;
    this->album = album;
 }
 
