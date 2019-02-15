@@ -39,10 +39,6 @@ private slots:
 
     void on_addTag_clicked();
 
-    void on_tag_editingFinished(int i);
-
-    void on_filename_editingFinished();
-
     void on_deleteButton_clicked();
 
     void on_comboBox_currentIndexChanged(const QString &arg1);
@@ -54,8 +50,12 @@ private:
 
     Bibliotheque *bibliotheque;
     BibliothequeWidget *bibliothequeWidget;
-    void updateInfoBar();
     void deleteImage();
+    // Infobar
+    QPushButton *addTagButton;
+    QWidget *tags;
+    vector<QLineEdit *> tag;
+    void updateInfoBar();
 
 };
 

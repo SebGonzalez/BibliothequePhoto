@@ -52,7 +52,7 @@ void tagDialog::init(){
     }
     else {
         ui->gridLayout->setAlignment(Qt::AlignTop);
-        for(int i = 0 ; i < tags.size() ; i ++){
+        for(unsigned int i = 0 ; i < tags.size() ; i ++){
             QPushButton *button = new QPushButton(tags[i].c_str());
             QPushButton *button2 = new QPushButton("Supprimer ce tag");
 
@@ -62,8 +62,8 @@ void tagDialog::init(){
             connect(button, SIGNAL(clicked()), this, SLOT(on_clickButton()));
             connect(button2, SIGNAL(clicked()), this, SLOT(on_DeleteButton()));
 
-            ui->gridLayout->addWidget(button,i,0);
-            ui->gridLayout->addWidget(button2,i,1);
+            ui->gridLayout->addWidget(button,static_cast<int>(i),0);
+            ui->gridLayout->addWidget(button2,static_cast<int>(i),1);
         }
     }
 }

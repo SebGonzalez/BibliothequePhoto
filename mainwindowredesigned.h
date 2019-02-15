@@ -35,7 +35,8 @@ public:
 private:
     Ui::MainWindowRedesigned *ui;
     BibliothequeWidget *bibliothequeWidget;
-
+    Bibliotheque biblio;
+    vector<Image> image_affichees;
 
 
 private slots:

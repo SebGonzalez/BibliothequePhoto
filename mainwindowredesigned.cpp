@@ -1,23 +1,11 @@
-    #include "mainwindowredesigned.h"
+#include "mainwindowredesigned.h"
 #include "ui_mainwindowredesigned.h"
-
-
-
 #include "tagdialog.h"
-
-
 #include "bibliotheque.h"
-
 #include "landingpage.h"
 #include "image.h"
-
 #include <QFileDialog>
-
- Bibliotheque biblio;
- vector<Image> image_affichees;
-
 #include "viewer.h"
-
 #include <QPixmap>
 #include <iostream>
 #include <qdebug.h>
@@ -28,7 +16,6 @@
 #include <QGridLayout>
 
 using namespace std;
-
 
 MainWindowRedesigned::MainWindowRedesigned(QWidget *parent) :
     QMainWindow(parent),
@@ -45,8 +32,7 @@ MainWindowRedesigned::MainWindowRedesigned(QWidget *parent) :
     for(unsigned int i = 0; i < biblio.getlisteImage().size(); i++) {
         QPixmap pixmap = QPixmap::fromImage(*biblio.getlisteImage()[i].getQImage());
         pixmap = pixmap.scaledToWidth(200);
-        //pixmap.scaledToHeight(200);
-          bibliothequeWidget->addPiece(pixmap.scaled(200,200), biblio.getlisteImage()[i].getId(), biblio.getlisteImage()[i].getTagsString());
+        bibliothequeWidget->addPiece(pixmap.scaled(200,200), biblio.getlisteImage()[i].getId(), biblio.getlisteImage()[i].getTagsString());
     }
 
    frameLayout->addWidget(bibliothequeWidget);
@@ -54,17 +40,16 @@ MainWindowRedesigned::MainWindowRedesigned(QWidget *parent) :
    connect(ui->bibliButton,SIGNAL(clicked()),this,SLOT(load_selection_on_click()));
    connect(ui->importerButton,SIGNAL(clicked()),this,SLOT(import_on_click()));
    connect(bibliothequeWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(displayViewer(QListWidgetItem*)));
-   connect(ui->favButton, SIGNAL(clicked()), this, SLOT(on_pushButton_clicked()));
+   connect(ui->favButton, SIGNAL(clicked()), this, SLOT(on_favButton_clicked()));
 
 }
 
 MainWindowRedesigned::~MainWindowRedesigned()
 {
-    cout << "On save les modifs" << endl;
     //Reset file and save all updated data before closing
     biblio.initDataFile();
-    for (unsigned int i = 0; i < biblio.getImgListSize(); i++) {
-        biblio.addToFile(biblio.getlisteImage()[i]);
+    for (int i = 0; i < biblio.getImgListSize(); i++) {
+        biblio.addToFile(biblio.getlisteImage()[static_cast<unsigned int>(i)]);
     }
     delete ui;
 }
@@ -107,10 +92,9 @@ void MainWindowRedesigned:: import_on_click(){
     biblio.loadImages();
     vector <Image> selection = biblio.getlisteImage();
 
-    for(unsigned int i = 0; i < biblio.getImgListSize(); i++) {
+    for(unsigned int i = 0; i < static_cast<unsigned int>(biblio.getImgListSize()); i++) {
         QPixmap pixmap = QPixmap::fromImage(*selection[i].getQImage());
         pixmap = pixmap.scaledToWidth(200);
-        //pixmap.scaledToHeight(200);
         bibliothequeWidget->addPiece(pixmap.scaled(200,200), selection[i].getId(), selection[i].getTagsString());
     }
 
@@ -157,13 +141,12 @@ void MainWindowRedesigned::displayViewer(QListWidgetItem *item)
     int idPhoto = item->data(Qt::UserRole+1).toInt();
     int position = biblio.getPositionImage(idPhoto);
     viewer *dialog;
-    if(biblio.fav_window == true){
 
+    if(biblio.fav_window == true){
         position = biblio.position_from_list(biblio.getFavImages(),idPhoto);
         dialog = new viewer(position, biblio, *bibliothequeWidget,biblio.getFavImages());
-
     }
-    else if(biblio.fav_window == false)
+    else
          dialog = new viewer(position, biblio, *bibliothequeWidget);
 
      dialog->show();

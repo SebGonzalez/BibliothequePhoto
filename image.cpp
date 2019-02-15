@@ -3,18 +3,6 @@
 #include <iostream>
 using namespace std;
 
-Image::Image(string chemin, int id, string album)
-{
-    this->album = album;
-    this->id = id;
-    this->chemin = chemin;
-    this->image = new QImage(QString::fromStdString(chemin));
-    if(image->isNull()) {
-        qDebug() << "Erreur lors de l'ouverture" << endl;
-    }
-    this->fav = false;
-}
-
 Image::Image(string chemin, int id, string album, int fav)
 {
     this->album = album;
@@ -25,20 +13,6 @@ Image::Image(string chemin, int id, string album, int fav)
         qDebug() << "Erreur lors de l'ouverture" << endl;
     }
     this->fav = fav;
-}
-
-Image::Image(string chemin, vector<string> tags, int id, string album)
-{
-    this->album = album;
-    this->id = id;
-    this->chemin    = chemin;
-    this->tags      = tags;
-    this->image     = new QImage(QString::fromStdString(chemin));
-    if(image->isNull()) {
-        qDebug() << "Erreur lors de l'ouverture" << endl;
-    }
-
-     this->fav = false;
 }
 
 Image::Image(string chemin, vector<string> tags, int id, string album, int fav)
