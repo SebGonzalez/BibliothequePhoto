@@ -115,6 +115,43 @@ viewer::viewer(int position, Bibliotheque &bibliotheque, BibliothequeWidget &bib
 
     //info widget
     ui->infoMenu->hide();
+    //icons
+    //Zoom in
+    QPixmap pixmap("../BibliothequePhoto/icons/zoom-in.png");
+    QIcon ButtonIcon(pixmap);
+    ui->zoom->setIcon(ButtonIcon);
+
+    //Zoom out
+    QPixmap pixmap2("../BibliothequePhoto/icons/zoom-out.png");
+    QIcon ButtonIcon2(pixmap2);
+    ui->zoomOut->setIcon(ButtonIcon2);
+
+    //Rotate
+    QPixmap pixmap3("../BibliothequePhoto/icons/rotate.svg");
+    QIcon ButtonIcon3(pixmap3);
+    ui->rotate->setIcon(ButtonIcon3);
+
+    //Delete
+    QPixmap pixmap4("../BibliothequePhoto/icons/delete.svg");
+    QIcon ButtonIcon4(pixmap4);
+    ui->deleteButton->setIcon(ButtonIcon4);
+
+    //Info
+    QPixmap pixmap5("../BibliothequePhoto/icons/info.svg");
+    QIcon ButtonIcon5(pixmap5);
+    ui->info->setIcon(ButtonIcon5);
+
+    //Favori
+    if (this->liste_image[this->position].getFav() == 0) {
+        QPixmap pixmap6("../BibliothequePhoto/icons/star.svg");
+        QIcon ButtonIcon6(pixmap6);
+        ui->favourite->setIcon(ButtonIcon6);
+    }
+    else {
+        QPixmap pixmap6("../BibliothequePhoto/icons/star-filled.svg");
+        QIcon ButtonIcon6(pixmap6);
+        ui->favourite->setIcon(ButtonIcon6);
+    }
 }
 
 viewer::~viewer()
