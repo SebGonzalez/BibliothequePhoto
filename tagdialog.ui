@@ -6,43 +6,189 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>444</width>
-    <height>265</height>
+    <width>556</width>
+    <height>335</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QWidget" name="gridLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>40</y>
-     <width>421</width>
-     <height>211</height>
-    </rect>
+  <property name="styleSheet">
+   <string notr="true">QDialog {
+	background-color: white;
+}
+
+QWidget {
+	background-color : white;
+}
+
+QLabel#header{
+	font: 57 24pt &quot;Ubuntu&quot;;
+	font-weight: bold;
+	padding : 15%;
+	margin-right: 150%;
+}
+
+QLabel#indication {
+	font: 57 12pt &quot;Ubuntu&quot;;
+	font-style: italic;
+	margin-right: 150%;
+	padding-right : 15%;
+
+}
+
+QLabel#placeholder{
+	font: 57 12pt &quot;Ubuntu&quot;;
+	font-style: italic;
+}
+
+QScrollArea {
+	border:none;
+}
+
+QPushButton {
+	color: rgb(71, 71, 71);
+	font-size: 12pt;
+	margin: 20%;
+	padding: 10%;
+	border-style: outset;
+	border-width: 3px;
+	border-color:  rgb(71, 71, 71);
+}
+
+QPushButton:hover {
+	color: white;
+	background-color: rgb(71, 71, 71);
+	border:none;
+}</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>0</number>
    </property>
-   <layout class="QGridLayout" name="gridLayout"/>
-  </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>190</x>
-     <y>0</y>
-     <width>81</width>
-     <height>31</height>
-    </rect>
+   <property name="bottomMargin">
+    <number>1</number>
    </property>
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-     <horstretch>50</horstretch>
-     <verstretch>51</verstretch>
-    </sizepolicy>
-   </property>
-   <property name="text">
-    <string>Mes tags</string>
-   </property>
-  </widget>
+   <item>
+    <widget class="QWidget" name="widget" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="spacing">
+         <number>7</number>
+        </property>
+        <property name="sizeConstraint">
+         <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
+        <item>
+         <widget class="QLabel" name="header">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>50</horstretch>
+            <verstretch>51</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Tous les tags</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="widget_2" native="true">
+     <layout class="QVBoxLayout" name="verticalLayout_4">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="indication">
+          <property name="text">
+           <string>   Sélectionnez un tag ci-dessous afin d'afficher les images qui le contiennent.</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents_3">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>538</width>
+        <height>199</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <layout class="QGridLayout" name="gridLayout">
+         <property name="horizontalSpacing">
+          <number>40</number>
+         </property>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

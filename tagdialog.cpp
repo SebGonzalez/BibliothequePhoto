@@ -19,8 +19,6 @@ tagDialog::tagDialog(Bibliotheque bibliotheque):
 {
     ui->setupUi(this);
     biblio_ = bibliotheque;
-    ui->label->setStyleSheet("font-weight: bold");
-    QSizePolicy *size = new QSizePolicy();
     init();
 
  }
@@ -44,33 +42,29 @@ void tagDialog::on_DeleteButton(){
 void tagDialog::init(){
 
     tags = biblio_.getAllTags();
-    for(int i = 0 ; i < tags.size() ; i ++){
-        QPushButton *button = new QPushButton(tags[i].c_str());
-        QPushButton *button2 = new QPushButton("Supprimer le tag");
 
-        button->setObjectName(tags[i].c_str());
-        button2->setObjectName(tags[i].c_str());
+    if (tags.size() < 1) {
+        ui->gridLayout->setAlignment(Qt::AlignCenter);
+        QLabel *placeholder = new QLabel("Aucun tag enregistré.");
+        placeholder->setObjectName("placeholder");
+        ui->gridLayout->addWidget(placeholder);
 
-        graphicsEffects(button);
+    }
+    else {
+        ui->gridLayout->setAlignment(Qt::AlignTop);
+        for(int i = 0 ; i < tags.size() ; i ++){
+            QPushButton *button = new QPushButton(tags[i].c_str());
+            QPushButton *button2 = new QPushButton("Supprimer ce tag");
 
-        connect(button, SIGNAL(clicked()), this, SLOT(on_clickButton()));
-        connect(button2, SIGNAL(clicked()), this, SLOT(on_DeleteButton()));
+            button->setObjectName(tags[i].c_str());
+            button2->setObjectName(tags[i].c_str());
 
+            connect(button, SIGNAL(clicked()), this, SLOT(on_clickButton()));
+            connect(button2, SIGNAL(clicked()), this, SLOT(on_DeleteButton()));
 
-        ui->gridLayout->addWidget(button,i,0);
-        ui->gridLayout->addWidget(button2,i,1);
-
-
-
-   }
+            ui->gridLayout->addWidget(button,i,0);
+            ui->gridLayout->addWidget(button2,i,1);
+        }
+    }
 }
-
-void tagDialog::graphicsEffects(QPushButton *button){
-    button->setStyleSheet("border: 1px solid black; background: white;");
-    button->setStyleSheet(" QPushButton:hover{background: grey;}");
-    button->resize(150,20);
-    button->setMinimumSize(150,20);
-}
-
-
 
