@@ -47,6 +47,8 @@ private slots:
     void on_tagsButton_clicked();
     void on_Album_pressed();
     void on_pushButton_clicked();
+    void on_favButton_clicked(bool checked);
+    void on_favButton_clicked();
 };
 
 #endif // MAINWINDOWREDESIGNED_H
