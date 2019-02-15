@@ -28,6 +28,7 @@ public:
     explicit MainWindowRedesigned(QWidget *parent = nullptr);
     ~MainWindowRedesigned();
     void refresh_bibliotheque_view();
+      bool getEmptyBibliotheque();
 
 
 

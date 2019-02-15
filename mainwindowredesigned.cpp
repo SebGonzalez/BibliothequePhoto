@@ -2,7 +2,6 @@
 #include "ui_mainwindowredesigned.h"
 
 
-#include "ui_mainwindow.h"
 
 #include "tagdialog.h"
 
@@ -211,5 +210,15 @@ void MainWindowRedesigned::on_pushButton_clicked()
           pixmap = pixmap.scaledToWidth(200);
           bibliothequeWidget->addPiece(pixmap.scaled(200,200), image_affichees[i].getId(), image_affichees[i].getTagsString());
       }
+
+}
+
+
+bool MainWindowRedesigned::getEmptyBibliotheque(){
+
+if(biblio.getImgListSize() == 0)
+    return true;
+
+return false;
 
 }
