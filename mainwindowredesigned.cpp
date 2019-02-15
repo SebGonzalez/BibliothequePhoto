@@ -26,6 +26,10 @@ MainWindowRedesigned::MainWindowRedesigned(QWidget *parent) :
         LandingPage *lp = new LandingPage(&biblio);
         lp->exec();
         biblio.loadImages();
+        if( biblio.getlisteImage().size() == 0) {
+           return;
+       }
+
     }
 
 
