@@ -7,6 +7,7 @@
 #include <QStandardItemModel>
 #include <algorithm>
 #include "confirmdelete.h"
+#include "ajouttagdialog.h"
 
 using namespace std;
 static QImage *original = new QImage("../BibliothequePhoto/firstbackground.jpg");
@@ -180,7 +181,6 @@ void viewer::on_info_clicked()
             tag[i]->setText(QString::fromStdString(currentTag));
             //connect(tag[i], SIGNAL(editingFinished()), this, SLOT(on_tag_editingFinished(i)));
             tags->layout()->addWidget(tag[i]);
-            cout << thisImage.getTags()[i] << endl;
         }
         //TODO Spacer in tagScrollArea
 //        QObject *spacer = ui->tagScrollArea->children()[0];
@@ -212,6 +212,7 @@ void viewer::on_addTag_clicked(){
 
     //Setup the combobox
     QComboBox *otherTags = new QComboBox();
+    tags->layout()->removeWidget(otherTags);
     otherTags->addItem("Autres tags...");
     QStandardItemModel* model =
             qobject_cast<QStandardItemModel*>(otherTags->model());
@@ -275,6 +276,7 @@ void viewer::on_filename_editingFinished()
     bibliotheque->removeImage(thisImage.getId());
     Image *renamedImg = new Image(newPath, thisImage.getTags(), thisImage.getId(), thisImage.getAlbum());
     bibliotheque->addImage(*renamedImg);
+    this->bibliothequeWidget->refreshView();
 
     //update the viewer
     liste_image[position] = *renamedImg;
@@ -285,10 +287,24 @@ void viewer::on_filename_editingFinished()
 
 void viewer::on_comboBox_currentIndexChanged(const QString &arg1)
 {
-    bibliotheque->addTag(liste_image[position].getChemin(), arg1.toStdString());
-    this->liste_image = bibliotheque->getlisteImage();
-    bibliotheque->addTag(this->liste_image[position].getId(), arg1.toStdString());
-    ui->infoMenu->hide(); //updateInfoBar(); ne marche pas
+    if (arg1.compare("Nouveau tag...") != 0) {
+        bibliotheque->addTag(liste_image[position].getChemin(), arg1.toStdString());
+        this->liste_image = bibliotheque->getlisteImage();
+        bibliotheque->addTag(this->liste_image[position].getId(), arg1.toStdString());
+        this->liste_image[position].addTag(arg1.toStdString());
+        /*ui->infoMenu->hide(); //*/updateInfoBar();// ne marche pas
+    }
+    else {
+        AjoutTagDialog *atd = new AjoutTagDialog;
+        atd->exec();
+        QString newTag = atd->getValue();
+        if(newTag.compare("") != 0) {
+            bibliotheque->addTag(liste_image[position].getChemin(), newTag.toStdString());
+            bibliotheque->addTag(this->liste_image[position].getId(), arg1.toStdString());
+            this->liste_image[position].addTag(newTag.toStdString());
+            ui->infoMenu->hide();
+        }
+    }
 
 }
 

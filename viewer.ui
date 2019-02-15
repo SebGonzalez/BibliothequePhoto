@@ -72,7 +72,7 @@ QWidget#infoMenu {
 	background-color: rgb(203, 203, 203);
 }
 
-QLineEdit {
+QLineEdit, QComboBox {
 	color: black;
 	background-color:transparent;
 	border-style: outset;
