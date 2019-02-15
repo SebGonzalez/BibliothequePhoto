@@ -97,8 +97,14 @@ QPushButton#quitButton {
 	border-width: 2px;
 }
 
-QLineEdit#filename {
-	margin-bottom: 30px
+QLabel#filename {
+	margin-bottom: 30px;
+	color: black;
+	background-color:transparent;
+	border-style: outset;
+	border-width: 2px;
+	border-color: black;
+	padding: 8% 5% 8% 5%;
 }
 
 QPushButton#zoom, QPushButton#zoomOut, QPushButton#rotate, QPushButton#info, QPushButton#deleteButton, QPushButton#favourite {
@@ -270,24 +276,10 @@ QPushButton#zoom, QPushButton#zoomOut, QPushButton#rotate, QPushButton#info, QPu
               </property>
              </widget>
             </item>
-            <item row="7" column="0">
-             <widget class="QLabel" name="dimensions">
+            <item row="4" column="0">
+             <widget class="QLabel" name="sizeHeader">
               <property name="text">
-               <string>height x width</string>
-              </property>
-             </widget>
-            </item>
-            <item row="6" column="0">
-             <widget class="QLabel" name="dimensionsHeader">
-              <property name="text">
-               <string>Dimensions</string>
-              </property>
-             </widget>
-            </item>
-            <item row="5" column="0">
-             <widget class="QLabel" name="size">
-              <property name="text">
-               <string>DisplayTaille</string>
+               <string>Taille</string>
               </property>
              </widget>
             </item>
@@ -304,6 +296,20 @@ QPushButton#zoom, QPushButton#zoomOut, QPushButton#rotate, QPushButton#info, QPu
               </property>
              </widget>
             </item>
+            <item row="6" column="0">
+             <widget class="QLabel" name="dimensionsHeader">
+              <property name="text">
+               <string>Dimensions</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="filename">
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
             <item row="0" column="0" rowspan="2">
              <widget class="QLabel" name="header">
               <property name="sizePolicy">
@@ -317,20 +323,24 @@ QPushButton#zoom, QPushButton#zoomOut, QPushButton#rotate, QPushButton#info, QPu
               </property>
              </widget>
             </item>
-            <item row="4" column="0">
-             <widget class="QLabel" name="sizeHeader">
-              <property name="text">
-               <string>Taille</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="0">
-             <widget class="QLineEdit" name="filename"/>
-            </item>
             <item row="8" column="0">
              <widget class="QLabel" name="tagHeader">
               <property name="text">
                <string>Tags</string>
+              </property>
+             </widget>
+            </item>
+            <item row="7" column="0">
+             <widget class="QLabel" name="dimensions">
+              <property name="text">
+               <string>height x width</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="0">
+             <widget class="QLabel" name="size">
+              <property name="text">
+               <string>DisplayTaille</string>
               </property>
              </widget>
             </item>

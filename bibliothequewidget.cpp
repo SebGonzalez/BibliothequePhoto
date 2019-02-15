@@ -17,7 +17,7 @@ BibliothequeWidget::BibliothequeWidget(int pieceSize, QWidget *parent, Bibliothe
     setItemDelegate(textOver);
 
     this->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),this, SLOT(ShowContextMenu(const QPoint&)));
+    connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),this, SLOT(ShowContextMenu()));
 
      connect(timer, SIGNAL(timeout()), this, SLOT(displayLabel()));
     timer->start(1500);
@@ -130,7 +130,7 @@ void BibliothequeWidget::refreshFavView(){
 }
 
 
-void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
+void BibliothequeWidget::ShowContextMenu()
 {
     infos->clear();
     infos->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
@@ -325,13 +325,13 @@ void BibliothequeWidget::displayLabel2(QListWidgetItem* item)
         Image *Img = m_bibliotheque->getImageById(idPhoto);
         QString chemin = QString::fromStdString( Img->getChemin());
         QString album = QString::fromStdString( Img->getAlbum());
-        float size = m_bibliotheque->GetFileSize(*Img)/1000;
+        double size = m_bibliotheque->GetFileSize(*Img)/1000;
         QSize dimension = m_bibliotheque->getDimension(*Img);
         QString dimensionW = QString::number(dimension.width());
         QString dimensionH = QString::number(dimension.height());
         vector <string> tags = Img->getTags();
         QString stringTags = "Tags : ";
-        for (int i = 0; i < tags.size(); ++i) {
+        for (unsigned int i = 0; i < tags.size(); ++i) {
             stringTags = stringTags + " " + QString::fromStdString(tags[i]);
             if(i!=tags.size()-1){
                 stringTags = stringTags + ", " ;

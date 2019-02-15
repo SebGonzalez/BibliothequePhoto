@@ -81,20 +81,19 @@ int Bibliotheque::getPositionImage(int idPhotoD) {
 }
 
 void Bibliotheque::updatePositionPhoto(int idPhotoD, int position) {
-    Image m("",0, "");
-    int index = 0;
-    for(size_t i=0; i<listeImage.size(); i++) {
+    Image *m = nullptr;
+    unsigned int index = 0;
+    for(unsigned int i=0; i<listeImage.size(); i++) {
         if(listeImage[i].getId() == idPhotoD) {
-            m = listeImage[i];
+            m = &listeImage[i];
             index = i;
-        //    cout << "trouve : " << i << endl;
             break;
         }
     }
 
-    if(index < position) position--;
+    if(index < static_cast<unsigned int>(position)) position--;
     listeImage.erase(listeImage.begin() + index);
-    listeImage.insert(listeImage.begin()+position, m);
+    listeImage.insert(listeImage.begin()+position, *m);
 }
 
 void Bibliotheque::deleteTag(std::string tag){
@@ -146,8 +145,8 @@ void Bibliotheque::addDirectory(string cheminDossier) {
     cout << "Lecture des fichiers : " << cheminDossier << endl;
     DIR *dir;
     struct dirent *ent;
-    if ((dir = opendir (cheminDossier.c_str())) != NULL) {
-        while ((ent = readdir (dir)) != NULL) {
+    if ((dir = opendir (cheminDossier.c_str())) != nullptr) {
+        while ((ent = readdir (dir)) != nullptr) {
             QString nomFichier(ent->d_name);
             string extension = nomFichier.section(".", -1).toStdString();
             if(extension == "png" || extension == "jpg" || extension == "jpeg") {
@@ -255,11 +254,11 @@ vector<Image> Bibliotheque::getFavImages() {
 
 
 void Bibliotheque::setFav(int id){
-    listeImage[id].setFav();
+    listeImage[static_cast<unsigned int>(id)].setFav();
 }
 
 void Bibliotheque::delFav(int id){
-    listeImage[id].delFav();
+    listeImage[static_cast<unsigned int>(id)].delFav();
 }
 
 
@@ -372,11 +371,11 @@ Image* Bibliotheque::getImageById(int id)
 
 int Bibliotheque::position_from_list(std::vector<Image> listeImageFav,int position){
 
-    string path = listeImage[position].getPath();
+           string path = listeImage[static_cast<unsigned int>(position)].getPath();
 
-    for(int i = 0 ; i < listeImageFav.size() ; i++)
-        if(listeImageFav[i].getPath() == path)
-            return i;
+           for(unsigned int i = 0 ; i < listeImageFav.size() ; i++)
+               if(listeImageFav[i].getPath() == path)
+                    return static_cast<int>(i);
     return -1;
 }
 
