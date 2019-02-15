@@ -192,10 +192,10 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
 
         }
         else if(!QString::compare(selectedTag->iconText(),"Nouveau tag")){
-            AjoutTag *ajout = new AjoutTag(this);
+            AjoutTagDialog *ajout = new AjoutTagDialog(this);
             ajout->exec();
             if(ajout->result() != 0){
-                string addedTag = ajout->tagName;
+                string addedTag = ajout->getValue().toStdString();
                 if(addedTag.size() != 0){
                     for (int i = 0; i < listeItems.size(); i++) {
                         int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
@@ -216,10 +216,11 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
         }
         else if(selectedTag == albumsMenu) {
             cout << "Nouvel album" << endl;
-            AjoutTag *ajout = new AjoutTag(this);
+            AjoutTagDialog *ajout = new AjoutTagDialog(this);
+            ajout->setObjectName("Ajout");
             ajout->exec();
             if(ajout->result() != 0){
-                string addedAlbum = ajout->tagName;
+                string addedAlbum = ajout->getValue().toStdString();
                 if(addedAlbum.size() != 0){
                     for (int i = 0; i < listeItems.size(); i++) {
                         int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();

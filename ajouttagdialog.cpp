@@ -16,7 +16,7 @@ AjoutTagDialog::~AjoutTagDialog()
 
 void AjoutTagDialog::on_buttonBox_accepted()
 {
-    value = ui->lineEdit->text();
+    value = ui->tag->text();
 }
 
 void AjoutTagDialog::on_buttonBox_rejected()

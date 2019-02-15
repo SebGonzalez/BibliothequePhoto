@@ -2,7 +2,7 @@
 #define BIBLIOTHEQUEWIDGET_H
 
 #include "bibliotheque.h"
-#include "ajouttag.h"
+#include "ajouttagdialog.h"
 #include "textoverphoto.h"
 
 #include <QDrag>
