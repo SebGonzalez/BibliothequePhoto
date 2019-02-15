@@ -44,6 +44,8 @@ private slots:
 
     void on_deleteButton_clicked();
 
+    void on_comboBox_currentIndexChanged(const QString &arg1);
+
 private:
     Ui::viewer *ui;
 

@@ -4,6 +4,7 @@
 #include <QLabel>
 #include <QPixmap>
 #include <QComboBox>
+#include <QStandardItemModel>
 #include <algorithm>
 #include "confirmdelete.h"
 
@@ -91,9 +92,9 @@ viewer::~viewer()
     delete ui;
 }
 
-/********************
- *        ZOOM      *
- * ******************/
+/*****************************************************************************************
+ *                                         ZOOM                                          *
+ *****************************************************************************************/
 
 static double zoomLevel = 1.0;
 
@@ -113,7 +114,9 @@ void viewer::on_zoomOut_clicked()
     ui->current_picture->setPixmap(scaled);
 }
 
-/****************************************************************************************/
+/*****************************************************************************************
+ *                                         ROTATION                                      *
+ *****************************************************************************************/
 
 void viewer::on_rotate_clicked()
 {
@@ -125,6 +128,10 @@ void viewer::on_rotate_clicked()
     ui->current_picture->setPixmap(QPixmap::fromImage(*current_picture).scaledToWidth(scaled_size.width()));
     this->rotate += 90 % 360;
 }
+
+/*****************************************************************************************
+ *                                     INFOBAR                                           *
+ *****************************************************************************************/
 QPushButton *addTagButton;
 QWidget *tags;
 vector<QLineEdit *> tag;
@@ -135,13 +142,11 @@ void viewer::on_info_clicked()
     if(ui->infoMenu->isHidden()) {
         ui->infoMenu->show();
 
-
         /**************************************************************
          *                          Infobar data
          * ************************************************************/
         Image thisImage = liste_image[position];
         //Show filename
-        //TODO Parse only filename without extension to allow modification
         string fullpath = thisImage.getChemin();
         unsigned long long lastSlash = fullpath.find_last_of('/');
         unsigned long long extension = fullpath.find_last_of('.');
@@ -166,7 +171,7 @@ void viewer::on_info_clicked()
 
         //Create lineEdit for each tag
         tags = new QWidget(ui->tagScrollArea);
-        //ui->tagScrollArea->setStyleSheet("background : transparent");
+        ui->tagScrollArea->setStyleSheet("background : transparent");
         tags->setLayout(new QVBoxLayout());
         tag.clear();
         for (int i = 0; i < thisImage.getTags().size(); i++) {
@@ -188,7 +193,6 @@ void viewer::on_info_clicked()
         addTagButton->setText("Ajouter un tag");
         connect(addTagButton,SIGNAL(clicked()),this,SLOT(on_addTag_clicked()));
         tags->layout()->addWidget(addTag);
-
     }
     else {
         ui->infoMenu->hide();
@@ -205,7 +209,16 @@ void viewer::on_tag_editingFinished(int i) {
 }
 void viewer::on_addTag_clicked(){
     addTagButton->hide();
-    QComboBox *otherTags = new QComboBox(ui->tagScrollArea);
+
+    //Setup the combobox
+    QComboBox *otherTags = new QComboBox();
+    otherTags->addItem("Autres tags...");
+    QStandardItemModel* model =
+            qobject_cast<QStandardItemModel*>(otherTags->model());
+    QModelIndex firstIndex = model->index(0, otherTags->modelColumn(),
+            otherTags->rootModelIndex());
+    QStandardItem* firstItem = model->itemFromIndex(firstIndex);
+    firstItem->setSelectable(false);
 
     //Add remaining existing tags to the combobox
     Image thisImage = liste_image[position];
@@ -217,12 +230,71 @@ void viewer::on_addTag_clicked(){
             otherTags->addItem(QString::fromStdString(tag));
         }
     }
+
     //Possibility to add a non-existing tag
     otherTags->addItem(QString::fromStdString("Nouveau tag..."));
-
     tags->layout()->addWidget(otherTags);
+    connect(otherTags,SIGNAL(currentIndexChanged(QString)),this,SLOT(on_comboBox_currentIndexChanged(const QString)));
+
+}
+void viewer::updateInfoBar() {
+    if (ui->infoMenu->isHidden()) {
+        on_info_clicked();
+        ui->infoMenu->hide();
+    }
+    else {
+        ui->infoMenu->hide();
+        on_info_clicked();
+    }
 }
 
+
+void viewer::on_quitButton_clicked()
+{
+    on_info_clicked();
+}
+
+
+void viewer::on_filename_editingFinished()
+{ //Rename file
+    Image thisImage = liste_image[position];
+    string fullpath = thisImage.getChemin();
+
+    unsigned long long lastSlash = fullpath.find_last_of('/');
+    unsigned long long extension = fullpath.find_last_of('.');
+
+    string path = fullpath.substr(0        , lastSlash + 1);
+    string ext  = fullpath.substr(extension, fullpath.size());
+    string newPath = path + ui->filename->text().toStdString() + ext;
+
+    //update in file system
+    QFile f(QString::fromStdString(fullpath));
+    f.rename(QString::fromStdString(newPath));
+
+    //update in bibliotheque
+    bibliotheque->removeImage(thisImage.getId());
+    Image *renamedImg = new Image(newPath, thisImage.getTags(), thisImage.getId(), thisImage.getAlbum());
+    bibliotheque->addImage(*renamedImg);
+
+    //update the viewer
+    liste_image[position] = *renamedImg;
+    this->liste_image = bibliotheque->getlisteImage();
+    ui->current_picture->setPixmap(QPixmap::fromImage(*thisImage.getQImage()));
+}
+
+
+void viewer::on_comboBox_currentIndexChanged(const QString &arg1)
+{
+    bibliotheque->addTag(liste_image[position].getChemin(), arg1.toStdString());
+    this->liste_image = bibliotheque->getlisteImage();
+    bibliotheque->addTag(this->liste_image[position].getId(), arg1.toStdString());
+    ui->infoMenu->hide(); //updateInfoBar(); ne marche pas
+
+}
+
+/*****************************************************************************************
+ *                               NEXT/PREVIOUS                                           *
+ *****************************************************************************************/
 void viewer::on_next_picture_clicked()
 {
     this->rotate = 90;
@@ -256,18 +328,9 @@ void viewer::on_previous_picture_clicked()
     updateInfoBar();
 }
 
-void viewer::updateInfoBar() {
-    if (ui->infoMenu->isHidden()) {
-        on_info_clicked();
-        ui->infoMenu->hide();
-    }
-    else {
-        ui->infoMenu->hide();
-        on_info_clicked();
-    }
-}
-
-
+/*****************************************************************************************
+ *                                     DELETE                                            *
+ *****************************************************************************************/
 void viewer::deleteImage()
 {
     bibliotheque->removeImage(this->liste_image[this->position].getId());
@@ -283,43 +346,11 @@ void viewer::deleteImage()
     this->bibliothequeWidget->refreshView();
 }
 
-void viewer::on_quitButton_clicked()
-{
-    on_info_clicked();
-}
-
-
-void viewer::on_filename_editingFinished()
-{ //Rename file
-    Image thisImage = liste_image[position];
-    string fullpath = thisImage.getChemin();
-
-    unsigned long long lastSlash = fullpath.find_last_of('/');
-    unsigned long long extension = fullpath.find_last_of('.');
-
-    string path = fullpath.substr(0        , lastSlash + 1);
-    string ext  = fullpath.substr(extension, fullpath.size());
-    string newPath = path + ui->filename->text().toStdString() + ext;
-
-    //update in file system
-    QFile f(QString::fromStdString(fullpath));
-    f.rename(QString::fromStdString(newPath));
-    
-    //update in bibliotheque
-    bibliotheque->removeImage(thisImage.getId());
-    Image *renamedImg = new Image(newPath, thisImage.getTags(), thisImage.getId(), thisImage.getAlbum());
-    bibliotheque->addImage(*renamedImg);
-
-    //update the viewer
-    liste_image[position] = *renamedImg;
-    this->liste_image = bibliotheque->getlisteImage();
-    ui->current_picture->setPixmap(QPixmap::fromImage(*thisImage.getQImage()));
-}
-
 void viewer::on_deleteButton_clicked()
 {
     confirmDelete *cd = new confirmDelete();
     cd->exec();
     if(cd->getValue() == true)
         deleteImage();
+    delete cd;
 }
