@@ -9,11 +9,13 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-//   MainWindow w;
-//    w.show();
-    LandingPage *lp = new LandingPage();
-    lp->exec();
+
     MainWindowRedesigned m;
+    if(m.getEmptyBibliotheque() == true){
+        LandingPage *lp = new LandingPage();
+        lp->exec();
+
+    }
     m.show();
 
     return a.exec();

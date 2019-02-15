@@ -2,7 +2,6 @@
 #include "ui_mainwindowredesigned.h"
 
 
-#include "ui_mainwindow.h"
 
 #include "tagdialog.h"
 
@@ -55,6 +54,7 @@ MainWindowRedesigned::MainWindowRedesigned(QWidget *parent) :
    connect(ui->bibliButton,SIGNAL(clicked()),this,SLOT(load_selection_on_click()));
    connect(ui->importerButton,SIGNAL(clicked()),this,SLOT(import_on_click()));
    connect(bibliothequeWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(displayViewer(QListWidgetItem*)));
+   connect(ui->favButton, SIGNAL(clicked()), this, SLOT(on_pushButton_clicked()));
 
 }
 
@@ -193,23 +193,35 @@ void MainWindowRedesigned::on_tagsButton_clicked()
 
 void MainWindowRedesigned::on_Album_pressed()
 {
+    qDebug() << "test";
     AlbumDialog *albumDialog = new AlbumDialog(biblio, *bibliothequeWidget);
     albumDialog->exec();
 
 }
 
-void MainWindowRedesigned::on_pushButton_clicked()
+
+
+bool MainWindowRedesigned::getEmptyBibliotheque(){
+
+if(biblio.getImgListSize() == 0)
+    return true;
+
+return false;
+
+}
+
+
+
+void MainWindowRedesigned::on_favButton_clicked()
 {
+    biblio.fav_window = true;
+    ui->titre->setText("Mes favoris");
 
-      biblio.fav_window = true;
-      ui->titre->setText("Mes favoris");
-
-      image_affichees  = biblio.getFavImages();
-      bibliothequeWidget->clear();
-      for(unsigned int i = 0; i < image_affichees.size(); i++) {
-          QPixmap pixmap = QPixmap::fromImage(*image_affichees[i].getQImage());
-          pixmap = pixmap.scaledToWidth(200);
-          bibliothequeWidget->addPiece(pixmap.scaled(200,200), image_affichees[i].getId(), image_affichees[i].getTagsString());
-      }
-
+    image_affichees  = biblio.getFavImages();
+    bibliothequeWidget->clear();
+    for(unsigned int i = 0; i < image_affichees.size(); i++) {
+        QPixmap pixmap = QPixmap::fromImage(*image_affichees[i].getQImage());
+        pixmap = pixmap.scaledToWidth(200);
+        bibliothequeWidget->addPiece(pixmap.scaled(200,200), image_affichees[i].getId(), image_affichees[i].getTagsString());
+    }
 }
