@@ -182,17 +182,14 @@ void viewer::on_info_clicked()
             //connect(tag[i], SIGNAL(editingFinished()), this, SLOT(on_tag_editingFinished(i)));
             tags->layout()->addWidget(tag[i]);
         }
-        //TODO Spacer in tagScrollArea
-//        QObject *spacer = ui->tagScrollArea->children()[0];
-        ui->tagScrollArea->setWidget(tags);
 
         //New link for add tag
-        QWidget *addTag = new QWidget(ui->tagScrollArea);
-        addTagButton = new QPushButton(addTag);
-
+        addTagButton = new QPushButton();
         addTagButton->setText("Ajouter un tag");
+        addTagButton->setStyleSheet("margin : 20; border: none; text-decoration: underline;");
         connect(addTagButton,SIGNAL(clicked()),this,SLOT(on_addTag_clicked()));
-        tags->layout()->addWidget(addTag);
+        tags->layout()->addWidget(addTagButton);
+        ui->tagScrollArea->setWidget(tags);
     }
     else {
         ui->infoMenu->hide();
@@ -207,11 +204,13 @@ void viewer::on_tag_editingFinished(int i) {
     bibliotheque->addTag(thisImage.getChemin(), tag[i]->text().toStdString());
     cout << "Ajout du tag " + tag[i]->text().toStdString() << endl;
 }
+
 void viewer::on_addTag_clicked(){
     addTagButton->hide();
 
     //Setup the combobox
     QComboBox *otherTags = new QComboBox();
+    tags->layout()->removeWidget(addTagButton);
     tags->layout()->removeWidget(otherTags);
     otherTags->addItem("Autres tags...");
     QStandardItemModel* model =
@@ -238,6 +237,32 @@ void viewer::on_addTag_clicked(){
     connect(otherTags,SIGNAL(currentIndexChanged(QString)),this,SLOT(on_comboBox_currentIndexChanged(const QString)));
 
 }
+
+void viewer::on_comboBox_currentIndexChanged(const QString &arg1)
+{
+    if (arg1.compare("Nouveau tag...") != 0) { // if existing tag is clicked
+        bibliotheque->addTag(liste_image[position].getChemin(), arg1.toStdString());
+        this->liste_image = bibliotheque->getlisteImage();
+        bibliotheque->addTag(this->liste_image[position].getId(), arg1.toStdString());
+        this->liste_image[position].addTag(arg1.toStdString());
+        ui->infoMenu->hide(); //updateInfoBar();// ne marche pas
+    }
+    else { // creates dialog to enter new non-empty tag
+        AjoutTagDialog *atd = new AjoutTagDialog;
+        atd->exec();
+        QString newTag = atd->getValue();
+        if(newTag.compare("") != 0) {
+            bibliotheque->addTag(liste_image[position].getChemin(), newTag.toStdString());
+            bibliotheque->addTag(this->liste_image[position].getId(), newTag.toStdString());
+            this->liste_image[position].addTag(newTag.toStdString());
+            ui->infoMenu->hide();
+            tags->layout()->addWidget(addTagButton);
+        }
+    }
+    bibliothequeWidget->refreshView();
+    bibliotheque->updateCSV();
+}
+
 void viewer::updateInfoBar() {
     if (ui->infoMenu->isHidden()) {
         on_info_clicked();
@@ -285,28 +310,6 @@ void viewer::on_filename_editingFinished()
 }
 
 
-void viewer::on_comboBox_currentIndexChanged(const QString &arg1)
-{
-    if (arg1.compare("Nouveau tag...") != 0) {
-        bibliotheque->addTag(liste_image[position].getChemin(), arg1.toStdString());
-        this->liste_image = bibliotheque->getlisteImage();
-        bibliotheque->addTag(this->liste_image[position].getId(), arg1.toStdString());
-        this->liste_image[position].addTag(arg1.toStdString());
-        /*ui->infoMenu->hide(); //*/updateInfoBar();// ne marche pas
-    }
-    else {
-        AjoutTagDialog *atd = new AjoutTagDialog;
-        atd->exec();
-        QString newTag = atd->getValue();
-        if(newTag.compare("") != 0) {
-            bibliotheque->addTag(liste_image[position].getChemin(), newTag.toStdString());
-            bibliotheque->addTag(this->liste_image[position].getId(), arg1.toStdString());
-            this->liste_image[position].addTag(newTag.toStdString());
-            ui->infoMenu->hide();
-        }
-    }
-
-}
 
 /*****************************************************************************************
  *                               NEXT/PREVIOUS                                           *
