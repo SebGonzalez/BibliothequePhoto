@@ -35,11 +35,17 @@ private slots:
 
     void on_previous_picture_clicked();
 
-    void on_boutonSupprimer_pressed();
-
     void on_quitButton_clicked();
 
     void on_addTag_clicked();
+
+    void on_tag_editingFinished(int i);
+
+    void on_filename_editingFinished();
+
+    void on_deleteButton_clicked();
+
+    void on_comboBox_currentIndexChanged(const QString &arg1);
 
 private:
     Ui::viewer *ui;
@@ -47,6 +53,8 @@ private:
     Bibliotheque *bibliotheque;
     BibliothequeWidget *bibliothequeWidget;
     void updateInfoBar();
+    void deleteImage();
+
 };
 
 #endif // VIEWER_H

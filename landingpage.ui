@@ -25,10 +25,8 @@
 QPushButton:hover {
 	opacity: 200;
 	color: black;
-	border-style: outset;
-	border-width: 3px;
+	background-color : white;
 	border-color: black;
-
 }</string>
   </property>
   <widget class="QLabel" name="label">
