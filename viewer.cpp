@@ -239,9 +239,10 @@ void viewer::on_info_clicked()
         tags = new QWidget(ui->tagScrollArea);
         ui->tagScrollArea->setStyleSheet("background : transparent");
         tags->setLayout(new QVBoxLayout());
+        tags->layout()->setAlignment(Qt::AlignTop);
         tag.clear();
         for (unsigned int i = 0; i < thisImage.getTags().size(); i++) {
-            tag.push_back(new QLineEdit(tags));
+            tag.push_back(new QLabel(tags));
             string currentTag = thisImage.getTags()[i];
             tag[i]->setText(QString::fromStdString(currentTag));
             //connect(tag[i], SIGNAL(editingFinished()), this, SLOT(on_tag_editingFinished(i)));

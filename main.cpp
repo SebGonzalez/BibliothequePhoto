@@ -11,11 +11,6 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     MainWindowRedesigned m;
-    if(m.getEmptyBibliotheque() == true){
-        LandingPage *lp = new LandingPage();
-        lp->exec();
-
-    }
     m.show();
 
     return a.exec();

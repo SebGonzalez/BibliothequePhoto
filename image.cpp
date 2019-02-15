@@ -10,7 +10,7 @@ Image::Image(string chemin, int id, string album, int fav)
     this->chemin = chemin;
     this->image = new QImage(QString::fromStdString(chemin));
     if(image->isNull()) {
-        qDebug() << "Erreur lors de l'ouverture" << endl;
+
     }
     this->fav = fav;
 }
@@ -23,7 +23,7 @@ Image::Image(string chemin, vector<string> tags, int id, string album, int fav)
     this->tags      = tags;
     this->image     = new QImage(QString::fromStdString(chemin));
     if(image->isNull()) {
-        qDebug() << "Erreur lors de l'ouverture" << endl;
+
     }
 
      this->fav = fav;

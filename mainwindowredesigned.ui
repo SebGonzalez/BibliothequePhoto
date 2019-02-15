@@ -18,6 +18,10 @@
 	background-color: white;
 }
 
+QFrame#photo, QFrame#selection {
+	border: none;
+}
+
 QPushButton#bibliButton, QPushButton#Album, QPushButton#importerButton, QPushButton#tagsButton, QPushButton#favButton {
 	color: rgb(71, 71, 71);
 	border-style: outset;
@@ -169,6 +173,9 @@ QLabel#selectionSize {
              </item>
              <item>
               <widget class="QLabel" name="selectionSize">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
                <property name="text">
                 <string>contient ? images</string>
                </property>

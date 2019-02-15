@@ -21,6 +21,14 @@ MainWindowRedesigned::MainWindowRedesigned(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindowRedesigned)
 {
+
+    if(getEmptyBibliotheque() == true){
+        LandingPage *lp = new LandingPage(&biblio);
+        lp->exec();
+        biblio.loadImages();
+    }
+
+
     ui->setupUi(this);
 
     image_affichees = biblio.getlisteImage();
@@ -42,6 +50,10 @@ MainWindowRedesigned::MainWindowRedesigned(QWidget *parent) :
    connect(bibliothequeWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(displayViewer(QListWidgetItem*)));
    connect(ui->favButton, SIGNAL(clicked()), this, SLOT(on_favButton_clicked()));
 
+   ui->selectionSize->hide();
+   ui->titre->setText("Ma Bibliothèque");
+   string nbPhotos = "contient " + std::to_string(biblio.getlisteImage().size()) + " images.";
+   ui->selectionSize->setText(QString::fromStdString(nbPhotos));
 }
 
 MainWindowRedesigned::~MainWindowRedesigned()
@@ -105,21 +117,37 @@ void MainWindowRedesigned::on_lineEdit_textEdited(const QString &arg1)
 {
 
     image_affichees = biblio.getTaggedImages(ui->lineEdit->text().toStdString());
-    if(arg1 == "") {
-        image_affichees = biblio.getlisteImage();
-    }
-
     if(image_affichees.size() != 0) {
+        bibliothequeWidget->clear();
+        for(unsigned int i = 0; i < image_affichees.size(); i++) {
+            QPixmap pixmap = QPixmap::fromImage(*image_affichees[i].getQImage());
+            pixmap = pixmap.scaledToWidth(200);
+            bibliothequeWidget->addPiece(pixmap.scaled(200,200), image_affichees[i].getId(), image_affichees[i].getTagsString());
+            string nbPhotos = "contient " + std::to_string(image_affichees.size()) + " images.";
+            ui->selectionSize->setText(QString::fromStdString(nbPhotos));
+            ui->titre->setText(QString::fromStdString("Résultat de recherche du filtre \"" + arg1.toStdString() + "\""));
 
-            bibliothequeWidget->clear();
-            for(unsigned int i = 0; i < image_affichees.size(); i++) {
-                QPixmap pixmap = QPixmap::fromImage(*image_affichees[i].getQImage());
-                pixmap = pixmap.scaledToWidth(200);
-                bibliothequeWidget->addPiece(pixmap.scaled(200,200), image_affichees[i].getId(), image_affichees[i].getTagsString());
-            }
         }
+     }
+
+    if(arg1.compare("") == 0) {
+        image_affichees = biblio.getlisteImage();
+        bibliothequeWidget->clear();
+        for(unsigned int i = 0; i < image_affichees.size(); i++) {
+            QPixmap pixmap = QPixmap::fromImage(*image_affichees[i].getQImage());
+            pixmap = pixmap.scaledToWidth(200);
+            bibliothequeWidget->addPiece(pixmap.scaled(200,200), image_affichees[i].getId(), image_affichees[i].getTagsString());
+            string nbPhotos = "contient " + std::to_string(image_affichees.size()) + " images.";
+        }
+        string nbPhotos = "contient " + std::to_string(image_affichees.size()) + " images.";
+        ui->selectionSize->setText(QString::fromStdString(nbPhotos));
+        ui->titre->setText("Ma Bibliothèque");
 
     }
+
+
+
+}
 
 
 void MainWindowRedesigned::on_checkBox_stateChanged(int arg1)
@@ -167,16 +195,22 @@ void MainWindowRedesigned::on_tagsButton_clicked()
              QPixmap pixmap = QPixmap::fromImage(*image_affichees[i].getQImage());
              pixmap = pixmap.scaledToWidth(200);
              bibliothequeWidget->addPiece(pixmap.scaled(200,200), image_affichees[i].getId(), image_affichees[i].getTagsString());
+
          }
 
+       }
 
+    if(tag->chosen_tag.compare("")){
+        ui->titre->setText("Résultat de recherche du filtre \"" + tag->chosen_tag + "\"");
+        ui->selectionSize->setText(QString::fromStdString("contient " + std::to_string(image_affichees.size()) + " images."));
+        if(image_affichees.size() == 1)   ui->selectionSize->setText(QString::fromStdString("contient " + std::to_string(image_affichees.size()) + " image."));
     }
 
 }
 
 void MainWindowRedesigned::on_Album_pressed()
 {
-    qDebug() << "test";
+
     AlbumDialog *albumDialog = new AlbumDialog(biblio, *bibliothequeWidget);
     albumDialog->exec();
 

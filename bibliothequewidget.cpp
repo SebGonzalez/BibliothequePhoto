@@ -1,4 +1,4 @@
-#include "bibliothequewidget.h"
+ #include "bibliothequewidget.h"
 
 BibliothequeWidget::BibliothequeWidget(int pieceSize, QWidget *parent, Bibliotheque *bibliotheque)
     : QListWidget(parent), m_PieceSize(pieceSize)
@@ -183,12 +183,16 @@ void BibliothequeWidget::ShowContextMenu()
     if (selectedTag)
     {
 
-        if(!QString::compare(selectedTag->iconText(),"Supprimer")){
-            for (int i = 0; i < listeItems.size(); ++i) {
-                int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
-                m_bibliotheque->removeImage(idPhoto);
-            }
-            refreshView();
+        if(!QString::compare(selectedTag->iconText(),"Supprimer")) {
+            confirmDelete *cd = new confirmDelete();
+            cd->exec();
+            if(cd->getValue() == true)
+                for (int i = 0; i < listeItems.size(); ++i) {
+                    int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
+                    m_bibliotheque->removeImage(idPhoto);
+                }
+                refreshView();
+            delete cd;
 
         }
         else if(!QString::compare(selectedTag->iconText(),"Nouveau tag")){

@@ -52,7 +52,7 @@
         <string/>
        </property>
        <property name="placeholderText">
-        <string>Nouveau tag...</string>
+        <string/>
        </property>
       </widget>
      </item>

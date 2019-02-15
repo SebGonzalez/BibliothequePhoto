@@ -54,7 +54,7 @@ private:
     // Infobar
     QPushButton *addTagButton;
     QWidget *tags;
-    vector<QLineEdit *> tag;
+    vector<QLabel *> tag;
     void updateInfoBar();
 
 };

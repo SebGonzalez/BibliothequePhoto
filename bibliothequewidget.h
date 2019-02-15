@@ -4,6 +4,7 @@
 #include "bibliotheque.h"
 #include "ajouttagdialog.h"
 #include "textoverphoto.h"
+#include "confirmdelete.h"
 
 #include <QDrag>
 #include <QDragEnterEvent>
