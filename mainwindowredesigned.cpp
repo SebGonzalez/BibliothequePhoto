@@ -1,14 +1,14 @@
     #include "mainwindowredesigned.h"
 #include "ui_mainwindowredesigned.h"
 
-#include "mainwindow.h"
+
 #include "ui_mainwindow.h"
 
 #include "tagdialog.h"
 
 
 #include "bibliotheque.h"
-#include "dialog.h"
+
 #include "landingpage.h"
 #include "image.h"
 

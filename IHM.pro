@@ -26,10 +26,8 @@ CONFIG += c++17
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp \
     bibliotheque.cpp \
     image.cpp \
-    dialog.cpp \
     bibliothequewidget.cpp \
     landingpage.cpp \
     ajouttag.cpp \
@@ -42,10 +40,8 @@ SOURCES += \
     ajouttagdialog.cpp
 
 HEADERS += \
-        mainwindow.h \
     bibliotheque.h \
     image.h \
-    dialog.h \
     global_variables.h \
     bibliothequewidget.h \
     landingpage.h \
@@ -60,8 +56,6 @@ HEADERS += \
 
 
 FORMS += \
-        mainwindow.ui \
-        dialog.ui \
     landingpage.ui \
     ajouttag.ui \
     mainwindowredesigned.ui \
