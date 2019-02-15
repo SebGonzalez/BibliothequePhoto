@@ -1,7 +1,6 @@
 #include "landingpage.h"
 #include "ui_landingpage.h"
-#include "mainwindow.h"
-#include "dialog.h"
+
 
 LandingPage::LandingPage(QWidget *parent) :
     QDialog(parent),

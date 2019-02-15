@@ -87,7 +87,7 @@ void Bibliotheque::updatePositionPhoto(int idPhotoD, int position) {
         if(listeImage[i].getId() == idPhotoD) {
             m = listeImage[i];
             index = i;
-            cout << "trouve : " << i << endl;
+        //    cout << "trouve : " << i << endl;
             break;
         }
     }

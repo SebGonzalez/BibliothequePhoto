@@ -60,7 +60,7 @@ void BibliothequeWidget::dropEvent(QDropEvent *event)
         int idPhoto = currentItem()->data(Qt::UserRole+1).toInt();
         cout << "Widht : " << this->width() << " : " << nbPhotoParLigne << endl;
         QListWidgetItem *pieceItem = new QListWidgetItem();
-        cout << "1"<< endl;
+     //   cout << "1"<< endl;
         pieceItem->setIcon(QIcon(pixmap.scaled(200,200)));
         pieceItem->setData(Qt::UserRole, QVariant(pixmap));
         pieceItem->setData(Qt::UserRole+1, QVariant(idPhoto));
@@ -69,15 +69,15 @@ void BibliothequeWidget::dropEvent(QDropEvent *event)
 
         pieceItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
 
-        cout << "2"<< endl;
+//        cout << "2"<< endl;
         int rowPhoto = ligne*nbPhotoParLigne + colonne+1;
         if(row(currentItem()) >= rowPhoto) {
             rowPhoto--;
         }
-            cout << "3"<< endl;
+         //   cout << "3"<< endl;
         m_bibliotheque->updatePositionPhoto(idPhoto, rowPhoto);
 
-         cout << "4"<< endl;
+    //     cout << "4"<< endl;
 
 
         insertItem(rowPhoto, pieceItem);
@@ -244,7 +244,7 @@ void BibliothequeWidget::ShowContextMenu(const QPoint& pos) // this is a slot
         }
         else if(!QString::compare(selectedTag->iconText(),"Ajouter aux favoris")) {
 
-            cout << "oui" << endl;
+          //  cout << "oui" << endl;
             for (int i = 0; i < listeItems.size(); ++i) {
                 int idPhoto = listeItems[i]->data(Qt::UserRole+1).toInt();
                 m_bibliotheque->getImageById(idPhoto)->setFav();
