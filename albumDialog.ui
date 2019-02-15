@@ -32,9 +32,9 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>861</width>
+     <x>30</x>
+     <y>-10</y>
+     <width>541</width>
      <height>91</height>
     </rect>
    </property>
@@ -50,25 +50,12 @@
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>160</y>
-     <width>271</width>
-     <height>231</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Créer un album</string>
-   </property>
-  </widget>
   <widget class="QListWidget" name="listWidget">
    <property name="geometry">
     <rect>
-     <x>320</x>
+     <x>35</x>
      <y>90</y>
-     <width>256</width>
+     <width>541</width>
      <height>381</height>
     </rect>
    </property>
